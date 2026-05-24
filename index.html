@@ -264,7 +264,7 @@
     .item-row:hover { background: rgba(76,175,80,0.04); }
     .item-row:hover::before { transform: scaleY(1); }
 
-    .item-info { flex: 1; min-width: 160px; }
+    .item-info { flex: 1; min-width: 110px; }
     .item-name { font-size: 0.875rem; font-weight: 600; color: var(--text); }
     .item-store { font-size: 0.7rem; color: var(--muted); margin-top: 3px; font-weight: 500; }
 
@@ -318,6 +318,9 @@
     }
     .form-row { display: grid; grid-template-columns: 2fr 1.1fr 1.1fr auto; gap: 12px; align-items: end; }
     @media(max-width:640px){ .form-row { grid-template-columns: 1fr 1fr; } }
+    @media(max-width:480px){ .form-row { grid-template-columns: 1fr; }
+      .form-row > div:last-child { display: flex; }
+      .form-row > div:last-child .btn-add { flex: 1; } }
 
     .ff label {
       display: block; font-size: 0.7rem; color: var(--muted);
@@ -538,8 +541,8 @@
       outline: none; transition: border-color 0.2s;
     }
     .add-item-row input:focus { border-color: var(--gold); }
-    .add-item-row .ai-name  { flex: 1; min-width: 140px; }
-    .add-item-row .ai-store { width: 130px; }
+    .add-item-row .ai-name  { flex: 1; min-width: 100px; }
+    .add-item-row .ai-store { width: 110px; }
     .btn-quick-add {
       background: rgba(255,215,0,0.13); color: var(--gold);
       border: 1px solid rgba(255,215,0,0.32);
@@ -648,7 +651,8 @@
     .sync-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
     /* ====== MOBILE / RESPONSIVE ====== */
-    /* Nav: tabs scroll, share controls always pinned right */
+
+    /* Nav: tabs scroll independently; share controls always visible */
     nav { overflow-x: hidden; }
     .tabs-scroll { display:flex; flex:1; overflow-x:auto; -webkit-overflow-scrolling:touch; min-width:0; }
     .tabs-scroll::-webkit-scrollbar { display:none; }
@@ -657,81 +661,171 @@
     .tbl-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }
     .tbl-scroll table { min-width:520px; }
 
-    /* Always give the bottom of the page breathing room (browser toolbar, home bar) */
+    /* Always leave room at the bottom for browser toolbar / home bar */
     .ctn { padding-bottom: 80px; }
-    body { padding-bottom: env(safe-area-inset-bottom, 0px); }
 
+    /* ── 768 px ─────────────────────────────────────── */
     @media (max-width: 768px) {
-      .hero { padding-top:40px; }
-      .ctn { padding:20px 14px 90px; }
-      .tab-btn { padding:13px 16px; font-size:0.84rem; }
-      .btn-share { padding:5px 11px; font-size:0.73rem; }
-      .trip-chip { font-size:0.65rem; padding:4px 9px; }
-      .settings-section { padding:20px 16px; }
-      .tx-item { flex-wrap:wrap; }
-      .tx-verb { flex-basis:100%; order:3; font-size:0.78rem; }
-      .balances { grid-template-columns:repeat(2,1fr); }
-      /* Modal as bottom sheet — avoids keyboard pushing it off screen */
-      .modal-overlay {
-        align-items: flex-end;
-        padding: 0;
-      }
+      .hero { padding: 40px 16px 0; }
+      .hero-moon { width: 40px; height: 40px; top: 20px; right: 8%; }
+      .ctn { padding: 16px 14px 90px; }
+
+      /* Tabs */
+      .tab-btn { padding: 13px 15px; font-size: 0.83rem; }
+      .btn-share { padding: 5px 10px; font-size: 0.73rem; }
+      .trip-chip { font-size: 0.65rem; padding: 4px 8px; }
+
+      /* Categories */
+      .cat-head { padding: 13px 16px; }
+      .item-row  { padding: 11px 16px; gap: 8px; }
+
+      /* Expense table */
+      .tbl-head { padding: 13px 16px; }
+      table { font-size: 0.78rem; }
+      thead th, tbody td { padding: 9px 12px; }
+
+      /* Balance cards: 2 col */
+      .balances { grid-template-columns: repeat(2,1fr); gap: 10px; }
+      .bal-card  { padding: 20px 12px; }
+
+      /* Settlement transactions: wrap cleanly */
+      .tx-item { flex-wrap: wrap; gap: 8px; padding: 14px 16px; }
+      .tx-verb  { flex-basis: 100%; order: 3; font-size: 0.78rem; }
+      .tx-chip  { font-size: 0.76rem; padding: 5px 12px; }
+      .tx-card  { padding: 20px 16px; }
+
+      /* Settings */
+      .settings-section { padding: 20px 14px; }
+
+      /* Modal → bottom sheet so keyboard doesn't push it off screen */
+      .modal-overlay { align-items: flex-end; padding: 0; }
       .modal {
         border-radius: 24px 24px 0 0;
-        max-height: 92dvh;
-        max-height: 92vh; /* fallback */
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        width: 100%;
-        max-width: 100%;
-        padding: 28px 20px max(28px, env(safe-area-inset-bottom, 16px));
-        /* handle bar at top */
+        max-height: 92dvh; max-height: 92vh;
+        overflow-y: auto; -webkit-overflow-scrolling: touch;
+        width: 100%; max-width: 100%;
+        padding: 8px 20px 32px;
         border-top: 3px solid rgba(255,255,255,0.12);
       }
       .modal::before {
-        content: '';
-        display: block;
+        content: ''; display: block;
         width: 40px; height: 4px;
         background: rgba(255,255,255,0.2);
-        border-radius: 2px;
-        margin: 0 auto 20px;
+        border-radius: 2px; margin: 0 auto 20px;
       }
     }
 
+    /* ── 480 px ─────────────────────────────────────── */
     @media (max-width: 480px) {
-      .hero { padding:28px 14px 0; }
-      .hero-emoji { font-size:2.8rem; }
-      .ctn { padding:14px 10px 100px; }
-      .tab-btn { padding:11px 12px; font-size:0.78rem; }
-      .nav-right { gap:6px; padding:0 8px 0 4px; }
-      #trip-id-display { display:none; }
-      .trip-chip { padding:4px 7px; }
-      .sc-num { font-size:1.9rem; }
-      .tot-num { font-size:1.6rem; }
-      .tot-card { padding:14px 10px; }
-      .form-card { padding:18px 12px; }
-      .settings-section { padding:14px 12px; }
-      .cat-head { padding:12px 14px; }
-      .item-row { padding:10px 14px; gap:8px; }
-      .add-item-row { padding:8px 14px; flex-wrap:wrap; }
-      .add-item-row .ai-name  { min-width:100%; } /* full width on tiny screens */
-      .add-item-row .ai-store { width:100%; }
-      .person-card { padding:10px 12px; gap:10px; }
-      .p-avatar { width:38px; height:38px; font-size:1.2rem; }
-      .bal-card { padding:18px 10px; }
-      .bal-net { font-size:1.3rem; }
-      .tx-item { padding:12px 12px; }
-      .tx-amt { font-size:1rem; }
-      .btn-add { padding:10px 16px; font-size:0.84rem; }
-      /* Edit mode quick-add inputs full width */
-      .add-cat-wrap { padding:14px 16px; }
+      /* Hero */
+      .hero { padding: 24px 12px 0; }
+      .hero-emoji { font-size: 2.6rem; margin-bottom: 10px; }
+      .hero h1 { font-size: 1.55rem; letter-spacing: -0.5px; }
+      .hero-sub { font-size: 0.8rem; gap: 6px; margin-bottom: 18px; }
+      .hero-chip { font-size: 0.73rem; padding: 3px 9px; }
+      .badge { padding: 6px 14px; font-size: 0.8rem; gap: 6px; }
+      .person-badges { gap: 7px; }
+
+      /* Container */
+      .ctn { padding: 12px 10px 100px; }
+
+      /* Tabs */
+      .tab-btn { padding: 11px 12px; font-size: 0.77rem; }
+      .nav-right { gap: 6px; padding: 0 8px 0 4px; }
+      #trip-id-display { display: none; }
+      .trip-chip { padding: 4px 7px; }
+
+      /* Stats: fixed 2-column grid */
+      .stats { grid-template-columns: repeat(2,1fr); gap: 8px; margin-bottom: 16px; }
+      .sc { padding: 14px 10px; border-radius: 14px; }
+      .sc-num { font-size: 1.8rem; }
+      .sc-lbl { font-size: 0.65rem; }
+
+      /* Category headers + items */
+      .cat-block { border-radius: 14px; margin-bottom: 10px; }
+      .cat-head  { padding: 11px 13px; }
+      .cat-title { font-size: 0.88rem; }
+      .item-row  { padding: 9px 13px; gap: 6px; }
+      .item-name { font-size: 0.82rem; }
+      .item-store { font-size: 0.66rem; }
+      .pill { padding: 2px 8px; font-size: 0.67rem; }
+      .status-tag { font-size: 0.65rem; padding: 2px 8px; }
+
+      /* Edit toolbar */
+      .edit-toolbar { margin-bottom: 12px; gap: 6px; }
+      .btn-edit-toggle { padding: 8px 16px; font-size: 0.8rem; }
+      .edit-hint { display: none; }
+
+      /* Quick-add row: stack inputs vertically */
+      .add-item-row {
+        padding: 8px 13px; flex-direction: column; gap: 6px;
+        align-items: stretch;
+      }
+      .add-item-row .ai-name  { width: 100%; min-width: 0; }
+      .add-item-row .ai-store { width: 100%; }
+      .btn-quick-add { width: 100%; text-align: center; padding: 8px; }
+      .add-cat-wrap  { padding: 13px 14px; margin-top: 8px; border-radius: 14px; }
+
+      /* Expense form */
+      .form-card  { padding: 14px 12px; border-radius: 16px; margin-bottom: 14px; }
+      .sec-title  { font-size: 0.92rem; margin-bottom: 10px; }
+      .split-row  { margin-top: 12px; }
+      .btn-add    { width: 100%; padding: 11px; font-size: 0.88rem; margin-top: 2px; }
+
+      /* Per-person totals: 2 col */
+      .totals  { grid-template-columns: repeat(2,1fr); gap: 8px; margin-bottom: 14px; }
+      .tot-card { padding: 12px 8px; border-radius: 14px; }
+      .tot-num  { font-size: 1.5rem; }
+      .tot-pct  { font-size: 0.63rem; }
+
+      /* Expense table wrapper */
+      .tbl-wrap { border-radius: 14px; }
+      .tbl-head { padding: 11px 13px; flex-wrap: wrap; gap: 4px; }
+      .grand-lbl { font-size: 0.85rem; }
+
+      /* Balance cards: 2 col compact */
+      .balances { grid-template-columns: repeat(2,1fr); gap: 8px; margin-bottom: 18px; }
+      .bal-card  { padding: 14px 8px; border-radius: 16px; }
+      .bal-name  { font-size: 0.88rem; margin-bottom: 8px; }
+      .bal-net   { font-size: 1.25rem; }
+      .bal-lbl   { font-size: 0.63rem; }
+      .bal-row   { font-size: 0.7rem; margin-bottom: 3px; }
+      .bal-divider { margin: 10px 0; }
+
+      /* Transactions */
+      .tx-card  { padding: 14px 12px; border-radius: 16px; }
+      .tx-item  { padding: 10px 12px; border-radius: 12px; margin-bottom: 8px; }
+      .tx-amt   { font-size: 0.95rem; }
+
+      /* Settings */
+      .settings-section { padding: 14px 12px; border-radius: 16px; margin-bottom: 12px; }
+      .person-card  { padding: 10px 11px; gap: 9px; border-radius: 12px; }
+      .p-avatar { width: 36px; height: 36px; font-size: 1.1rem; }
+      .p-name   { font-size: 0.88rem; }
+      .p-meta   { font-size: 0.67rem; }
+      .p-actions { gap: 5px; }
+      .btn-sm   { padding: 5px 10px; font-size: 0.72rem; }
+      .add-person-grid { grid-template-columns: 1fr 1fr; }
+      .reset-bar { padding: 12px 12px; }
+
+      /* Modal */
+      .modal { padding: 6px 14px 28px; }
+      .modal-title { font-size: 0.98rem; margin-bottom: 14px; }
+      .mf { margin-bottom: 11px; }
+      .mf input, .mf select { padding: 9px 11px; font-size: 0.85rem; }
+      .modal-btns { gap: 8px; margin-top: 16px; }
+      .btn-cancel, .btn-save { padding: 10px 16px; font-size: 0.83rem; }
+      .swatches { gap: 6px; }
+      .swatch { width: 24px; height: 24px; }
     }
 
+    /* ── 360 px ─────────────────────────────────────── */
     @media (max-width: 360px) {
-      .tab-btn { padding:10px 9px; font-size:0.72rem; }
-      .balances { grid-template-columns:1fr; }
-      .stats { grid-template-columns:repeat(2,1fr); }
-      .hero h1 { font-size:1.5rem; }
+      .tab-btn { padding: 10px 9px; font-size: 0.72rem; }
+      .hero h1  { font-size: 1.35rem; }
+      .badge    { padding: 5px 11px; font-size: 0.76rem; }
+      .balances { grid-template-columns: 1fr; }
+      .sc-num   { font-size: 1.6rem; }
     }
   </style>
 </head>
