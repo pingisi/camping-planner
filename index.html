@@ -1,0 +1,1889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>⛺ Camping Trip Planner 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:        #080f0b;
+      --bg2:       #0d1a12;
+      --surface:   rgba(255,255,255,0.045);
+      --surface2:  rgba(255,255,255,0.08);
+      --border:    rgba(255,255,255,0.08);
+      --border2:   rgba(255,255,255,0.15);
+      --text:      #e2f0e6;
+      --muted:     #6e9e8c;
+      --faint:     #2e4a3e;
+      --fire:      #ff6b35;
+      --gold:      #ffd700;
+      --green-acc: #4caf50;
+      --sid:       #29b6f6;
+      --rahul:     #ba68c8;
+      --deep:      #f06292;
+      --sujoy:     #ffa726;
+      --ok:        #66bb6a;
+      --warn:      #ffa726;
+      --danger:    #ef5350;
+      --sh-sm:     0 2px 10px rgba(0,0,0,0.35);
+      --sh-md:     0 8px 32px rgba(0,0,0,0.45);
+      --sh-lg:     0 20px 60px rgba(0,0,0,0.55);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ====== CANVAS BACKGROUND ====== */
+    #bg-canvas {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    }
+
+    .app { position: relative; z-index: 1; }
+
+    /* ====== HERO ====== */
+    .hero {
+      background: radial-gradient(ellipse 120% 100% at 50% -20%, #1a3a20 0%, #0d1f14 50%, #080f0b 100%);
+      padding: 64px 24px 0;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 50% -10%, rgba(255,107,53,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 80% 10%, rgba(255,215,0,0.08) 0%, transparent 50%);
+    }
+
+    /* Moon */
+    .hero-moon {
+      position: absolute; top: 28px; right: 10%;
+      width: 52px; height: 52px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff9d6, #ffd700 60%, #e6a800);
+      box-shadow: 0 0 0 2px rgba(255,215,0,0.2),
+                  0 0 20px 6px rgba(255,215,0,0.25),
+                  0 0 50px 15px rgba(255,215,0,0.1);
+      animation: moonPulse 5s ease-in-out infinite;
+      z-index: 1;
+    }
+    @keyframes moonPulse {
+      0%,100% { box-shadow: 0 0 0 2px rgba(255,215,0,0.2), 0 0 20px 6px rgba(255,215,0,0.25), 0 0 50px 15px rgba(255,215,0,0.1); }
+      50%      { box-shadow: 0 0 0 4px rgba(255,215,0,0.15), 0 0 30px 10px rgba(255,215,0,0.3), 0 0 70px 22px rgba(255,215,0,0.15); }
+    }
+    /* Star sparkles around moon */
+    .hero-moon::before, .hero-moon::after {
+      content: '✦'; position: absolute; color: rgba(255,215,0,0.7); font-size: 0.6rem;
+      animation: sparkle 3s ease-in-out infinite;
+    }
+    .hero-moon::before { top: -14px; right: -8px; animation-delay: 0.5s; }
+    .hero-moon::after  { bottom: -10px; left: -14px; animation-delay: 1.2s; }
+    @keyframes sparkle { 0%,100%{opacity:0.3;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.2)} }
+
+    .hero-content { position: relative; z-index: 2; padding-bottom: 36px; }
+
+    .hero-emoji {
+      font-size: 3.8rem; display: block; margin-bottom: 14px;
+      animation: bob 3.5s ease-in-out infinite;
+      filter: drop-shadow(0 4px 12px rgba(255,107,53,0.4));
+    }
+    @keyframes bob {
+      0%,100% { transform: translateY(0) rotate(-2deg); }
+      50%      { transform: translateY(-14px) rotate(2deg); }
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-weight: 900; letter-spacing: -1px;
+      background: linear-gradient(135deg, #ffe066 0%, #ffb347 40%, #ff6b35 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 10px;
+    }
+    .hero-sub {
+      color: var(--muted); font-size: 0.98rem; margin-bottom: 30px;
+      display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .hero-chip {
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50px; padding: 4px 12px; font-size: 0.82rem; color: var(--muted);
+      font-weight: 600;
+    }
+
+    .person-badges {
+      display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 0;
+    }
+    .badge {
+      padding: 8px 20px; border-radius: 50px; font-weight: 700; font-size: 0.88rem;
+      border: 1.5px solid; display: flex; align-items: center; gap: 8px;
+      backdrop-filter: blur(12px); transition: transform 0.25s, box-shadow 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .badge::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+    }
+    .badge:hover { transform: translateY(-4px); }
+    .b-sid   { color:var(--sid);   border-color:rgba(41,182,246,0.5);  background:rgba(41,182,246,0.1);  box-shadow:0 4px 20px rgba(41,182,246,0.2); }
+    .b-rahul { color:var(--rahul); border-color:rgba(186,104,200,0.5); background:rgba(186,104,200,0.1); box-shadow:0 4px 20px rgba(186,104,200,0.2); }
+    .b-deep  { color:var(--deep);  border-color:rgba(240,98,146,0.5);  background:rgba(240,98,146,0.1);  box-shadow:0 4px 20px rgba(240,98,146,0.2); }
+    .b-sujoy { color:var(--sujoy); border-color:rgba(255,167,38,0.5);  background:rgba(255,167,38,0.1);  box-shadow:0 4px 20px rgba(255,167,38,0.2); }
+    .b-sid:hover   { box-shadow:0 8px 28px rgba(41,182,246,0.4); }
+    .b-rahul:hover { box-shadow:0 8px 28px rgba(186,104,200,0.4); }
+    .b-deep:hover  { box-shadow:0 8px 28px rgba(240,98,146,0.4); }
+    .b-sujoy:hover { box-shadow:0 8px 28px rgba(255,167,38,0.4); }
+
+    /* Mountain silhouette at bottom of hero */
+    .hero-mountains {
+      position: relative; z-index: 1; margin-top: 10px;
+      line-height: 0; pointer-events: none;
+    }
+    .hero-mountains svg { width: 100%; display: block; }
+
+    /* ====== TABS NAV ====== */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(8,15,11,0.9);
+      backdrop-filter: blur(28px) saturate(1.8);
+      border-bottom: 1px solid var(--border);
+      display: flex; overflow-x: auto;
+    }
+    nav::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      padding: 16px 28px;
+      background: none; border: none; border-bottom: 2px solid transparent;
+      color: var(--muted); font-size: 0.92rem; font-weight: 600; font-family: 'Outfit', sans-serif;
+      cursor: pointer; white-space: nowrap; transition: all 0.25s; position: relative;
+    }
+    .tab-btn::after {
+      content: ''; position: absolute; bottom: -2px; left: 50%; right: 50%;
+      height: 2px; background: linear-gradient(90deg, var(--fire), var(--gold));
+      transition: left 0.3s ease, right 0.3s ease; border-radius: 2px;
+    }
+    .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+    .tab-btn.active { color: var(--gold); }
+    .tab-btn.active::after { left: 12px; right: 12px; }
+
+    /* ====== CONTAINER ====== */
+    .ctn { max-width: 1200px; margin: 0 auto; padding: 28px 20px; }
+
+    /* ====== TAB PANELS ====== */
+    .panel { display: none; }
+    .panel.active { display: block; animation: fadeUp 0.3s ease; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ====== STAT CARDS ====== */
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 28px; }
+
+    .sc {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 18px; padding: 22px 16px; text-align: center;
+      backdrop-filter: blur(12px); position: relative; overflow: hidden;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    }
+    .sc::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--fire), var(--gold));
+      border-radius: 18px 18px 0 0;
+    }
+    .sc::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .sc:hover { transform: translateY(-6px); border-color: rgba(255,215,0,0.22); box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,215,0,0.08); }
+    .sc-num { font-size: 2.4rem; font-weight: 900; line-height: 1; margin-bottom: 6px; letter-spacing: -1px; }
+    .sc-lbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; }
+
+    /* ====== CATEGORY ACCORDION ====== */
+    .cat-block {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden; margin-bottom: 14px;
+      backdrop-filter: blur(12px);
+      border-left: 3px solid rgba(255,255,255,0.1);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .cat-block:hover { box-shadow: var(--sh-md); }
+
+    /* Category color bands */
+    .cat-block[data-cat="gear"]      { border-left-color: var(--ok); }
+    .cat-block[data-cat="costco"]    { border-left-color: var(--sid); }
+    .cat-block[data-cat="walmart"]   { border-left-color: var(--rahul); }
+    .cat-block[data-cat="dollarama"] { border-left-color: var(--gold); }
+    .cat-block[data-cat="indian"]    { border-left-color: var(--fire); }
+    .cat-block[data-cat="reminders"] { border-left-color: var(--deep); }
+
+    .cat-head {
+      padding: 16px 22px; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      user-select: none; transition: background 0.2s;
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-head:hover { background: rgba(255,255,255,0.025); }
+    .cat-title-wrap { display: flex; align-items: center; gap: 10px; }
+    .cat-title { font-size: 0.98rem; font-weight: 700; letter-spacing: -0.2px; }
+    .cat-count {
+      background: rgba(255,215,0,0.1); color: var(--gold);
+      border: 1px solid rgba(255,215,0,0.25);
+      border-radius: 50px; padding: 2px 10px; font-size: 0.72rem; font-weight: 800;
+    }
+    .chevron { width: 18px; height: 18px; color: var(--muted); transition: transform 0.35s; }
+    .chevron.open { transform: rotate(180deg); }
+
+    .cat-body { overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .cat-body.closed { max-height: 0 !important; }
+
+    /* ====== ITEM ROW ====== */
+    .item-row {
+      display: flex; align-items: center; gap: 12px; padding: 13px 22px;
+      border-bottom: 1px solid rgba(255,255,255,0.035);
+      transition: background 0.18s, padding-left 0.18s; flex-wrap: wrap;
+      position: relative;
+    }
+    .item-row::before {
+      content: ''; position: absolute; left: 0; top: 4px; bottom: 4px; width: 2px;
+      background: var(--green-acc); border-radius: 2px;
+      transform: scaleY(0); transform-origin: center; transition: transform 0.2s ease;
+    }
+    .item-row:last-child { border-bottom: none; }
+    .item-row:hover { background: rgba(76,175,80,0.04); }
+    .item-row:hover::before { transform: scaleY(1); }
+
+    .item-info { flex: 1; min-width: 160px; }
+    .item-name { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+    .item-store { font-size: 0.7rem; color: var(--muted); margin-top: 3px; font-weight: 500; }
+
+    .item-pills { display: flex; gap: 5px; flex-wrap: wrap; }
+
+    .pill {
+      padding: 3px 10px; border-radius: 50px; font-size: 0.7rem; font-weight: 700;
+      border: 1.5px solid; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .pill:hover { transform: scale(1.1); }
+    .pill.on  { opacity: 1; }
+    .pill.off { opacity: 0.18; }
+    .p-sid   { color:var(--sid);   border-color:rgba(41,182,246,0.6);  background:rgba(41,182,246,0.1); }
+    .p-rahul { color:var(--rahul); border-color:rgba(186,104,200,0.6); background:rgba(186,104,200,0.1); }
+    .p-deep  { color:var(--deep);  border-color:rgba(240,98,146,0.6);  background:rgba(240,98,146,0.1); }
+    .p-sujoy { color:var(--sujoy); border-color:rgba(255,167,38,0.6);  background:rgba(255,167,38,0.1); }
+    /* Glow when assigned */
+    .p-sid.on   { box-shadow: 0 0 8px rgba(41,182,246,0.45); }
+    .p-rahul.on { box-shadow: 0 0 8px rgba(186,104,200,0.45); }
+    .p-deep.on  { box-shadow: 0 0 8px rgba(240,98,146,0.45); }
+    .p-sujoy.on { box-shadow: 0 0 8px rgba(255,167,38,0.45); }
+
+    .status-tag {
+      padding: 3px 10px; border-radius: 50px; font-size: 0.68rem; font-weight: 800;
+      white-space: nowrap; letter-spacing: 0.3px;
+    }
+    .s-claimed { background:rgba(102,187,106,0.12); color:var(--ok); border: 1px solid rgba(102,187,106,0.25); }
+    .s-needed  {
+      background:rgba(255,167,38,0.1); color:var(--warn);
+      border: 1px solid rgba(255,167,38,0.3);
+      animation: needPulse 3s ease-in-out infinite;
+    }
+    @keyframes needPulse {
+      0%,100% { opacity: 1; box-shadow: none; }
+      50% { opacity: 0.7; box-shadow: 0 0 6px rgba(255,167,38,0.3); }
+    }
+
+    /* ====== SECTION TITLE ====== */
+    .sec-title {
+      font-size: 1.05rem; font-weight: 800; margin-bottom: 18px;
+      display: flex; align-items: center; gap: 9px; letter-spacing: -0.2px;
+    }
+
+    /* ====== EXPENSE FORM ====== */
+    .form-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 22px; padding: 26px; margin-bottom: 22px;
+      backdrop-filter: blur(14px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .form-row { display: grid; grid-template-columns: 2fr 1.1fr 1.1fr auto; gap: 12px; align-items: end; }
+    @media(max-width:640px){ .form-row { grid-template-columns: 1fr 1fr; } }
+
+    .ff label {
+      display: block; font-size: 0.7rem; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; font-weight: 700;
+    }
+    .ff input, .ff select {
+      width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      border-radius: 11px; padding: 10px 13px; color: var(--text); font-size: 0.88rem;
+      font-family: 'Outfit', sans-serif;
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .ff input:focus, .ff select:focus {
+      border-color: rgba(255,215,0,0.5);
+      box-shadow: 0 0 0 3px rgba(255,215,0,0.08);
+    }
+    .ff select option { background: #0d1a12; }
+
+    .split-row { margin-top: 16px; }
+    .split-row label.lbl {
+      font-size: 0.7rem; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 0.8px; display: block; margin-bottom: 8px; font-weight: 700;
+    }
+    .split-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .sp-label { cursor: pointer; }
+    .sp-label input { display: none; }
+    .sp-label input:checked + .pill { opacity: 1; }
+    .sp-label .pill { opacity: 0.22; transition: opacity 0.2s, box-shadow 0.2s; }
+
+    .btn-add {
+      background: linear-gradient(135deg, #ff6b35, #e55525);
+      color: #fff; border: none; border-radius: 11px; padding: 10px 22px;
+      font-size: 0.88rem; font-weight: 700; font-family: 'Outfit', sans-serif;
+      cursor: pointer; white-space: nowrap;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 14px rgba(255,107,53,0.35);
+    }
+    .btn-add:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,53,0.5); }
+    .btn-add:active { transform: translateY(0); }
+
+    /* ====== TOTALS GRID ====== */
+    .totals { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 22px; }
+    @media(max-width:600px){ .totals { grid-template-columns: repeat(2,1fr); } }
+
+    .tot-card {
+      border-radius: 18px; padding: 22px 16px; text-align: center;
+      border: 1px solid var(--border); position: relative; overflow: hidden;
+      backdrop-filter: blur(12px);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .tot-card::before {
+      content: ''; position: absolute; inset: 0; opacity: 0.06;
+      background: radial-gradient(ellipse at 50% 0%, currentColor, transparent 70%);
+    }
+    .tot-card:hover { transform: translateY(-5px); box-shadow: var(--sh-md); }
+    .tot-name { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; font-weight: 700; }
+    .tot-num  { font-size: 2rem; font-weight: 900; letter-spacing: -1px; }
+    .tot-pct  { font-size: 0.7rem; color: var(--muted); margin-top: 6px; font-weight: 600; }
+
+    /* ====== EXPENSE TABLE ====== */
+    .tbl-wrap {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden; margin-bottom: 22px;
+      backdrop-filter: blur(12px);
+    }
+    .tbl-head {
+      padding: 17px 22px; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(0,0,0,0.15);
+    }
+    .grand-lbl { font-size: 1rem; font-weight: 800; color: var(--gold); letter-spacing: -0.3px; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 11px 18px; text-align: left; font-size: 0.68rem; font-weight: 700;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px;
+      background: rgba(0,0,0,0.2); font-family: 'Outfit', sans-serif;
+    }
+    tbody td { padding: 12px 18px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.85rem; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: rgba(76,175,80,0.03); }
+    .amt { font-weight: 800; letter-spacing: -0.5px; }
+
+    .btn-del {
+      background: rgba(239,83,80,0.1); color: var(--danger);
+      border: 1px solid rgba(239,83,80,0.25); border-radius: 8px;
+      padding: 3px 11px; cursor: pointer; font-size: 0.78rem; font-weight: 700;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-del:hover { background: rgba(239,83,80,0.25); transform: scale(1.05); }
+
+    /* ====== BALANCE CARDS ====== */
+    .balances { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 28px; }
+    @media(max-width:600px){ .balances { grid-template-columns: repeat(2,1fr); } }
+
+    .bal-card {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 22px; padding: 26px 18px; text-align: center;
+      transition: transform 0.25s, box-shadow 0.25s; position: relative; overflow: hidden;
+    }
+    .bal-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 50%);
+    }
+    .bal-card.pos-card { background: linear-gradient(160deg, rgba(102,187,106,0.06), var(--surface) 60%); }
+    .bal-card.neg-card { background: linear-gradient(160deg, rgba(239,83,80,0.06), var(--surface) 60%); }
+    .bal-card:hover { transform: translateY(-6px); box-shadow: var(--sh-md); }
+    .bal-name { font-size: 1rem; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.3px; }
+    .bal-row  { font-size: 0.78rem; color: var(--muted); margin-bottom: 5px; font-weight: 500; }
+    .bal-row strong { color: var(--text); font-weight: 700; }
+    .bal-divider { height: 1px; background: var(--border); margin: 14px 0; }
+    .bal-net  { font-size: 1.6rem; font-weight: 900; letter-spacing: -1px; }
+    .bal-lbl  { font-size: 0.72rem; font-weight: 700; margin-top: 5px; letter-spacing: 0.3px; }
+    .pos { color: var(--ok); }
+    .neg { color: var(--danger); }
+    .zer { color: var(--muted); }
+
+    /* ====== TRANSACTIONS ====== */
+    .tx-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 22px; padding: 28px; backdrop-filter: blur(12px);
+    }
+    .tx-sub { font-size: 0.83rem; color: var(--muted); margin-bottom: 22px; font-weight: 500; }
+    .tx-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 20px; border-radius: 14px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(0,0,0,0.1));
+      border: 1px solid var(--border);
+      margin-bottom: 10px; transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .tx-item:hover { background: linear-gradient(135deg,rgba(255,215,0,0.04),rgba(0,0,0,0.15)); transform: translateX(6px); box-shadow: var(--sh-sm); }
+    .tx-chip {
+      padding: 6px 16px; border-radius: 50px; font-size: 0.82rem; font-weight: 800;
+      border: 1.5px solid; letter-spacing: -0.2px;
+    }
+    .tx-arrow {
+      font-size: 1.1rem; color: var(--gold);
+      animation: arrowBounce 1.5s ease-in-out infinite;
+    }
+    @keyframes arrowBounce {
+      0%,100% { transform: translateX(0); }
+      50% { transform: translateX(4px); }
+    }
+    .tx-verb  { flex: 1; color: var(--muted); font-size: 0.82rem; font-weight: 500; }
+    .tx-amt   { font-size: 1.15rem; font-weight: 900; letter-spacing: -0.5px; color: var(--gold); }
+
+    /* ====== EMPTY STATE ====== */
+    .empty { text-align: center; padding: 52px 20px; color: var(--muted); }
+    .empty .ico { font-size: 3rem; margin-bottom: 14px; display: block; }
+    .empty p    { font-size: 0.88rem; line-height: 1.6; font-weight: 500; }
+
+    /* ====== SCROLLBAR ====== */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,215,0,0.3); }
+
+    /* ====== MISC ====== */
+    .tag-row { display: flex; gap: 5px; flex-wrap: wrap; }
+
+    /* Progress bar */
+    .prog-bar { height: 4px; border-radius: 3px; background: rgba(255,255,255,0.07); margin-top: 12px; overflow: hidden; }
+    .prog-fill {
+      height: 100%; border-radius: 3px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative; overflow: hidden;
+    }
+    .prog-fill::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+      background-size: 200% 100%;
+      animation: shimmer 2.2s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    @media(max-width:768px){
+      .item-row { gap: 8px; }
+      table { font-size: 0.78rem; }
+      thead th, tbody td { padding: 9px 12px; }
+    }
+    @media(max-width:480px){
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    /* ====== EDIT MODE ====== */
+    .edit-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+    }
+    .btn-edit-toggle {
+      padding: 9px 22px; border-radius: 50px; font-size: 0.85rem; font-weight: 700;
+      border: 2px solid var(--border2); background: var(--surface); color: var(--muted);
+      cursor: pointer; transition: all 0.25s; display: flex; align-items: center; gap: 8px;
+    }
+    .btn-edit-toggle.on {
+      border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.1);
+      box-shadow: 0 0 20px rgba(255,215,0,0.15);
+    }
+    .edit-hint { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+
+    .btn-icon {
+      background: none; border: none; cursor: pointer; padding: 5px 7px;
+      border-radius: 8px; font-size: 0.9rem; line-height: 1;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .btn-icon:hover { transform: scale(1.18); }
+    .btn-ie:hover { background: rgba(255,215,0,0.18); }
+    .btn-id:hover { background: rgba(239,83,80,0.18); }
+    .edit-controls { display: flex; gap: 2px; }
+
+    .add-item-row {
+      display: flex; align-items: center; gap: 8px; padding: 10px 22px;
+      border-top: 1px dashed rgba(255,215,0,0.18); flex-wrap: wrap;
+    }
+    .add-item-row input {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,215,0,0.22);
+      border-radius: 8px; padding: 7px 11px; color: var(--text); font-size: 0.82rem;
+      outline: none; transition: border-color 0.2s;
+    }
+    .add-item-row input:focus { border-color: var(--gold); }
+    .add-item-row .ai-name  { flex: 1; min-width: 140px; }
+    .add-item-row .ai-store { width: 130px; }
+    .btn-quick-add {
+      background: rgba(255,215,0,0.13); color: var(--gold);
+      border: 1px solid rgba(255,215,0,0.32);
+      border-radius: 8px; padding: 7px 14px; font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s; white-space: nowrap;
+    }
+    .btn-quick-add:hover { background: rgba(255,215,0,0.26); }
+
+    .add-cat-wrap {
+      border: 2px dashed rgba(255,255,255,0.14); border-radius: 20px;
+      padding: 18px 24px; display: flex; align-items: center; gap: 12px;
+      cursor: pointer; transition: border-color 0.25s, background 0.25s;
+      margin-top: 14px;
+    }
+    .add-cat-wrap:hover { border-color: rgba(255,215,0,0.45); background: rgba(255,215,0,0.04); }
+    .add-cat-wrap .ac-label { color: var(--muted); font-size: 0.92rem; font-weight: 600; }
+
+    .cat-actions { display: flex; gap: 4px; margin-left: 8px; }
+    .cat-actions button { font-size: 0.85rem; }
+
+    /* ====== MODAL ====== */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.72); backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    }
+    .modal-overlay.show { opacity: 1; pointer-events: all; }
+    .modal {
+      background: #0f2a1e; border: 1px solid var(--border2);
+      border-radius: 24px; padding: 32px; width: 100%; max-width: 460px;
+      transform: translateY(18px) scale(0.97); transition: transform 0.25s;
+      box-shadow: 0 36px 90px rgba(0,0,0,0.65);
+    }
+    .modal-overlay.show .modal { transform: translateY(0) scale(1); }
+    .modal-title { font-size: 1.12rem; font-weight: 800; margin-bottom: 22px; }
+    .mf { margin-bottom: 16px; }
+    .mf label { display:block; font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:6px; font-weight:600; }
+    .mf input, .mf select {
+      width:100%; background:rgba(255,255,255,0.07); border:1px solid var(--border);
+      border-radius:10px; padding:10px 13px; color:var(--text); font-size:0.9rem; outline:none;
+      transition:border-color 0.2s;
+    }
+    .mf input:focus, .mf select:focus { border-color: var(--gold); }
+    .mf select option { background: #0f2a1e; }
+    .modal-btns { display:flex; gap:10px; margin-top:24px; justify-content:flex-end; }
+    .btn-cancel {
+      padding:10px 22px; border-radius:10px; font-size:0.88rem; font-weight:700;
+      background:rgba(255,255,255,0.06); border:1px solid var(--border); color:var(--muted);
+      cursor:pointer; transition:background 0.2s;
+    }
+    .btn-cancel:hover { background:rgba(255,255,255,0.11); }
+    .btn-save {
+      padding:10px 26px; border-radius:10px; font-size:0.88rem; font-weight:700;
+      background:linear-gradient(135deg,var(--green-acc),#3d8c1e); border:none;
+      color:#fff; cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-save:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(86,171,47,0.4); }
+
+    /* ── SETTINGS ────────────────────────────────────── */
+    .settings-section { background:var(--surface); border:1px solid var(--border); border-radius:22px; padding:26px 28px; margin-bottom:20px; backdrop-filter:blur(12px); }
+    .settings-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:16px; }
+    @media(max-width:640px) { .settings-grid { grid-template-columns:1fr; } }
+    .people-list { display:flex; flex-direction:column; gap:10px; }
+    .person-card { display:flex; align-items:center; gap:14px; padding:14px 18px; border-radius:14px; background:rgba(0,0,0,0.22); border:1px solid var(--border); transition:border-color 0.2s; }
+    .person-card:hover { border-color:var(--border2); }
+    .p-avatar { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.4rem; border:2px solid; flex-shrink:0; }
+    .p-info { flex:1; min-width:0; }
+    .p-name { font-size:1rem; font-weight:800; }
+    .p-meta { font-size:0.73rem; color:var(--muted); margin-top:2px; }
+    .p-actions { display:flex; gap:8px; flex-shrink:0; }
+    .swatches { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .swatch { width:26px; height:26px; border-radius:50%; cursor:pointer; border:3px solid transparent; transition:transform 0.15s, border-color 0.15s; }
+    .swatch:hover { transform:scale(1.18); }
+    .swatch.sel { border-color:rgba(255,255,255,0.85) !important; box-shadow:0 0 0 2px rgba(255,255,255,0.35); }
+    .btn-sm { padding:6px 14px; border-radius:8px; font-size:0.78rem; font-weight:700; border:1px solid; cursor:pointer; transition:all 0.2s; font-family:'Outfit',sans-serif; }
+    .btn-edit-p { color:#ffd54f; border-color:rgba(255,213,79,0.3); background:rgba(255,213,79,0.07); }
+    .btn-edit-p:hover { background:rgba(255,213,79,0.18); }
+    .btn-del-p { color:var(--danger); border-color:rgba(239,83,80,0.3); background:rgba(239,83,80,0.07); }
+    .btn-del-p:hover { background:rgba(239,83,80,0.22); }
+    .add-person-bar { margin-top:18px; border-top:1px solid var(--border); padding-top:18px; }
+    .add-person-grid { display:grid; grid-template-columns:1fr auto auto auto; gap:10px; align-items:end; }
+    @media(max-width:640px) { .add-person-grid { grid-template-columns:1fr 1fr; } }
+    .reset-bar { margin-top:22px; padding:16px 20px; border-radius:14px; background:rgba(239,83,80,0.06); border:1px solid rgba(239,83,80,0.2); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+    .reset-text { font-size:0.82rem; color:var(--muted); }
+    .btn-reset { padding:8px 18px; border-radius:8px; font-size:0.82rem; font-weight:700; background:rgba(239,83,80,0.11); color:var(--danger); border:1px solid rgba(239,83,80,0.3); cursor:pointer; transition:background 0.2s; font-family:'Outfit',sans-serif; }
+    .btn-reset:hover { background:rgba(239,83,80,0.24); }
+
+    /* ── FIREBASE / SHARING ───────────────────────────────── */
+    .loading-overlay { position:fixed; inset:0; background:rgba(8,15,11,0.94); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; }
+    .loading-spinner { width:52px; height:52px; border-radius:50%; border:4px solid rgba(255,255,255,0.08); border-top-color:var(--ok); animation:spin 0.85s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .loading-msg { color:var(--muted); font-size:0.95rem; font-weight:500; }
+    .nav-right { display:flex; align-items:center; gap:10px; margin-left:auto; padding:0 16px 0 8px; flex-shrink:0; }
+    .sync-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; transition:background 0.3s; }
+    .sync-dot.ok      { background:#4caf50; box-shadow:0 0 6px rgba(76,175,80,0.7); }
+    .sync-dot.syncing { background:#ffa726; animation:syncBlink 0.7s ease-in-out infinite; }
+    .sync-dot.offline { background:#9e9e9e; }
+    .sync-dot.error   { background:var(--danger); }
+    @keyframes syncBlink { 0%,100%{opacity:1}50%{opacity:0.25} }
+    .trip-chip { font-size:0.7rem; font-weight:700; color:var(--muted); background:rgba(255,255,255,0.06); border:1px solid var(--border); border-radius:20px; padding:4px 11px; letter-spacing:0.04em; cursor:pointer; white-space:nowrap; transition:border-color 0.2s; user-select:all; }
+    .trip-chip:hover { border-color:var(--border2); color:var(--text); }
+    .btn-share { padding:6px 16px; border-radius:20px; font-size:0.78rem; font-weight:800; background:linear-gradient(135deg,rgba(41,182,246,0.15),rgba(86,171,47,0.15)); border:1px solid rgba(41,182,246,0.4); color:#4fc3f7; cursor:pointer; transition:all 0.2s; font-family:'Outfit',sans-serif; white-space:nowrap; }
+    .btn-share:hover { background:linear-gradient(135deg,rgba(41,182,246,0.3),rgba(86,171,47,0.3)); border-color:rgba(41,182,246,0.7); }
+    .sync-toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(16px); background:rgba(18,30,22,0.96); border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:12px 22px; font-size:0.88rem; font-weight:600; color:var(--text); opacity:0; pointer-events:none; transition:all 0.32s; z-index:5000; backdrop-filter:blur(14px); white-space:nowrap; }
+    .sync-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+    /* ====== MOBILE / RESPONSIVE ====== */
+    /* Nav: tabs scroll, share controls always pinned right */
+    nav { overflow-x: hidden; }
+    .tabs-scroll { display:flex; flex:1; overflow-x:auto; -webkit-overflow-scrolling:touch; min-width:0; }
+    .tabs-scroll::-webkit-scrollbar { display:none; }
+
+    /* Horizontally scrollable expense table */
+    .tbl-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .tbl-scroll table { min-width:520px; }
+
+    @media (max-width: 768px) {
+      .hero { padding-top:40px; }
+      .ctn { padding:20px 14px; }
+      .tab-btn { padding:13px 16px; font-size:0.84rem; }
+      .btn-share { padding:5px 11px; font-size:0.73rem; }
+      .trip-chip { font-size:0.65rem; padding:4px 9px; }
+      .settings-section { padding:20px 16px; }
+      .tx-item { flex-wrap:wrap; }
+      .tx-verb { flex-basis:100%; order:3; font-size:0.78rem; }
+      .balances { grid-template-columns:repeat(2,1fr); }
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding:28px 14px 0; }
+      .hero-emoji { font-size:2.8rem; }
+      .ctn { padding:14px 10px; }
+      .tab-btn { padding:11px 12px; font-size:0.78rem; }
+      .nav-right { gap:6px; padding:0 8px 0 4px; }
+      #trip-id-display { display:none; }
+      .trip-chip { padding:4px 7px; }
+      .sc-num { font-size:1.9rem; }
+      .tot-num { font-size:1.6rem; }
+      .tot-card { padding:14px 10px; }
+      .form-card { padding:18px 12px; }
+      .settings-section { padding:14px 12px; }
+      .modal { padding:22px 16px; }
+      .cat-head { padding:12px 14px; }
+      .item-row { padding:10px 14px; gap:8px; }
+      .add-item-row { padding:8px 14px; }
+      .person-card { padding:10px 12px; gap:10px; }
+      .p-avatar { width:38px; height:38px; font-size:1.2rem; }
+      .bal-card { padding:18px 10px; }
+      .bal-net { font-size:1.3rem; }
+      .tx-item { padding:12px 12px; }
+      .tx-amt { font-size:1rem; }
+      .btn-add { padding:10px 16px; font-size:0.84rem; }
+    }
+
+    @media (max-width: 360px) {
+      .tab-btn { padding:10px 9px; font-size:0.72rem; }
+      .balances { grid-template-columns:1fr; }
+      .stats { grid-template-columns:repeat(2,1fr); }
+      .hero h1 { font-size:1.5rem; }
+    }
+  </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+
+<!-- Loading overlay (shown while Firestore fetches trip data) -->
+<div class="loading-overlay" id="loading-overlay" style="display:none">
+  <div class="loading-spinner"></div>
+  <div class="loading-msg" id="loading-msg">⛺️ Loading your trip…</div>
+</div>
+
+<!-- Sync toast notification -->
+<div class="sync-toast" id="sync-toast"></div>
+
+<div class="app">
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="hero-moon"></div>
+    <div class="hero-content">
+      <span class="hero-emoji">⛺</span>
+      <h1 id="hero-title">Ultimate Camping Trip Planner</h1>
+      <div class="hero-sub" id="hero-chips">
+        <span class="hero-chip">🌲 Summer 2026</span>
+        <span class="hero-chip">👨‍👩‍👧 4 People</span>
+        <span class="hero-chip">🔥 Grill. Chill. Thrill.</span>
+      </div>
+      <div class="person-badges" id="hero-badges">
+        <div class="badge b-sid">  🌊 Sid</div>
+        <div class="badge b-rahul">💫 Rahul</div>
+        <div class="badge b-deep"> 🌸 Deep</div>
+        <div class="badge b-sujoy">🔥 Sujoy</div>
+      </div>
+    </div>
+    <!-- Mountain silhouette -->
+    <div class="hero-mountains">
+      <svg viewBox="0 0 1440 110" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,110 L0,75 L90,30 L180,60 L300,5 L420,50 L520,18 L640,55 L720,8 L830,48 L940,12 L1060,52 L1160,22 L1300,58 L1440,35 L1440,110 Z"
+              fill="#0d1a12" opacity="0.9"/>
+        <path d="M0,110 L0,88 L70,68 L160,88 L250,55 L360,80 L460,48 L580,78 L680,42 L790,74 L890,50 L1010,80 L1110,55 L1230,82 L1340,62 L1440,80 L1440,110 Z"
+              fill="#080f0b"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- ===== TABS ===== -->
+  <nav id="nav">
+    <div class="tabs-scroll">
+      <button class="tab-btn active" data-tab="planner">📋 Items &amp; Checklist</button>
+      <button class="tab-btn"        data-tab="expenses">💰 Expenses</button>
+      <button class="tab-btn"        data-tab="settlement">⚖️ Settlement</button>
+      <button class="tab-btn"        data-tab="settings">⚙️ Settings</button>
+    </div>
+    <div class="nav-right">
+      <span class="sync-dot syncing" id="sync-dot" title="Connecting…"></span>
+      <span class="trip-chip" id="trip-chip" onclick="shareTrip()" title="Click to copy trip link">⛺️ <span id="trip-id-display">…</span></span>
+      <button class="btn-share" onclick="shareTrip()">📤 Share</button>
+    </div>
+  </nav>
+
+  <div class="ctn">
+
+    <!-- ===== PLANNER PANEL ===== -->
+    <div id="panel-planner" class="panel active">
+      <div class="edit-toolbar">
+        <button class="btn-edit-toggle" id="edit-toggle" onclick="toggleEditMode()">✏️ Edit Mode</button>
+        <span class="edit-hint" id="edit-hint">Click a person pill to toggle who's bringing an item</span>
+      </div>
+      <div class="stats" id="stats"></div>
+      <div id="cats"></div>
+    </div>
+
+    <!-- ===== EXPENSES PANEL ===== -->
+    <div id="panel-expenses" class="panel">
+
+      <!-- Add form -->
+      <div class="form-card">
+        <div class="sec-title">➕ Log an Expense</div>
+        <div class="form-row">
+          <div class="ff">
+            <label>Description</label>
+            <input id="e-desc" type="text" placeholder="e.g. Costco grocery run" autocomplete="off" />
+          </div>
+          <div class="ff">
+            <label>Amount (CAD $)</label>
+            <input id="e-amt" type="number" placeholder="0.00" step="0.01" min="0" />
+          </div>
+          <div class="ff">
+            <label>Paid By</label>
+            <select id="e-payer"><!-- filled by JS --></select>
+          </div>
+          <div>
+            <button class="btn-add" id="add-btn">Add ➕</button>
+          </div>
+        </div>
+        <div class="split-row">
+          <span class="lbl">Split Between</span>
+          <div class="split-pills" id="split-pills"><!-- filled by JS --></div>
+        </div>
+      </div>
+
+      <!-- Per-person totals -->
+      <div class="totals" id="totals"></div>
+
+      <!-- Expense list -->
+      <div class="tbl-wrap">
+        <div class="tbl-head">
+          <span class="sec-title" style="margin:0">💳 All Expenses</span>
+          <span class="grand-lbl" id="grand-lbl"></span>
+        </div>
+        <div id="exp-list"></div>
+      </div>
+
+    </div>
+
+    <!-- ===== SETTLEMENT PANEL ===== -->
+    <div id="panel-settlement" class="panel">
+      <div class="sec-title">📊 Balance Summary</div>
+      <div class="balances" id="balances"></div>
+      <div class="tx-card">
+        <div class="sec-title">💸 Minimum Transactions to Settle Up</div>
+        <p class="tx-sub">The simplest way to make everyone even — pay in person or e-transfer!</p>
+        <div id="tx-list"></div>
+      </div>
+    </div>
+
+    <!-- ===== SETTINGS PANEL ===== -->
+    <div id="panel-settings" class="panel">
+
+      <!-- Trip Details -->
+      <div class="settings-section">
+        <div class="sec-title">🗺️ Trip Details</div>
+        <div class="settings-grid">
+          <div class="ff">
+            <label>Trip Title</label>
+            <input id="s-title" type="text" placeholder="e.g. Ultimate Camping Trip Planner" autocomplete="off" />
+          </div>
+          <div class="ff">
+            <label>Date / Season</label>
+            <input id="s-date" type="text" placeholder="e.g. Summer 2026" autocomplete="off" />
+          </div>
+          <div class="ff">
+            <label>Tagline</label>
+            <input id="s-tagline" type="text" placeholder="e.g. Grill. Chill. Thrill." autocomplete="off" />
+          </div>
+        </div>
+        <button class="btn-add" id="trip-save-btn" onclick="saveTripDetails()">💾 Save Trip Details</button>
+      </div>
+
+      <!-- People Management -->
+      <div class="settings-section">
+        <div class="sec-title">👥 Manage People</div>
+        <div class="people-list" id="people-list"></div>
+
+        <!-- Add person -->
+        <div class="add-person-bar">
+          <div class="sec-title" style="font-size:0.9rem;margin-bottom:12px">➕ Add New Person</div>
+          <div class="add-person-grid">
+            <div class="ff">
+              <label>Name</label>
+              <input id="np-name" type="text" placeholder="e.g. Priya" autocomplete="off" />
+            </div>
+            <div class="ff">
+              <label>Emoji</label>
+              <input id="np-emoji" type="text" placeholder="🌟" style="font-size:1.35rem;text-align:center;width:58px" />
+            </div>
+            <div class="ff">
+              <label>Color</label>
+              <div id="np-swatches" class="swatches" style="padding-top:6px"></div>
+            </div>
+            <div style="padding-top:22px">
+              <button class="btn-add" onclick="addPerson()">Add ➕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reset -->
+        <div class="reset-bar">
+          <span class="reset-text">⚠️ Reset all data — clears expenses &amp; item assignments, resets people to defaults. Use for a new trip.</span>
+          <button class="btn-reset" onclick="resetAll()">🔄 Reset for New Trip</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- /ctn -->
+</div><!-- /app -->
+
+<!-- ===== PERSON EDIT MODAL ===== -->
+<div class="modal-overlay" id="person-modal-overlay" onclick="closePersonModal(event)">
+  <div class="modal" id="person-modal">
+    <div class="modal-title">✏️ Edit Person</div>
+    <div class="mf">
+      <label>Name</label>
+      <input id="pm-name" type="text" placeholder="Name" autocomplete="off" />
+    </div>
+    <div class="mf">
+      <label>Emoji</label>
+      <input id="pm-emoji" type="text" placeholder="🌟" style="font-size:1.5rem;text-align:center;width:60px" />
+    </div>
+    <div class="mf">
+      <label>Color</label>
+      <div id="pm-swatches" class="swatches" style="padding-top:6px"></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closePersonModal()">Cancel</button>
+      <button class="btn-save" onclick="savePersonModal()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EDIT MODAL ===== -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-title" id="modal-title">Edit Item</div>
+    <div class="mf">
+      <label id="modal-f1-lbl">Item Name</label>
+      <input id="modal-f1" type="text" placeholder="e.g. Marshmallows" autocomplete="off" />
+    </div>
+    <div class="mf" id="modal-f2-wrap">
+      <label>Store / Source</label>
+      <input id="modal-f2" type="text" placeholder="e.g. Walmart" autocomplete="off" />
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" id="modal-save-btn" onclick="saveModal()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+// ─────────────────────────────────────────────
+// FIREBASE MODULAR SDK
+// ─────────────────────────────────────────────
+import { initializeApp }  from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+const _fbApp = initializeApp({
+  apiKey:            "AIzaSyA9IO3HQXO144Hr5P1l1zQMEwBJXlK3_o4",
+  authDomain:        "camping-planner-db061.firebaseapp.com",
+  projectId:         "camping-planner-db061",
+  storageBucket:     "camping-planner-db061.firebasestorage.app",
+  messagingSenderId: "672097465308",
+  appId:             "1:672097465308:web:f480bde613a3870acf1519",
+  measurementId:     "G-LNKKLCKGKP"
+});
+const db = getFirestore(_fbApp);
+
+// ─────────────────────────────────────────────
+// TRIP ID  (lives in the URL hash — sharing = sharing the URL)
+// ─────────────────────────────────────────────
+const TRIP_ID = (function() {
+  const m = location.hash.match(/[#&]t=([A-Za-z0-9]{6,})/);
+  if (m) return m[1];
+  const id = [...Array(10)].map(()=>'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.random()*36|0]).join('');
+  history.replaceState(null, '', '#t=' + id);
+  return id;
+})();
+const tripRef = doc(db, 'trips', TRIP_ID);
+
+// ─────────────────────────────────────────────
+// EDIT MODE
+// ─────────────────────────────────────────────
+let editMode = false;
+let modalCtx  = null; // { mode:'item'|'cat', ci, ii }
+
+function toggleEditMode() {
+  editMode = !editMode;
+  const btn  = document.getElementById('edit-toggle');
+  const hint = document.getElementById('edit-hint');
+  btn.classList.toggle('on', editMode);
+  btn.textContent = editMode ? '✅ Done Editing' : '✏️ Edit Mode';
+  hint.textContent = editMode
+    ? 'Edit Mode ON — add, rename, or delete items and categories'
+    : 'Click a person pill to toggle who\'s bringing an item';
+  renderPlanner();
+}
+
+function openItemModal(ci, ii) {
+  const item = S.cats[ci].items[ii];
+  modalCtx = { mode: 'item', ci, ii };
+  document.getElementById('modal-title').textContent    = '✏️ Edit Item';
+  document.getElementById('modal-f1-lbl').textContent   = 'Item Name';
+  document.getElementById('modal-f1').value             = item.name;
+  document.getElementById('modal-f2').value             = item.store;
+  document.getElementById('modal-f2-wrap').style.display = '';
+  document.getElementById('modal-save-btn').textContent  = 'Save Changes';
+  document.getElementById('modal-overlay').classList.add('show');
+  document.getElementById('modal-f1').focus();
+}
+
+function openCatModal() {
+  modalCtx = { mode: 'cat' };
+  document.getElementById('modal-title').textContent    = '➕ Add New Category';
+  document.getElementById('modal-f1-lbl').textContent   = 'Category Title (include emoji)';
+  document.getElementById('modal-f1').value             = '';
+  document.getElementById('modal-f2-wrap').style.display = 'none';
+  document.getElementById('modal-save-btn').textContent  = 'Add Category';
+  document.getElementById('modal-overlay').classList.add('show');
+  document.getElementById('modal-f1').focus();
+}
+
+function openRenameCatModal(ci) {
+  modalCtx = { mode: 'rename-cat', ci };
+  document.getElementById('modal-title').textContent    = '✏️ Rename Category';
+  document.getElementById('modal-f1-lbl').textContent   = 'Category Title';
+  document.getElementById('modal-f1').value             = S.cats[ci].title;
+  document.getElementById('modal-f2-wrap').style.display = 'none';
+  document.getElementById('modal-save-btn').textContent  = 'Save';
+  document.getElementById('modal-overlay').classList.add('show');
+  document.getElementById('modal-f1').focus();
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modal-overlay')) return;
+  document.getElementById('modal-overlay').classList.remove('show');
+  modalCtx = null;
+}
+
+function saveModal() {
+  const f1 = document.getElementById('modal-f1').value.trim();
+  const f2 = document.getElementById('modal-f2').value.trim();
+  if (!f1) { document.getElementById('modal-f1').focus(); return; }
+
+  if (modalCtx.mode === 'item') {
+    S.cats[modalCtx.ci].items[modalCtx.ii].name  = f1;
+    S.cats[modalCtx.ci].items[modalCtx.ii].store = f2 || S.cats[modalCtx.ci].items[modalCtx.ii].store;
+  } else if (modalCtx.mode === 'cat') {
+    const newId = 'cat_' + Date.now();
+    S.cats.push({ id: newId, title: f1, items: [] });
+  } else if (modalCtx.mode === 'rename-cat') {
+    S.cats[modalCtx.ci].title = f1;
+  }
+
+  save();
+  document.getElementById('modal-overlay').classList.remove('show');
+  modalCtx = null;
+  renderPlanner();
+}
+
+// Enter key in modal
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeModal({ target: document.getElementById('modal-overlay') });
+    closePersonModal({ target: document.getElementById('person-modal-overlay') });
+  }
+  if (e.key === 'Enter') {
+    if (document.getElementById('modal-overlay').classList.contains('show')) saveModal();
+    if (document.getElementById('person-modal-overlay').classList.contains('show')) savePersonModal();
+  }
+});
+
+function deleteItem(ci, ii) {
+  if (!confirm(`Delete "${S.cats[ci].items[ii].name}"?`)) return;
+  S.cats[ci].items.splice(ii, 1);
+  save(); renderPlanner();
+}
+
+function deleteCat(ci) {
+  if (!confirm(`Delete the entire category "${S.cats[ci].title}" and all its items?`)) return;
+  S.cats.splice(ci, 1);
+  save(); renderPlanner();
+}
+
+function quickAddItem(ci) {
+  const rows = document.querySelectorAll(`.add-item-row[data-ci="${ci}"]`);
+  if (!rows.length) return;
+  const nameInput  = rows[0].querySelector('.ai-name');
+  const storeInput = rows[0].querySelector('.ai-store');
+  const name  = nameInput.value.trim();
+  const store = storeInput.value.trim() || 'TBD';
+  if (!name) { nameInput.focus(); return; }
+  S.cats[ci].items.push({ name, store, a: [] });
+  nameInput.value = ''; storeInput.value = '';
+  save(); renderPlanner();
+  // re-open the category
+  S.collapsed[S.cats[ci].id] = false;
+  renderPlanner();
+}
+
+// ─────────────────────────────────────────────
+// CONSTANTS
+// ─────────────────────────────────────────────
+const PEOPLE_INIT = [
+  { id:'p1', name:'Sid',   color:'#29b6f6', emoji:'🌊' },
+  { id:'p2', name:'Rahul', color:'#ba68c8', emoji:'💫' },
+  { id:'p3', name:'Deep',  color:'#f06292', emoji:'🌸' },
+  { id:'p4', name:'Sujoy', color:'#ffa726', emoji:'🔥' },
+];
+const TRIP_INIT = { title:'Ultimate Camping Trip Planner', date:'Summer 2026', tagline:'Grill. Chill. Thrill.' };
+const PRESET_COLORS = ['#29b6f6','#ba68c8','#f06292','#ffa726','#66bb6a','#ff7043','#80cbc4','#fff176','#ef5350','#ab47bc'];
+
+const CATS_INIT = [
+  {
+    id: 'gear', title: '⛺ Gear, Equipment &amp; Supplies',
+    items: [
+      { name:'Cooking Stove Electric',          store:"Sid's Home",      a:['Sid'] },
+      { name:'Cooking utensils',                store:"Sid's Home",      a:['Sid'] },
+      { name:'Dish liquid &amp; scrub',         store:"Sid's Home",      a:['Sid'] },
+      { name:'Tablecloths',                     store:"Sid's Home",      a:['Sid'] },
+      { name:'Umbrella',                        store:"Sid's Home",      a:['Sid'] },
+      { name:'Candle',                          store:"Sid's Home",      a:['Sid'] },
+      { name:'Collapsible water container',     store:"Sid's Home",      a:['Sid'] },
+      { name:'Coal / fire starter / wood',      store:"Sid's Home",      a:['Sid'] },
+      { name:'Rice &amp; daal (for Ellie &amp; Rai)', store:"Sid's Home", a:['Sid'] },
+      { name:'Tent, mattress, etc.',            store:'Bring for Yourself', a:['Sid','Rahul','Deep','Sujoy'] },
+      { name:'Bedsheets / comforter / jacket',  store:'Bring for Yourself', a:['Sid','Rahul','Deep','Sujoy'] },
+      { name:'Camping chairs',                  store:'Bring for Yourself', a:['Sid','Rahul','Deep','Sujoy'] },
+      { name:'Bug spray / sunscreen',           store:'Bring for Yourself', a:['Sid','Rahul','Deep','Sujoy'] },
+      { name:'Spices &amp; salt from home',     store:'Bring for Yourself', a:['Sid','Rahul','Deep','Sujoy'] },
+      { name:'Small heater',                    store:'Bring for Yourself', a:['Sid','Rahul','Deep','Sujoy'] },
+      { name:'Extension cords',                 store:'Bring for Yourself', a:['Sid','Rahul','Deep','Sujoy'] },
+      { name:'Twinkle lights for tent',         store:'Need Volunteer',  a:['Sid'] },
+      { name:'Stove and butane',                store:'Need Volunteer',  a:['Deep'] },
+    ]
+  },
+  {
+    id: 'costco', title: '🛒 Grocery Run — Costco',
+    items: [
+      { name:'Chicken wings (marinated) — 1 tray',      store:'Costco', a:[] },
+      { name:'Bell pepper (6-pack)',                     store:'Costco', a:[] },
+      { name:'Mini cucumbers — 1 bag',                  store:'Costco', a:[] },
+      { name:'Chicken burger patties (15 pieces)',       store:'Costco', a:[] },
+      { name:'Bread (3-pack)',                           store:'Costco', a:[] },
+      { name:'Milk (1 pack)',                            store:'Costco', a:[] },
+      { name:'Eggs (30-pack)',                           store:'Costco', a:[] },
+      { name:'Hash browns — 24 pieces',                 store:'Costco', a:[] },
+      { name:'Water (2 × 48 pack)',                     store:'Costco', a:[] },
+      { name:'Prawns (frozen) — 1 bag',                 store:'Costco', a:[] },
+      { name:'Chicken legs fresh — 1 tray',             store:'Costco', a:[] },
+    ]
+  },
+  {
+    id: 'walmart', title: '🛒 Grocery Run — Walmart',
+    items: [
+      { name:'Paneer (2)',                              store:'Walmart', a:[] },
+      { name:'Corn with husk (12 pieces)',              store:'Walmart', a:[] },
+      { name:'Sweet potatoes (2–3 large)',              store:'Walmart', a:[] },
+      { name:'Onions (small bag)',                      store:'Walmart', a:[] },
+      { name:'Thai green chilies — 100g',               store:'Walmart', a:[] },
+      { name:'Ginger (small bag)',                      store:'Walmart', a:[] },
+      { name:'Chicken sausage (20-pack)',               store:'Walmart', a:[] },
+      { name:'Tea (small box)',                         store:'Walmart', a:[] },
+      { name:'Pineapple (2)',                           store:'Walmart', a:[] },
+      { name:'Condensed milk (3 cans)',                 store:'Walmart', a:[] },
+      { name:'Sugar (small pack)',                      store:'Walmart', a:[] },
+      { name:'Maggi (10-pack)',                         store:'Walmart', a:[] },
+      { name:'Cooking oil (1 Litre)',                   store:'Walmart', a:[] },
+      { name:'Cold drinks / sodas — 2× Coke, 2× Ginger Ale (2L)', store:'Walmart', a:[] },
+      { name:'Fruits — 1 Watermelon &amp; 24 Bananas', store:'Walmart', a:[] },
+      { name:'Ginger garlic paste (1)',                 store:'Walmart', a:[] },
+      { name:'Plates — 125 piece pack',                store:'Walmart', a:[] },
+      { name:'24 cheese slices',                        store:'Walmart', a:[] },
+      { name:'10 tomatoes',                             store:'Walmart', a:[] },
+      { name:'Coriander (1 bunch)',                     store:'Walmart', a:[] },
+    ]
+  },
+  {
+    id: 'dollarama', title: '🛒 Grocery Run — Dollarama',
+    items: [
+      { name:'Disposable grills (2)',                  store:'Dollarama', a:['Sid'] },
+      { name:'Kitchen paper rolls (3)',                store:'Dollarama', a:['Sid'] },
+      { name:'50 cups',                               store:'Dollarama', a:['Sid'] },
+      { name:'30 tea cups',                           store:'Dollarama', a:['Sid'] },
+      { name:'Ziplock bags — 1 large, 1 medium',      store:'Dollarama', a:['Sid'] },
+      { name:'100 spoons + 50 forks',                 store:'Dollarama', a:['Sid'] },
+      { name:'Mosquito candles (2)',                  store:'Dollarama', a:['Sid'] },
+      { name:'Long skewers for grill &amp; marshmallows', store:'Dollarama', a:['Sid'] },
+    ]
+  },
+  {
+    id: 'indian', title: '🏪 Indian &amp; Meat Stores',
+    items: [
+      { name:'Poha',                             store:'Panchavati',  a:['Sid'] },
+      { name:'Dosa Mix',                         store:'Panchavati',  a:['Sid'] },
+      { name:'Chicken Kabab (marinated)',         store:'Habib Meat',  a:['Sid'] },
+      { name:'Snacks (Chips, Desi, Doritos)',     store:'Any Store',   a:['Sid'] },
+    ]
+  },
+  {
+    id: 'reminders', title: '📋 Group Reminders',
+    items: [
+      { name:'BYOB — Bring your own booze! 🍻',   store:'Everyone',    a:['Sid','Rahul','Deep','Sujoy'] },
+    ]
+  },
+];
+
+// ─────────────────────────────────────────────
+// STATE  (persisted to localStorage)
+// ─────────────────────────────────────────────
+let S = {
+  cats:      deepClone(CATS_INIT),
+  expenses:  [],
+  collapsed: {},
+  people:    deepClone(PEOPLE_INIT),
+  trip:      deepClone(TRIP_INIT),
+};
+
+function deepClone(x) { return JSON.parse(JSON.stringify(x)); }
+
+
+function save() {
+  try { localStorage.setItem('camp25', JSON.stringify(S)); } catch(e) {}
+  _lastSaveTs = Date.now();
+  setSyncStatus('syncing');
+  const payload = { cats:S.cats, expenses:S.expenses, collapsed:S.collapsed, people:S.people, trip:S.trip };
+  setDoc(tripRef, payload)
+    .then(() => setSyncStatus('ok'))
+    .catch(err => { setSyncStatus('error'); console.warn('Firestore save failed:', err); });
+}
+
+// ─────────────────────────────────────────────
+// BACKGROUND ANIMATION (stars + fireflies)
+// ─────────────────────────────────────────────
+(function() {
+  const cv = document.getElementById('bg-canvas');
+  const cx = cv.getContext('2d');
+  let stars = [], flies = [];
+
+  function resize() { cv.width = innerWidth; cv.height = innerHeight; init(); }
+
+  function init() {
+    stars = Array.from({length:140}, () => ({
+      x: Math.random()*cv.width, y: Math.random()*cv.height*0.65,
+      r: Math.random()*1.4+0.3, a: Math.random(), da: (Math.random()*0.006+0.002) * (Math.random()<.5?1:-1)
+    }));
+    flies = Array.from({length:18}, () => ({
+      x: Math.random()*cv.width, y: Math.random()*cv.height,
+      vx:(Math.random()-.5)*.5, vy:(Math.random()-.5)*.5,
+      r: Math.random()*1.8+0.8, a: Math.random(),
+      da:(Math.random()*.025+.005)*(Math.random()<.5?1:-1),
+      c: Math.random()>.5 ? [255,215,0] : [86,171,47]
+    }));
+  }
+
+  function frame() {
+    cx.clearRect(0,0,cv.width,cv.height);
+    stars.forEach(s => {
+      s.a += s.da;
+      if (s.a > 1 || s.a < 0) s.da *= -1;
+      cx.beginPath(); cx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      cx.fillStyle = `rgba(255,255,255,${s.a*.75})`; cx.fill();
+    });
+    flies.forEach(f => {
+      f.x+=f.vx; f.y+=f.vy; f.a+=f.da;
+      if(f.a>1||f.a<0) f.da*=-1;
+      if(f.x<0||f.x>cv.width) f.vx*=-1;
+      if(f.y<0||f.y>cv.height) f.vy*=-1;
+      const [r,g,b]=f.c, gl=cx.createRadialGradient(f.x,f.y,0,f.x,f.y,f.r*5);
+      gl.addColorStop(0,`rgba(${r},${g},${b},${f.a*.8})`);
+      gl.addColorStop(1,'transparent');
+      cx.beginPath(); cx.arc(f.x,f.y,f.r*5,0,Math.PI*2); cx.fillStyle=gl; cx.fill();
+      cx.beginPath(); cx.arc(f.x,f.y,f.r,0,Math.PI*2);
+      cx.fillStyle=`rgba(${r},${g},${b},${f.a})`; cx.fill();
+    });
+    requestAnimationFrame(frame);
+  }
+  resize(); frame();
+  window.addEventListener('resize', resize);
+})();
+
+// ─────────────────────────────────────────────
+// TABS
+// ─────────────────────────────────────────────
+document.getElementById('nav').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn');
+  if (!btn) return;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  const id = btn.dataset.tab;
+  document.getElementById('panel-'+id).classList.add('active');
+  if (id==='expenses')   renderExpenses();
+  if (id==='settlement') renderSettlement();
+  if (id==='settings')   renderSettings();
+});
+
+// ─────────────────────────────────────────────
+// PLANNER
+// ─────────────────────────────────────────────
+function renderPlanner() {
+  let total=0, claimed=0;
+  const pc = Object.fromEntries(S.people.map(p=>[p.name,0]));
+  S.cats.forEach(c => c.items.forEach(i => {
+    total++;
+    if (i.a.length) { claimed++; i.a.forEach(p => { if(p in pc) pc[p]++; }); }
+  }));
+  const pct = n => total ? Math.round(n/total*100) : 0;
+
+  const statsEl = document.getElementById('stats');
+  statsEl.innerHTML = `
+    <div class="sc">
+      <div class="sc-num" style="color:var(--gold)">${total}</div>
+      <div class="sc-lbl">Total Items</div>
+      <div class="prog-bar"><div class="prog-fill" style="width:100%;background:var(--gold)"></div></div>
+    </div>
+    <div class="sc">
+      <div class="sc-num" style="color:var(--ok)">${claimed}</div>
+      <div class="sc-lbl">Claimed ✅</div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct(claimed)}%;background:var(--ok)"></div></div>
+    </div>
+    <div class="sc">
+      <div class="sc-num" style="color:var(--warn)">${total-claimed}</div>
+      <div class="sc-lbl">Still Needed ⏳</div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct(total-claimed)}%;background:var(--warn)"></div></div>
+    </div>
+    ${S.people.map(p=>`
+    <div class="sc">
+      <div class="sc-num" style="color:${p.color}">${pc[p.name]||0}</div>
+      <div class="sc-lbl">${p.name}'s Items</div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct(pc[p.name]||0)}%;background:${p.color}"></div></div>
+    </div>`).join('')}
+  `;
+
+  const catsEl = document.getElementById('cats');
+  catsEl.innerHTML = S.cats.map((cat,ci) => {
+    const open = !S.collapsed[cat.id];
+    const itemsHtml = cat.items.map((item,ii) => `
+      <div class="item-row">
+        <div class="item-info">
+          <div class="item-name">${item.name}</div>
+          <div class="item-store">📍 ${item.store}</div>
+        </div>
+        <div class="item-pills">
+          ${S.people.map(p=>`
+            <span class="pill ${item.a.includes(p.name)?'on':'off'}"
+              style="${pillStyle(p.color, item.a.includes(p.name))}"
+              data-ci="${ci}" data-ii="${ii}" data-p="${p.name}"
+              title="Click to toggle ${p.name}'s assignment">${p.name}</span>
+          `).join('')}
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          ${item.a.length
+            ? `<span class="status-tag s-claimed">✅ Claimed</span>`
+            : `<span class="status-tag s-needed">⏳ Needed</span>`}
+          ${editMode ? `
+          <div class="edit-controls">
+            <button class="btn-icon btn-ie" data-action="edit-item" data-ci="${ci}" data-ii="${ii}" title="Edit">✏️</button>
+            <button class="btn-icon btn-id" data-action="del-item"  data-ci="${ci}" data-ii="${ii}" title="Delete">🗑️</button>
+          </div>` : ''}
+        </div>
+      </div>`).join('');
+
+    const addRow = editMode ? `
+      <div class="add-item-row" data-ci="${ci}">
+        <input class="ai-name"  type="text" placeholder="New item name…" />
+        <input class="ai-store" type="text" placeholder="Store / source" />
+        <button class="btn-quick-add" data-action="quick-add" data-ci="${ci}">+ Add Item</button>
+      </div>` : '';
+
+    const catEditBtns = editMode ? `
+      <div class="cat-actions" onclick="event.stopPropagation()">
+        <button class="btn-icon btn-ie" data-action="edit-cat" data-ci="${ci}" title="Rename">✏️</button>
+        <button class="btn-icon btn-id" data-action="del-cat"  data-ci="${ci}" title="Delete category">🗑️</button>
+      </div>` : '';
+
+    return `
+      <div class="cat-block" data-cat="${cat.id}">
+        <div class="cat-head" data-catid="${cat.id}">
+          <div class="cat-title-wrap">
+            <span class="cat-title">${cat.title}</span>
+            <span class="cat-count">${cat.items.length}</span>
+            ${catEditBtns}
+          </div>
+          <svg class="chevron ${open?'open':''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </div>
+        <div class="cat-body ${open?'':'closed'}" style="max-height:${open?(cat.items.length*70+60)+'px':'0'}">
+          ${itemsHtml}
+          ${addRow}
+        </div>
+      </div>`;
+  }).join('')
+  + (editMode ? `
+    <div class="add-cat-wrap" data-action="add-cat">
+      <span style="font-size:1.4rem">➕</span>
+      <span class="ac-label">Add New Category / Store</span>
+    </div>` : '');
+}
+
+// Planner click handler
+document.getElementById('cats').addEventListener('click', e => {
+  // Edit mode action buttons
+  const actionEl = e.target.closest('[data-action]');
+  if (actionEl) {
+    const a = actionEl.dataset.action;
+    const ci = actionEl.dataset.ci !== undefined ? +actionEl.dataset.ci : null;
+    const ii = actionEl.dataset.ii !== undefined ? +actionEl.dataset.ii : null;
+    if (a === 'edit-item')  { openItemModal(ci, ii); return; }
+    if (a === 'del-item')   { deleteItem(ci, ii); return; }
+    if (a === 'edit-cat')   { openRenameCatModal(ci); return; }
+    if (a === 'del-cat')    { deleteCat(ci); return; }
+    if (a === 'quick-add')  { quickAddItem(ci); return; }
+    if (a === 'add-cat')    { openCatModal(); return; }
+  }
+  // Toggle category expand/collapse
+  const head = e.target.closest('.cat-head');
+  if (head && !e.target.closest('.cat-actions')) {
+    const id = head.dataset.catid;
+    S.collapsed[id] = !S.collapsed[id];
+    save(); renderPlanner(); return;
+  }
+  // Toggle person assignment
+  const pill = e.target.closest('.pill[data-ci]');
+  if (pill) {
+    const ci=+pill.dataset.ci, ii=+pill.dataset.ii, p=pill.dataset.p;
+    const arr = S.cats[ci].items[ii].a;
+    const idx = arr.indexOf(p);
+    if (idx>=0) arr.splice(idx,1); else arr.push(p);
+    save(); renderPlanner();
+  }
+});
+
+// Allow pressing Enter in quick-add inputs
+document.getElementById('cats').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const row = e.target.closest('.add-item-row[data-ci]');
+    if (row) quickAddItem(+row.dataset.ci);
+  }
+});
+
+// ─────────────────────────────────────────────
+// EXPENSES
+// ─────────────────────────────────────────────
+document.getElementById('add-btn').addEventListener('click', addExpense);
+document.getElementById('e-amt').addEventListener('keydown', e => { if(e.key==='Enter') addExpense(); });
+
+function addExpense() {
+  const desc = document.getElementById('e-desc').value.trim();
+  const amt  = parseFloat(document.getElementById('e-amt').value);
+  const payer= document.getElementById('e-payer').value;
+  const split= Array.from(document.querySelectorAll('#split-pills input:checked')).map(c=>c.value);
+
+  if (!desc)           { flash('e-desc',  'Please enter a description.');    return; }
+  if (!amt || amt <= 0){ flash('e-amt',   'Please enter a valid amount > 0.'); return; }
+  if (!split.length)   { alert('Select at least one person to split with.'); return; }
+
+  S.expenses.push({
+    id:    Date.now(),
+    desc, amt: Math.round(amt*100)/100, payer, split,
+    date: new Date().toLocaleDateString('en-CA')
+  });
+
+  document.getElementById('e-desc').value = '';
+  document.getElementById('e-amt').value  = '';
+  save(); renderExpenses();
+}
+
+function flash(id, msg) {
+  const el = document.getElementById(id);
+  el.style.borderColor = 'var(--danger)';
+  el.placeholder = msg;
+  el.focus();
+  setTimeout(()=>{ el.style.borderColor=''; el.placeholder = id==='e-desc'?'e.g. Costco grocery run':'0.00'; },2000);
+}
+
+function deleteExpense(id) {
+  S.expenses = S.expenses.filter(e=>e.id!==id);
+  save(); renderExpenses();
+}
+
+function renderExpenses() {
+  const paid = Object.fromEntries(S.people.map(p=>[p.name,0]));
+  S.expenses.forEach(e => { paid[e.payer] = (paid[e.payer]||0) + e.amt; });
+  const grand = Object.values(paid).reduce((s,v)=>s+v, 0);
+
+  document.getElementById('grand-lbl').textContent = grand ? `Grand Total: $${grand.toFixed(2)}` : '';
+
+  document.getElementById('totals').innerHTML = S.people.map(per => {
+    const c = pcs(per.color);
+    const v = paid[per.name]||0;
+    return `
+    <div class="tot-card" style="border-color:rgba(${c.rbg},0.25)">
+      <div class="tot-name" style="color:${per.color}">${per.name}</div>
+      <div class="tot-num"  style="color:${per.color}">$${v.toFixed(2)}</div>
+      <div class="tot-pct">${grand>0?Math.round(v/grand*100):0}% of total</div>
+    </div>`;}).join('');
+
+  const listEl = document.getElementById('exp-list');
+  if (!S.expenses.length) {
+    listEl.innerHTML = `<div class="empty"><div class="ico">💸</div><p>No expenses yet — log your first one above!</p></div>`;
+    return;
+  }
+  listEl.innerHTML = `
+    <div class="tbl-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th><th>Description</th><th>Paid By</th>
+          <th>Split</th><th>Amount</th><th>Per Person</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        ${S.expenses.map(e=>`
+        <tr>
+          <td style="color:var(--muted)">${e.date}</td>
+          <td style="font-weight:600">${e.desc}</td>
+          <td><span class="pill on" style="${pillStyle(personByName(e.payer).color,true)};font-size:0.72rem">${e.payer}</span></td>
+          <td><div class="tag-row">${e.split.map(n=>`<span class="pill on" style="${pillStyle(personByName(n).color,true)};font-size:0.68rem">${n}</span>`).join('')}</div></td>
+          <td class="amt" style="color:var(--gold)">$${e.amt.toFixed(2)}</td>
+          <td class="amt" style="color:var(--muted)">$${(e.amt/e.split.length).toFixed(2)}</td>
+          <td><button class="btn-del" data-id="${e.id}">✕</button></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+    </div>`;
+}
+
+document.getElementById('exp-list').addEventListener('click', e => {
+  const btn = e.target.closest('.btn-del');
+  if (btn && confirm('Delete this expense?')) deleteExpense(+btn.dataset.id);
+});
+
+// ─────────────────────────────────────────────
+// SETTLEMENT
+// ─────────────────────────────────────────────
+function renderSettlement() {
+  const allNames = [...new Set([...S.people.map(p=>p.name), ...S.expenses.map(e=>e.payer), ...S.expenses.flatMap(e=>e.split)])];
+  const paid  = Object.fromEntries(allNames.map(n=>[n,0]));
+  const share = Object.fromEntries(allNames.map(n=>[n,0]));
+
+  S.expenses.forEach(e => {
+    paid[e.payer] = (paid[e.payer]||0) + e.amt;
+    const perP = e.amt / e.split.length;
+    e.split.forEach(p => { share[p] = (share[p]||0) + perP; });
+  });
+
+  const net   = Object.fromEntries(allNames.map(n=>[n, paid[n]-share[n]]));
+  const grand = Object.values(paid).reduce((s,v)=>s+v, 0);
+
+  document.getElementById('balances').innerHTML = S.people.map(per => {
+    const n = net[per.name]||0;
+    const cls     = n > 0.005 ? 'pos' : n < -0.005 ? 'neg' : 'zer';
+    const cardCls = n > 0.005 ? 'pos-card' : n < -0.005 ? 'neg-card' : '';
+    const lbl     = n > 0.005 ? '← is owed' : n < -0.005 ? '→ owes' : '✓ settled';
+    const c = pcs(per.color);
+    return `
+      <div class="bal-card ${cardCls}" style="border-color:rgba(${c.rbg},0.35)">
+        <div class="bal-name" style="color:${per.color}">${per.name}</div>
+        <div class="bal-row">Paid: <strong>$${(paid[per.name]||0).toFixed(2)}</strong></div>
+        <div class="bal-row">Fair share: <strong>$${(share[per.name]||0).toFixed(2)}</strong></div>
+        <div class="bal-divider"></div>
+        <div class="bal-net ${cls}">$${Math.abs(n).toFixed(2)}</div>
+        <div class="bal-lbl ${cls}">${lbl}</div>
+      </div>`;
+  }).join('');
+
+  const txEl = document.getElementById('tx-list');
+  const txs  = settle(net);
+
+  if (!grand) {
+    txEl.innerHTML = `<div class="empty"><div class="ico">📝</div><p>No expenses logged yet. Go to the Expenses tab to add spending!</p></div>`;
+    return;
+  }
+  if (!txs.length) {
+    txEl.innerHTML = `<div class="empty"><div class="ico">🎉</div><p>Everyone is already even — nothing to settle!</p></div>`;
+    return;
+  }
+
+  txEl.innerHTML = txs.map(t=>{
+    const fc = pcs(personByName(t.from).color);
+    const tc = pcs(personByName(t.to).color);
+    return `
+    <div class="tx-item">
+      <span class="tx-chip" style="border-color:${fc.border};color:${fc.text}">${t.from}</span>
+      <span class="tx-arrow">→</span>
+      <span class="tx-chip" style="border-color:${tc.border};color:${tc.text}">${t.to}</span>
+      <span class="tx-verb">needs to pay</span>
+      <span class="tx-amt">$${t.amt.toFixed(2)}</span>
+    </div>`;
+  }).join('');
+}
+
+function settle(net) {
+  const names = Object.keys(net);
+  const debtors   = names.filter(n=>net[n]<-0.005).map(n=>({name:n,amt:-net[n]})).sort((a,b)=>b.amt-a.amt);
+  const creditors = names.filter(n=>net[n]> 0.005).map(n=>({name:n,amt: net[n]})).sort((a,b)=>b.amt-a.amt);
+  const txs = [];
+  let i=0,j=0;
+  while(i<debtors.length && j<creditors.length){
+    const d=debtors[i], c=creditors[j];
+    const a=Math.min(d.amt,c.amt);
+    if(a>0.005) txs.push({from:d.name,to:c.name,amt:Math.round(a*100)/100});
+    d.amt-=a; c.amt-=a;
+    if(d.amt<0.005) i++;
+    if(c.amt<0.005) j++;
+  }
+  return txs;
+}
+
+// ─────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────
+function pcs(col) {
+  const r=parseInt(col.slice(1,3),16), g=parseInt(col.slice(3,5),16), b=parseInt(col.slice(5,7),16);
+  return { text:col, border:`rgba(${r},${g},${b},0.55)`, bg:`rgba(${r},${g},${b},0.1)`, glow:`0 0 8px rgba(${r},${g},${b},0.45)`, rbg:`${r},${g},${b}` };
+}
+function personByName(n) { return S.people.find(p=>p.name===n) || {name:n, color:'#aaaaaa', emoji:'👤'}; }
+function pillStyle(col, on) {
+  const c = pcs(col);
+  return `color:${c.text};border-color:${c.border};background:${c.bg}${on?`;box-shadow:${c.glow}`:''}`;
+}
+
+// ─────────────────────────────────────────────
+// HERO
+// ─────────────────────────────────────────────
+function renderHero() {
+  document.getElementById('hero-title').textContent = S.trip.title;
+  const cnt = S.people.length;
+  document.getElementById('hero-chips').innerHTML = `
+    <span class="hero-chip">🌲 ${S.trip.date}</span>
+    <span class="hero-chip">👨‍👩‍👧 ${cnt} ${cnt===1?'Person':'People'}</span>
+    <span class="hero-chip">🔥 ${S.trip.tagline}</span>
+  `;
+  document.getElementById('hero-badges').innerHTML = S.people.map(p => {
+    const c = pcs(p.color);
+    return `<div class="badge" style="color:${c.text};border-color:${c.border};background:${c.bg};box-shadow:0 4px 20px rgba(${c.rbg},0.2)">${p.emoji} ${p.name}</div>`;
+  }).join('');
+}
+
+// ─────────────────────────────────────────────
+// EXPENSE FORM (dynamic)
+// ─────────────────────────────────────────────
+function renderExpenseForm() {
+  document.getElementById('e-payer').innerHTML = S.people.map(p=>`<option value="${p.name}">${p.name}</option>`).join('');
+  document.getElementById('split-pills').innerHTML = S.people.map(p => {
+    const cs = pillStyle(p.color, true);
+    return `<label class="sp-label"><input type="checkbox" value="${p.name}" checked /><span class="pill on" style="${cs}">${p.name}</span></label>`;
+  }).join('');
+}
+
+// Toggle split pill visual when checkbox changes
+document.addEventListener('change', function(e) {
+  if (e.target.closest && e.target.closest('#split-pills') && e.target.type==='checkbox') {
+    const span = e.target.nextElementSibling;
+    span.classList.toggle('on',  e.target.checked);
+    span.classList.toggle('off', !e.target.checked);
+  }
+});
+
+// ─────────────────────────────────────────────
+// SETTINGS
+// ─────────────────────────────────────────────
+let selectedNewColor = PRESET_COLORS[0];
+let personModalIdx   = -1;
+let personModalColor = PRESET_COLORS[0];
+
+function renderSettings() {
+  document.getElementById('s-title').value   = S.trip.title;
+  document.getElementById('s-date').value    = S.trip.date;
+  document.getElementById('s-tagline').value = S.trip.tagline;
+  renderPeopleList();
+  renderAddSwatches();
+}
+
+function renderPeopleList() {
+  document.getElementById('people-list').innerHTML = S.people.map((p,pi) => {
+    const c = pcs(p.color);
+    return `
+      <div class="person-card">
+        <div class="p-avatar" style="background:${c.bg};border-color:${c.border}">${p.emoji}</div>
+        <div class="p-info">
+          <div class="p-name" style="color:${p.color}">${p.name}</div>
+          <div class="p-meta">${p.emoji} &nbsp;·&nbsp; ${p.color}</div>
+        </div>
+        <div class="p-actions">
+          <button class="btn-sm btn-edit-p" onclick="openPersonModal(${pi})">✏️ Edit</button>
+          <button class="btn-sm btn-del-p" onclick="deletePerson(${pi})">🗑️ Remove</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderAddSwatches() {
+  document.getElementById('np-swatches').innerHTML = PRESET_COLORS.map(c=>`
+    <div class="swatch${c===selectedNewColor?' sel':''}" style="background:${c}" onclick="selectNewColor('${c}')" title="${c}"></div>
+  `).join('');
+}
+
+function selectNewColor(c) { selectedNewColor = c; renderAddSwatches(); }
+
+function saveTripDetails() {
+  const t  = document.getElementById('s-title').value.trim();
+  const d  = document.getElementById('s-date').value.trim();
+  const tg = document.getElementById('s-tagline').value.trim();
+  if (!t) { document.getElementById('s-title').focus(); return; }
+  S.trip.title   = t;
+  S.trip.date    = d || S.trip.date;
+  S.trip.tagline = tg || S.trip.tagline;
+  save(); renderHero();
+  const btn = document.getElementById('trip-save-btn');
+  const orig = btn.textContent;
+  btn.textContent = '✅ Saved!';
+  setTimeout(()=>btn.textContent=orig, 1800);
+}
+
+function addPerson() {
+  const name  = document.getElementById('np-name').value.trim();
+  const emoji = document.getElementById('np-emoji').value.trim() || '👤';
+  if (!name) { document.getElementById('np-name').focus(); return; }
+  if (S.people.find(p=>p.name.toLowerCase()===name.toLowerCase())) {
+    alert(`"${name}" already exists.`); return;
+  }
+  S.people.push({ id:'p'+Date.now(), name, color:selectedNewColor, emoji });
+  document.getElementById('np-name').value  = '';
+  document.getElementById('np-emoji').value = '';
+  save(); renderPeopleList(); renderHero(); renderExpenseForm();
+}
+
+function deletePerson(pi) {
+  const p = S.people[pi];
+  const inExp   = S.expenses.some(e=>e.payer===p.name||e.split.includes(p.name));
+  const inItems = S.cats.some(c=>c.items.some(i=>i.a.includes(p.name)));
+  let msg = `Remove "${p.name}" from the trip?`;
+  if (inExp)   msg += '\n⚠️ They appear in expense records (data kept, shown as unknown).';
+  if (inItems) msg += '\n⚠️ They will be removed from item assignments.';
+  if (!confirm(msg)) return;
+  S.cats.forEach(c=>c.items.forEach(i=>{ i.a=i.a.filter(n=>n!==p.name); }));
+  S.people.splice(pi,1);
+  save(); renderPeopleList(); renderHero(); renderExpenseForm(); renderPlanner();
+}
+
+function openPersonModal(pi) {
+  const p = S.people[pi];
+  personModalIdx   = pi;
+  personModalColor = p.color;
+  document.getElementById('pm-name').value  = p.name;
+  document.getElementById('pm-emoji').value = p.emoji;
+  renderPersonModalSwatches();
+  document.getElementById('person-modal-overlay').classList.add('show');
+  document.getElementById('pm-name').focus();
+}
+
+function closePersonModal(e) {
+  if (e && e.target !== document.getElementById('person-modal-overlay')) return;
+  document.getElementById('person-modal-overlay').classList.remove('show');
+  personModalIdx = -1;
+}
+
+function renderPersonModalSwatches() {
+  document.getElementById('pm-swatches').innerHTML = PRESET_COLORS.map(c=>`
+    <div class="swatch${c===personModalColor?' sel':''}" style="background:${c}"
+      onclick="window._setPersonColor('${c}')" title="${c}"></div>
+  `).join('');
+}
+
+function savePersonModal() {
+  const name  = document.getElementById('pm-name').value.trim();
+  const emoji = document.getElementById('pm-emoji').value.trim() || '👤';
+  if (!name) { document.getElementById('pm-name').focus(); return; }
+  const p = S.people[personModalIdx];
+  const oldName = p.name;
+  if (name !== oldName) {
+    S.cats.forEach(c=>c.items.forEach(i=>{ i.a=i.a.map(n=>n===oldName?name:n); }));
+    S.expenses.forEach(e=>{
+      if (e.payer===oldName) e.payer=name;
+      e.split=e.split.map(n=>n===oldName?name:n);
+    });
+  }
+  p.name=name; p.emoji=emoji; p.color=personModalColor;
+  save();
+  document.getElementById('person-modal-overlay').classList.remove('show');
+  personModalIdx = -1;
+  renderPeopleList(); renderHero(); renderExpenseForm(); renderPlanner();
+}
+
+function resetAll() {
+  if (!confirm('⚠️ This will CLEAR ALL expenses, item assignments, and reset people to defaults.\n\nThis cannot be undone. Continue?')) return;
+  S.cats=deepClone(CATS_INIT); S.expenses=[]; S.collapsed={};
+  S.people=deepClone(PEOPLE_INIT); S.trip=deepClone(TRIP_INIT);
+  save(); renderHero(); renderExpenseForm(); renderSettings(); renderPlanner();
+  document.querySelector('[data-tab="planner"]').click();
+}
+
+// ─────────────────────────────────────────────
+// SYNC HELPERS
+// ─────────────────────────────────────────────
+let _toastTimer;
+
+function setSyncStatus(status) {
+  const el = document.getElementById('sync-dot');
+  if (!el) return;
+  el.className = 'sync-dot ' + status;
+  const msgs = { ok:'Synced ✅', syncing:'Syncing…', offline:'Offline — changes saved locally', error:'Sync error ⚠️' };
+  el.title = msgs[status] || '';
+}
+
+function showSyncToast(msg) {
+  const el = document.getElementById('sync-toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
+}
+
+function shareTrip() {
+  const url = location.href;
+  navigator.clipboard.writeText(url)
+    .then(() => showSyncToast('📋 Trip link copied! Send it to your crew.'))
+    .catch(() => prompt('Copy this link to share your trip:', url));
+}
+
+// ─────────────────────────────────────────────
+// GLOBAL EXPORTS  (module-scoped functions must be on window for onclick=)
+// ─────────────────────────────────────────────
+Object.assign(window, {
+  toggleEditMode, openItemModal, openCatModal, openRenameCatModal,
+  closeModal, saveModal, deleteItem, deleteCat, quickAddItem,
+  openPersonModal, closePersonModal, savePersonModal,
+  saveTripDetails, selectNewColor, addPerson, deletePerson, resetAll,
+  shareTrip,
+  _setPersonColor: (c) => { personModalColor = c; renderPersonModalSwatches(); }
+});
+
+// ─────────────────────────────────────────────
+// INIT  — onSnapshot is the single source of truth for all data
+// ─────────────────────────────────────────────
+let _firstSnap = true;
+let _lastSaveTs = 0;
+
+document.getElementById('trip-id-display').textContent = TRIP_ID;
+document.getElementById('loading-overlay').style.display = 'flex';
+
+onSnapshot(tripRef, snap => {
+  const wasFirst = _firstSnap;
+  _firstSnap = false;
+
+  if (snap.exists()) {
+    const p = snap.data();
+    if (p.cats)      S.cats      = p.cats;
+    if (p.expenses)  S.expenses  = p.expenses;
+    if (p.collapsed) S.collapsed = p.collapsed;
+    if (p.people)    S.people    = p.people;
+    if (p.trip)      S.trip      = p.trip;
+    try { localStorage.setItem('camp25', JSON.stringify(S)); } catch(e) {}
+  } else if (wasFirst) {
+    // Brand new trip — seed from localStorage if available (one-time migration)
+    try {
+      const raw = localStorage.getItem('camp25');
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p.cats)      S.cats      = p.cats;
+        if (p.expenses)  S.expenses  = p.expenses;
+        if (p.collapsed) S.collapsed = p.collapsed;
+        if (p.people)    S.people    = p.people;
+        if (p.trip)      S.trip      = p.trip;
+        save(); // push existing data up to Firestore
+      }
+    } catch(e) {}
+  }
+
+  if (wasFirst) {
+    document.getElementById('loading-overlay').style.display = 'none';
+  } else if (Date.now() - _lastSaveTs > 3000) {
+    showSyncToast('🔄 Updated by a crew member!');
+  }
+
+  renderHero(); renderExpenseForm(); renderPlanner(); renderExpenses();
+  setSyncStatus('ok');
+  const at = document.querySelector('.tab-btn.active')?.dataset.tab;
+  if (at === 'settlement') renderSettlement();
+  if (at === 'settings')   renderSettings();
+
+}, err => {
+  _firstSnap = false;
+  document.getElementById('loading-overlay').style.display = 'none';
+  console.warn('Firestore unavailable, falling back to localStorage:', err);
+  try {
+    const raw = localStorage.getItem('camp25');
+    if (raw) {
+      const p = JSON.parse(raw);
+      if (p.cats)      S.cats      = p.cats;
+      if (p.expenses)  S.expenses  = p.expenses;
+      if (p.collapsed) S.collapsed = p.collapsed;
+      if (p.people)    S.people    = p.people;
+      if (p.trip)      S.trip      = p.trip;
+    }
+  } catch(e) {}
+  renderHero(); renderExpenseForm(); renderPlanner(); renderExpenses();
+  setSyncStatus('offline');
+});
+</script>
+</body>
+</html>
