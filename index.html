@@ -1495,7 +1495,7 @@ function renderPlanner() {
             <path d="M6 9l6 6 6-6"/>
           </svg>
         </div>
-        <div class="cat-body ${open?'':'closed'}" style="max-height:${open?(cat.items.length*70+60)+'px':'0'}">
+        <div class="cat-body ${open?'':'closed'}" style="max-height:${open?'none':'0'}">
           ${itemsHtml}
           ${addRow}
         </div>
