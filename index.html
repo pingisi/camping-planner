@@ -657,9 +657,13 @@
     .tbl-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }
     .tbl-scroll table { min-width:520px; }
 
+    /* Always give the bottom of the page breathing room (browser toolbar, home bar) */
+    .ctn { padding-bottom: max(40px, env(safe-area-inset-bottom, 20px)); }
+    body { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
     @media (max-width: 768px) {
       .hero { padding-top:40px; }
-      .ctn { padding:20px 14px; }
+      .ctn { padding:20px 14px max(40px, env(safe-area-inset-bottom, 20px)); }
       .tab-btn { padding:13px 16px; font-size:0.84rem; }
       .btn-share { padding:5px 11px; font-size:0.73rem; }
       .trip-chip { font-size:0.65rem; padding:4px 9px; }
@@ -667,12 +671,37 @@
       .tx-item { flex-wrap:wrap; }
       .tx-verb { flex-basis:100%; order:3; font-size:0.78rem; }
       .balances { grid-template-columns:repeat(2,1fr); }
+      /* Modal as bottom sheet — avoids keyboard pushing it off screen */
+      .modal-overlay {
+        align-items: flex-end;
+        padding: 0;
+      }
+      .modal {
+        border-radius: 24px 24px 0 0;
+        max-height: 92dvh;
+        max-height: 92vh; /* fallback */
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+        max-width: 100%;
+        padding: 28px 20px max(28px, env(safe-area-inset-bottom, 16px));
+        /* handle bar at top */
+        border-top: 3px solid rgba(255,255,255,0.12);
+      }
+      .modal::before {
+        content: '';
+        display: block;
+        width: 40px; height: 4px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 2px;
+        margin: 0 auto 20px;
+      }
     }
 
     @media (max-width: 480px) {
       .hero { padding:28px 14px 0; }
       .hero-emoji { font-size:2.8rem; }
-      .ctn { padding:14px 10px; }
+      .ctn { padding:14px 10px max(60px, env(safe-area-inset-bottom, 30px)); }
       .tab-btn { padding:11px 12px; font-size:0.78rem; }
       .nav-right { gap:6px; padding:0 8px 0 4px; }
       #trip-id-display { display:none; }
@@ -682,10 +711,11 @@
       .tot-card { padding:14px 10px; }
       .form-card { padding:18px 12px; }
       .settings-section { padding:14px 12px; }
-      .modal { padding:22px 16px; }
       .cat-head { padding:12px 14px; }
       .item-row { padding:10px 14px; gap:8px; }
-      .add-item-row { padding:8px 14px; }
+      .add-item-row { padding:8px 14px; flex-wrap:wrap; }
+      .add-item-row .ai-name  { min-width:100%; } /* full width on tiny screens */
+      .add-item-row .ai-store { width:100%; }
       .person-card { padding:10px 12px; gap:10px; }
       .p-avatar { width:38px; height:38px; font-size:1.2rem; }
       .bal-card { padding:18px 10px; }
@@ -693,6 +723,8 @@
       .tx-item { padding:12px 12px; }
       .tx-amt { font-size:1rem; }
       .btn-add { padding:10px 16px; font-size:0.84rem; }
+      /* Edit mode quick-add inputs full width */
+      .add-cat-wrap { padding:14px 16px; }
     }
 
     @media (max-width: 360px) {
