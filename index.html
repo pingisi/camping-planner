@@ -197,29 +197,49 @@
     }
     .hero-mountains svg { width: 100%; display: block; }
 
-    /* ====== TABS NAV ====== */
+    /* ====== TABS NAV (DROPDOWN) ====== */
     nav {
       position: sticky; top: 0; z-index: 200;
       background: rgba(8,15,11,0.9);
       backdrop-filter: blur(28px) saturate(1.8);
       border-bottom: 1px solid var(--border);
-      display: flex; overflow-x: auto;
+      display: flex; align-items: stretch;
     }
-    nav::-webkit-scrollbar { display: none; }
+    .nav-dropdown-wrap { position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .nav-select-btn {
+      flex: 1; display: flex; align-items: center; gap: 10px;
+      padding: 14px 20px;
+      background: none; border: none;
+      color: var(--text); font-size: 0.9rem; font-weight: 700; font-family: 'Outfit', sans-serif;
+      cursor: pointer; text-align: left; transition: background 0.2s; white-space: nowrap;
+    }
+    .nav-select-btn:hover { background: rgba(255,255,255,0.04); }
+    .nav-select-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+    .nav-chevron { width: 18px; height: 18px; flex-shrink: 0; transition: transform 0.25s; color: var(--muted); }
+    .nav-select-btn.open .nav-chevron { transform: rotate(180deg); }
+    .nav-active-bar {
+      position: absolute; bottom: 0; left: 16px; right: 16px; height: 2px;
+      background: linear-gradient(90deg, var(--fire), var(--gold)); border-radius: 2px; pointer-events: none;
+    }
+    .nav-dropdown {
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: rgba(8,15,11,0.97); border: 1px solid var(--border2); border-top: none;
+      backdrop-filter: blur(28px) saturate(1.8);
+      border-radius: 0 0 18px 18px; overflow: hidden;
+      opacity: 0; transform: translateY(-8px); pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      z-index: 210; box-shadow: var(--sh-md);
+    }
+    .nav-dropdown.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
     .tab-btn {
-      padding: 16px 28px;
-      background: none; border: none; border-bottom: 2px solid transparent;
-      color: var(--muted); font-size: 0.92rem; font-weight: 600; font-family: 'Outfit', sans-serif;
-      cursor: pointer; white-space: nowrap; transition: all 0.25s; position: relative;
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 13px 20px;
+      background: none; border: none; border-left: 3px solid transparent;
+      color: var(--muted); font-size: 0.88rem; font-weight: 600; font-family: 'Outfit', sans-serif;
+      cursor: pointer; text-align: left; transition: all 0.2s; white-space: nowrap;
     }
-    .tab-btn::after {
-      content: ''; position: absolute; bottom: -2px; left: 50%; right: 50%;
-      height: 2px; background: linear-gradient(90deg, var(--fire), var(--gold));
-      transition: left 0.3s ease, right 0.3s ease; border-radius: 2px;
-    }
-    .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.03); }
-    .tab-btn.active { color: var(--gold); }
-    .tab-btn.active::after { left: 12px; right: 12px; }
+    .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); border-left-color: rgba(255,255,255,0.2); }
+    .tab-btn.active { color: var(--gold); background: rgba(255,215,0,0.06); border-left-color: var(--gold); }
 
     /* ====== CONTAINER ====== */
     .ctn { max-width: 1200px; margin: 0 auto; padding: 28px 20px; }
@@ -777,10 +797,9 @@
 
     /* ====== MOBILE / RESPONSIVE ====== */
 
-    /* Nav: tabs scroll independently; share controls always visible */
+    /* Nav: dropdown nav */
     nav { overflow-x: hidden; }
-    .tabs-scroll { display:flex; flex:1; overflow-x:auto; -webkit-overflow-scrolling:touch; min-width:0; }
-    .tabs-scroll::-webkit-scrollbar { display:none; }
+    .nav-dropdown-wrap { flex: 1; min-width: 0; }
 
     /* Horizontally scrollable expense table */
     .tbl-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }
@@ -952,6 +971,40 @@
       .balances { grid-template-columns: 1fr; }
       .sc-num   { font-size: 1.6rem; }
     }
+
+    /* ====== MEAL / ACTIVITY PLAN ====== */
+    .plan-hint { color: var(--muted); font-size: 0.88rem; margin: 4px 0 20px; line-height: 1.5; }
+    .plan-day-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 18px; margin-bottom: 16px; overflow: hidden;
+    }
+    .plan-day-head {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 20px; background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid var(--border);
+    }
+    .plan-day-num {
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--gold); background: rgba(255,215,0,0.12); border: 1px solid rgba(255,215,0,0.25);
+      padding: 3px 10px; border-radius: 20px; white-space: nowrap;
+    }
+    .plan-day-label { font-weight: 700; font-size: 0.95rem; color: var(--text); }
+    .plan-meals { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+    .plan-meal-row { display: flex; align-items: center; gap: 12px; }
+    .plan-meal-lbl { font-size: 0.82rem; font-weight: 600; color: var(--muted); min-width: 110px; flex-shrink: 0; }
+    .plan-input {
+      flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: 10px; padding: 9px 14px; color: var(--text);
+      font-family: 'Outfit', sans-serif; font-size: 0.88rem;
+      transition: border-color 0.2s, background 0.2s; min-width: 0;
+    }
+    .plan-input:focus { outline: none; border-color: var(--gold); background: rgba(255,215,0,0.04); }
+    .plan-input::placeholder { color: var(--muted); opacity: 0.6; }
+    @media (max-width: 480px) {
+      .plan-meal-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .plan-meal-lbl { min-width: auto; }
+      .nav-select-btn { padding: 12px 14px; font-size: 0.82rem; }
+    }
   </style>
 </head>
 <body>
@@ -1000,11 +1053,20 @@
 
   <!-- ===== TABS ===== -->
   <nav id="nav">
-    <div class="tabs-scroll">
-      <button class="tab-btn active" data-tab="planner">📋 Items &amp; Checklist</button>
-      <button class="tab-btn"        data-tab="expenses">💰 Expenses</button>
-      <button class="tab-btn"        data-tab="settlement">⚖️ Settlement</button>
-      <button class="tab-btn"        data-tab="settings">⚙️ Settings</button>
+    <div class="nav-dropdown-wrap">
+      <button class="nav-select-btn" id="nav-select-btn" onclick="toggleNavDropdown()">
+        <span class="nav-select-label" id="nav-select-label">📋 Items &amp; Checklist</span>
+        <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="nav-active-bar"></div>
+      <div class="nav-dropdown" id="nav-dropdown">
+        <button class="tab-btn active" data-tab="planner">📋 Items &amp; Checklist</button>
+        <button class="tab-btn"        data-tab="expenses">💰 Expenses</button>
+        <button class="tab-btn"        data-tab="settlement">⚖️ Settlement</button>
+        <button class="tab-btn"        data-tab="meal">🍽️ Meal Plan</button>
+        <button class="tab-btn"        data-tab="activity">🏕️ Activity Plan</button>
+        <button class="tab-btn"        data-tab="settings">⚙️ Settings</button>
+      </div>
     </div>
     <div class="nav-right">
       <span class="sync-dot syncing" id="sync-dot" title="Connecting…"></span>
@@ -1080,6 +1142,20 @@
       </div>
     </div>
 
+    <!-- ===== MEAL PLAN PANEL ===== -->
+    <div id="panel-meal" class="panel">
+      <div class="sec-title">🍽️ Meal Plan</div>
+      <p class="plan-hint">Plan your meals for each day. Set <strong>Start &amp; End Dates</strong> in Settings to generate days.</p>
+      <div id="meal-days"></div>
+    </div>
+
+    <!-- ===== ACTIVITY PLAN PANEL ===== -->
+    <div id="panel-activity" class="panel">
+      <div class="sec-title">🏕️ Activity Plan</div>
+      <p class="plan-hint">Plan activities for each day. Set <strong>Start &amp; End Dates</strong> in Settings to generate days.</p>
+      <div id="activity-days"></div>
+    </div>
+
     <!-- ===== SETTINGS PANEL ===== -->
     <div id="panel-settings" class="panel">
 
@@ -1092,8 +1168,12 @@
             <input id="s-title" type="text" placeholder="e.g. Ultimate Camping Trip Planner" autocomplete="off" />
           </div>
           <div class="ff">
-            <label>Date</label>
-            <input id="s-date" type="date" />
+            <label>Start Date</label>
+            <input id="s-start-date" type="date" />
+          </div>
+          <div class="ff">
+            <label>End Date</label>
+            <input id="s-end-date" type="date" />
           </div>
           <div class="ff">
             <label>Camping Location</label>
@@ -1387,7 +1467,7 @@ const PEOPLE_INIT = [
   { id:'p3', name:'Deep',  color:'#f06292', emoji:'🌸' },
   { id:'p4', name:'Sujoy', color:'#ffa726', emoji:'🔥' },
 ];
-const TRIP_INIT = { title:'Ultimate Camping Trip Planner', date:'Summer 2026', tagline:'Grill. Chill. Thrill.', location:'' };
+const TRIP_INIT = { title:'Ultimate Camping Trip Planner', date:'Summer 2026', startDate:'', endDate:'', tagline:'Grill. Chill. Thrill.', location:'' };
 const PRESET_COLORS = ['#29b6f6','#ba68c8','#f06292','#ffa726','#66bb6a','#ff7043','#80cbc4','#fff176','#ef5350','#ab47bc'];
 
 const CATS_INIT = [
@@ -1489,11 +1569,13 @@ const CATS_INIT = [
 // STATE  (persisted to localStorage)
 // ─────────────────────────────────────────────
 let S = {
-  cats:      deepClone(CATS_INIT),
-  expenses:  [],
-  collapsed: {},
-  people:    deepClone(PEOPLE_INIT),
-  trip:      deepClone(TRIP_INIT),
+  cats:       deepClone(CATS_INIT),
+  expenses:   [],
+  collapsed:  {},
+  people:     deepClone(PEOPLE_INIT),
+  trip:       deepClone(TRIP_INIT),
+  meals:      {},
+  activities: {},
 };
 
 function deepClone(x) { return JSON.parse(JSON.stringify(x)); }
@@ -1503,7 +1585,7 @@ function save() {
   try { localStorage.setItem('camp25', JSON.stringify(S)); } catch(e) {}
   _lastSaveTs = Date.now();
   setSyncStatus('syncing');
-  const payload = { cats:S.cats, expenses:S.expenses, collapsed:S.collapsed, people:S.people, trip:S.trip };
+  const payload = { cats:S.cats, expenses:S.expenses, collapsed:S.collapsed, people:S.people, trip:S.trip, meals:S.meals, activities:S.activities };
   setDoc(tripRef, payload)
     .then(() => setSyncStatus('ok'))
     .catch(err => { setSyncStatus('error'); console.warn('Firestore save failed:', err); });
@@ -1565,17 +1647,42 @@ function save() {
 // ─────────────────────────────────────────────
 // TABS
 // ─────────────────────────────────────────────
-document.getElementById('nav').addEventListener('click', e => {
+function toggleNavDropdown() {
+  const dd  = document.getElementById('nav-dropdown');
+  const btn = document.getElementById('nav-select-btn');
+  const open = !dd.classList.contains('open');
+  dd.classList.toggle('open', open);
+  btn.classList.toggle('open', open);
+}
+
+// Close nav dropdown when clicking outside it
+document.addEventListener('click', e => {
+  const wrap = document.getElementById('nav-dropdown');
+  const btn  = document.getElementById('nav-select-btn');
+  if (!wrap?.contains(e.target) && !btn?.contains(e.target)) {
+    wrap?.classList.remove('open');
+    btn?.classList.remove('open');
+  }
+});
+
+document.getElementById('nav-dropdown').addEventListener('click', e => {
   const btn = e.target.closest('.tab-btn');
   if (!btn) return;
+  // Close dropdown
+  document.getElementById('nav-dropdown').classList.remove('open');
+  document.getElementById('nav-select-btn').classList.remove('open');
+  // Update active tab
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
+  document.getElementById('nav-select-label').textContent = btn.textContent.trim();
   const id = btn.dataset.tab;
   document.getElementById('panel-'+id).classList.add('active');
   if (id==='expenses')   renderExpenses();
   if (id==='settlement') renderSettlement();
   if (id==='settings')   renderSettings();
+  if (id==='meal')       renderMealPlan();
+  if (id==='activity')   renderActivityPlan();
 });
 
 // ─────────────────────────────────────────────
@@ -1998,10 +2105,20 @@ function formatTripDate(d) {
   return d;
 }
 
+function formatDateRange(start, end) {
+  if (!start && !end) return formatTripDate(S.trip.date);
+  if (!end) return formatTripDate(start);
+  const s = new Date(start + 'T00:00:00');
+  const e = new Date(end   + 'T00:00:00');
+  return s.toLocaleDateString('en-CA', { month:'short', day:'numeric' }) +
+         ' – ' + e.toLocaleDateString('en-CA', { month:'short', day:'numeric', year:'numeric' });
+}
+
 function tripCountdown() {
-  if (!S.trip.date) return '';
+  const d = S.trip.startDate || S.trip.date;
+  if (!d) return '';
   const today = new Date(); today.setHours(0,0,0,0);
-  const raw = /^\d{4}-\d{2}-\d{2}$/.test(S.trip.date) ? S.trip.date + 'T00:00:00' : S.trip.date;
+  const raw = /^\d{4}-\d{2}-\d{2}$/.test(d) ? d + 'T00:00:00' : d;
   const tripDay = new Date(raw); tripDay.setHours(0,0,0,0);
   if (isNaN(tripDay)) return '';
   const days = Math.round((tripDay - today) / 86400000);
@@ -2021,7 +2138,7 @@ function renderHero() {
        <span class="hero-chip btn-map-toggle" onclick="toggleMap()" id="map-toggle-btn">🗺️ Map</span>`
     : '';
   document.getElementById('hero-chips').innerHTML = `
-    <span class="hero-chip">🌲 ${formatTripDate(S.trip.date)}</span>
+    <span class="hero-chip">🌲 ${formatDateRange(S.trip.startDate, S.trip.endDate)}</span>
     <span class="hero-chip">👨‍👩‍👧 ${cnt} ${cnt===1?'Person':'People'}</span>
     <span class="hero-chip">🔥 ${S.trip.tagline}</span>
     ${locChip}
@@ -2058,6 +2175,21 @@ document.addEventListener('change', function(e) {
   }
 });
 
+// Plan inputs — auto-save on blur (capture phase catches blur from child inputs)
+document.addEventListener('blur', function(e) {
+  const inp = e.target.closest && e.target.closest('.plan-input');
+  if (!inp) return;
+  const { date, field, type } = inp.dataset;
+  if (type === 'meal') {
+    if (!S.meals[date]) S.meals[date] = {};
+    S.meals[date][field] = inp.value;
+  } else if (type === 'activity') {
+    if (!S.activities[date]) S.activities[date] = {};
+    S.activities[date][field] = inp.value;
+  }
+  save();
+}, true);
+
 // ─────────────────────────────────────────────
 // SETTINGS
 // ─────────────────────────────────────────────
@@ -2067,7 +2199,8 @@ let personModalColor = PRESET_COLORS[0];
 
 function renderSettings() {
   document.getElementById('s-title').value   = S.trip.title;
-  document.getElementById('s-date').value = /^\d{4}-\d{2}-\d{2}$/.test(S.trip.date) ? S.trip.date : '';
+  document.getElementById('s-start-date').value = S.trip.startDate || '';
+  document.getElementById('s-end-date').value   = S.trip.endDate   || '';
   document.getElementById('s-tagline').value = S.trip.tagline;
   document.getElementById('s-location').value = S.trip.location || '';
   renderPeopleList();
@@ -2102,19 +2235,115 @@ function selectNewColor(c) { selectedNewColor = c; renderAddSwatches(); }
 
 function saveTripDetails() {
   const t  = document.getElementById('s-title').value.trim();
-  const d  = document.getElementById('s-date').value.trim();
+  const sd = document.getElementById('s-start-date').value.trim();
+  const ed = document.getElementById('s-end-date').value.trim();
   const tg = document.getElementById('s-tagline').value.trim();
   const loc= document.getElementById('s-location').value.trim();
   if (!t) { document.getElementById('s-title').focus(); return; }
-  S.trip.title    = t;
-  S.trip.date     = d || S.trip.date;
-  S.trip.tagline  = tg || S.trip.tagline;
-  S.trip.location = loc;
+  S.trip.title     = t;
+  S.trip.startDate = sd;
+  S.trip.endDate   = ed;
+  S.trip.date      = sd || S.trip.date;
+  S.trip.tagline   = tg || S.trip.tagline;
+  S.trip.location  = loc;
   save(); renderHero();
   const btn = document.getElementById('trip-save-btn');
   const orig = btn.textContent;
   btn.textContent = '✅ Saved!';
   setTimeout(()=>btn.textContent=orig, 1800);
+}
+
+// ─────────────────────────────────────────────
+function escHtml(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function getTripDays() {
+  const sd = S.trip.startDate, ed = S.trip.endDate;
+  if (!sd) return [];
+  const start = new Date(sd + 'T00:00:00');
+  const end   = ed ? new Date(ed + 'T00:00:00') : start;
+  const days  = [];
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate()+1)) {
+    days.push(d.toISOString().slice(0,10));
+  }
+  return days;
+}
+
+function renderMealPlan() {
+  const days = getTripDays();
+  const el = document.getElementById('meal-days');
+  if (!days.length) {
+    el.innerHTML = `<div class="empty"><div class="ico">📅</div><p>Set your trip <strong>Start &amp; End Dates</strong> in <strong>Settings</strong> to generate meal plan days.</p></div>`;
+    return;
+  }
+  el.innerHTML = days.map((dateStr, i) => {
+    const label = new Date(dateStr + 'T00:00:00').toLocaleDateString('en-CA', { weekday:'long', month:'short', day:'numeric' });
+    const m = S.meals[dateStr] || {};
+    return `
+    <div class="plan-day-card">
+      <div class="plan-day-head">
+        <span class="plan-day-num">Day ${i+1}</span>
+        <span class="plan-day-label">${label}</span>
+      </div>
+      <div class="plan-meals">
+        <div class="plan-meal-row">
+          <label class="plan-meal-lbl">🌅 Breakfast</label>
+          <input class="plan-input" type="text" value="${escHtml(m.breakfast)}" placeholder="e.g. Dosa &amp; chai" data-date="${dateStr}" data-field="breakfast" data-type="meal" />
+        </div>
+        <div class="plan-meal-row">
+          <label class="plan-meal-lbl">☀️ Lunch</label>
+          <input class="plan-input" type="text" value="${escHtml(m.lunch)}" placeholder="e.g. BBQ chicken wraps" data-date="${dateStr}" data-field="lunch" data-type="meal" />
+        </div>
+        <div class="plan-meal-row">
+          <label class="plan-meal-lbl">🌙 Dinner</label>
+          <input class="plan-input" type="text" value="${escHtml(m.dinner)}" placeholder="e.g. Grilled prawns &amp; corn" data-date="${dateStr}" data-field="dinner" data-type="meal" />
+        </div>
+        <div class="plan-meal-row">
+          <label class="plan-meal-lbl">📝 Notes</label>
+          <input class="plan-input" type="text" value="${escHtml(m.notes)}" placeholder="Allergies, extras…" data-date="${dateStr}" data-field="notes" data-type="meal" />
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderActivityPlan() {
+  const days = getTripDays();
+  const el = document.getElementById('activity-days');
+  if (!days.length) {
+    el.innerHTML = `<div class="empty"><div class="ico">📅</div><p>Set your trip <strong>Start &amp; End Dates</strong> in <strong>Settings</strong> to generate activity plan days.</p></div>`;
+    return;
+  }
+  el.innerHTML = days.map((dateStr, i) => {
+    const label = new Date(dateStr + 'T00:00:00').toLocaleDateString('en-CA', { weekday:'long', month:'short', day:'numeric' });
+    const a = S.activities[dateStr] || {};
+    return `
+    <div class="plan-day-card">
+      <div class="plan-day-head">
+        <span class="plan-day-num">Day ${i+1}</span>
+        <span class="plan-day-label">${label}</span>
+      </div>
+      <div class="plan-meals">
+        <div class="plan-meal-row">
+          <label class="plan-meal-lbl">🌅 Morning</label>
+          <input class="plan-input" type="text" value="${escHtml(a.morning)}" placeholder="e.g. Sunrise hike" data-date="${dateStr}" data-field="morning" data-type="activity" />
+        </div>
+        <div class="plan-meal-row">
+          <label class="plan-meal-lbl">🌞 Afternoon</label>
+          <input class="plan-input" type="text" value="${escHtml(a.afternoon)}" placeholder="e.g. Kayaking or swimming" data-date="${dateStr}" data-field="afternoon" data-type="activity" />
+        </div>
+        <div class="plan-meal-row">
+          <label class="plan-meal-lbl">🌆 Evening</label>
+          <input class="plan-input" type="text" value="${escHtml(a.evening)}" placeholder="e.g. Campfire &amp; s&apos;mores" data-date="${dateStr}" data-field="evening" data-type="activity" />
+        </div>
+        <div class="plan-meal-row">
+          <label class="plan-meal-lbl">📝 Notes</label>
+          <input class="plan-input" type="text" value="${escHtml(a.notes)}" placeholder="Equipment, reminders…" data-date="${dateStr}" data-field="notes" data-type="activity" />
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function addPerson() {
@@ -2191,6 +2420,7 @@ function resetAll() {
   if (!confirm('⚠️ This will CLEAR ALL expenses, item assignments, and reset people to defaults.\n\nThis cannot be undone. Continue?')) return;
   S.cats=deepClone(CATS_INIT); S.expenses=[]; S.collapsed={};
   S.people=deepClone(PEOPLE_INIT); S.trip=deepClone(TRIP_INIT);
+  S.meals={}; S.activities={};
   save(); renderHero(); renderExpenseForm(); renderSettings(); renderPlanner();
   document.querySelector('[data-tab="planner"]').click();
 }
@@ -2258,6 +2488,7 @@ Object.assign(window, {
   openPersonModal, closePersonModal, savePersonModal,
   saveTripDetails, selectNewColor, addPerson, deletePerson, resetAll,
   shareTrip, toggleTheme, toggleMap,
+  toggleNavDropdown, renderMealPlan, renderActivityPlan,
   _setPersonColor: (c) => { personModalColor = c; renderPersonModalSwatches(); }
 });
 
@@ -2282,11 +2513,13 @@ onSnapshot(tripRef, snap => {
 
   if (snap.exists()) {
     const p = snap.data();
-    if (p.cats)      S.cats      = p.cats;
-    if (p.expenses)  S.expenses  = p.expenses;
-    if (p.collapsed) S.collapsed = p.collapsed;
-    if (p.people)    S.people    = p.people;
-    if (p.trip)      S.trip      = p.trip;
+    if (p.cats)        S.cats       = p.cats;
+    if (p.expenses)    S.expenses   = p.expenses;
+    if (p.collapsed)   S.collapsed  = p.collapsed;
+    if (p.people)      S.people     = p.people;
+    if (p.trip)        S.trip       = { ...deepClone(TRIP_INIT), ...p.trip };
+    if (p.meals)       S.meals      = p.meals;
+    if (p.activities)  S.activities = p.activities;
     try { localStorage.setItem('camp25', JSON.stringify(S)); } catch(e) {}
   } else if (wasFirst) {
     // Brand new trip — seed from localStorage if available (one-time migration)
@@ -2294,11 +2527,13 @@ onSnapshot(tripRef, snap => {
       const raw = localStorage.getItem('camp25');
       if (raw) {
         const p = JSON.parse(raw);
-        if (p.cats)      S.cats      = p.cats;
-        if (p.expenses)  S.expenses  = p.expenses;
-        if (p.collapsed) S.collapsed = p.collapsed;
-        if (p.people)    S.people    = p.people;
-        if (p.trip)      S.trip      = p.trip;
+        if (p.cats)        S.cats       = p.cats;
+        if (p.expenses)    S.expenses   = p.expenses;
+        if (p.collapsed)   S.collapsed  = p.collapsed;
+        if (p.people)      S.people     = p.people;
+        if (p.trip)        S.trip       = { ...deepClone(TRIP_INIT), ...p.trip };
+        if (p.meals)       S.meals      = p.meals;
+        if (p.activities)  S.activities = p.activities;
         save(); // push existing data up to Firestore
       }
     } catch(e) {}
@@ -2315,6 +2550,8 @@ onSnapshot(tripRef, snap => {
   const at = document.querySelector('.tab-btn.active')?.dataset.tab;
   if (at === 'settlement') renderSettlement();
   if (at === 'settings')   renderSettings();
+  if (at === 'meal')       renderMealPlan();
+  if (at === 'activity')   renderActivityPlan();
 
 }, err => {
   _firstSnap = false;
@@ -2324,11 +2561,13 @@ onSnapshot(tripRef, snap => {
     const raw = localStorage.getItem('camp25');
     if (raw) {
       const p = JSON.parse(raw);
-      if (p.cats)      S.cats      = p.cats;
-      if (p.expenses)  S.expenses  = p.expenses;
-      if (p.collapsed) S.collapsed = p.collapsed;
-      if (p.people)    S.people    = p.people;
-      if (p.trip)      S.trip      = p.trip;
+      if (p.cats)        S.cats       = p.cats;
+      if (p.expenses)    S.expenses   = p.expenses;
+      if (p.collapsed)   S.collapsed  = p.collapsed;
+      if (p.people)      S.people     = p.people;
+      if (p.trip)        S.trip       = { ...deepClone(TRIP_INIT), ...p.trip };
+      if (p.meals)       S.meals      = p.meals;
+      if (p.activities)  S.activities = p.activities;
     }
   } catch(e) {}
   renderHero(); renderExpenseForm(); renderPlanner(); renderExpenses();
