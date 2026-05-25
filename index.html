@@ -147,7 +147,18 @@
       border-radius: 50px; padding: 4px 12px; font-size: 0.82rem; color: var(--muted);
       font-weight: 600;
     }
-    .hero-cd         { background:rgba(255,215,0,0.10);  border-color:rgba(255,215,0,0.35);  color:var(--gold); font-weight:800; }
+    .hero-map-wrap {
+      max-width: 680px; margin: 20px auto 4px;
+      border-radius: 20px; overflow: hidden; height: 0;
+      transition: height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.35s;
+      border: 1px solid rgba(255,255,255,0.1); opacity: 0;
+    }
+    .hero-map-wrap.open { height: 230px; opacity: 1; }
+    .hero-map-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+    .hero-loc { cursor: pointer; color: var(--text) !important; text-decoration: none; }
+    .hero-loc:hover { background: rgba(255,255,255,0.12); }
+    .btn-map-toggle { cursor: pointer; background: rgba(255,215,0,0.1); border-color: rgba(255,215,0,0.25); color: var(--gold); }
+    .btn-map-toggle:hover { background: rgba(255,215,0,0.18); }  border-color:rgba(255,215,0,0.35);  color:var(--gold); font-weight:800; }
     .hero-cd-urgent  { background:rgba(255,107,53,0.13); border-color:rgba(255,107,53,0.45); color:var(--fire); font-weight:800; animation:cd-pulse 2s ease-in-out infinite; }
     .hero-cd-today   { background:rgba(102,187,106,0.15);border-color:rgba(102,187,106,0.5); color:var(--ok);   font-weight:800; animation:cd-pulse 1.2s ease-in-out infinite; }
     .hero-cd-past    { background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.1); color:var(--muted); }
@@ -974,6 +985,7 @@
         <div class="badge b-deep"> 🌸 Deep</div>
         <div class="badge b-sujoy">🔥 Sujoy</div>
       </div>
+      <div id="hero-map-wrap" class="hero-map-wrap"></div>
     </div>
     <!-- Mountain silhouette -->
     <div class="hero-mountains">
@@ -1080,8 +1092,12 @@
             <input id="s-title" type="text" placeholder="e.g. Ultimate Camping Trip Planner" autocomplete="off" />
           </div>
           <div class="ff">
-            <label>Date / Season</label>
-            <input id="s-date" type="text" placeholder="e.g. Summer 2026" autocomplete="off" />
+            <label>Date</label>
+            <input id="s-date" type="date" />
+          </div>
+          <div class="ff">
+            <label>Camping Location</label>
+            <input id="s-location" type="text" placeholder="e.g. Algonquin Provincial Park, ON" autocomplete="off" />
           </div>
           <div class="ff">
             <label>Tagline</label>
@@ -1371,7 +1387,7 @@ const PEOPLE_INIT = [
   { id:'p3', name:'Deep',  color:'#f06292', emoji:'🌸' },
   { id:'p4', name:'Sujoy', color:'#ffa726', emoji:'🔥' },
 ];
-const TRIP_INIT = { title:'Ultimate Camping Trip Planner', date:'Summer 2026', tagline:'Grill. Chill. Thrill.' };
+const TRIP_INIT = { title:'Ultimate Camping Trip Planner', date:'Summer 2026', tagline:'Grill. Chill. Thrill.', location:'' };
 const PRESET_COLORS = ['#29b6f6','#ba68c8','#f06292','#ffa726','#66bb6a','#ff7043','#80cbc4','#fff176','#ef5350','#ab47bc'];
 
 const CATS_INIT = [
@@ -1974,10 +1990,19 @@ function pillStyle(col, on) {
 // ─────────────────────────────────────────────
 // HERO
 // ─────────────────────────────────────────────
+function formatTripDate(d) {
+  if (!d) return d;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(d)) {
+    return new Date(d + 'T00:00:00').toLocaleDateString('en-CA', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+  return d;
+}
+
 function tripCountdown() {
-  if (!S.trip.date || !/^\d{4}-\d{2}-\d{2}$/.test(S.trip.date)) return '';
+  if (!S.trip.date) return '';
   const today = new Date(); today.setHours(0,0,0,0);
-  const tripDay = new Date(S.trip.date + 'T00:00:00'); tripDay.setHours(0,0,0,0);
+  const raw = /^\d{4}-\d{2}-\d{2}$/.test(S.trip.date) ? S.trip.date + 'T00:00:00' : S.trip.date;
+  const tripDay = new Date(raw); tripDay.setHours(0,0,0,0);
   if (isNaN(tripDay)) return '';
   const days = Math.round((tripDay - today) / 86400000);
   if (days > 7)  return `<span class="hero-chip hero-cd">⏳ ${days} days to go</span>`;
@@ -1990,12 +2015,23 @@ function tripCountdown() {
 function renderHero() {
   document.getElementById('hero-title').textContent = S.trip.title;
   const cnt = S.people.length;
+  const loc = S.trip.location || '';
+  const locChip = loc
+    ? `<a class="hero-chip hero-loc" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}" target="_blank" rel="noopener" title="Open in Google Maps">📍 ${loc}</a>
+       <span class="hero-chip btn-map-toggle" onclick="toggleMap()" id="map-toggle-btn">🗺️ Map</span>`
+    : '';
   document.getElementById('hero-chips').innerHTML = `
-    <span class="hero-chip">🌲 ${S.trip.date}</span>
+    <span class="hero-chip">🌲 ${formatTripDate(S.trip.date)}</span>
     <span class="hero-chip">👨‍👩‍👧 ${cnt} ${cnt===1?'Person':'People'}</span>
     <span class="hero-chip">🔥 ${S.trip.tagline}</span>
+    ${locChip}
     ${tripCountdown()}
   `;
+  // Reset map state on re-render
+  const mapWrap = document.getElementById('hero-map-wrap');
+  mapWrap.classList.remove('open');
+  mapWrap.innerHTML = '';
+  _mapOpen = false;
   document.getElementById('hero-badges').innerHTML = S.people.map(p => {
     const c = pcs(p.color);
     return `<div class="badge" style="color:${c.text};border-color:${c.border};background:${c.bg};box-shadow:0 4px 20px rgba(${c.rbg},0.2)">${p.emoji} ${p.name}</div>`;
@@ -2031,8 +2067,9 @@ let personModalColor = PRESET_COLORS[0];
 
 function renderSettings() {
   document.getElementById('s-title').value   = S.trip.title;
-  document.getElementById('s-date').value    = S.trip.date;
+  document.getElementById('s-date').value = /^\d{4}-\d{2}-\d{2}$/.test(S.trip.date) ? S.trip.date : '';
   document.getElementById('s-tagline').value = S.trip.tagline;
+  document.getElementById('s-location').value = S.trip.location || '';
   renderPeopleList();
   renderAddSwatches();
 }
@@ -2067,10 +2104,12 @@ function saveTripDetails() {
   const t  = document.getElementById('s-title').value.trim();
   const d  = document.getElementById('s-date').value.trim();
   const tg = document.getElementById('s-tagline').value.trim();
+  const loc= document.getElementById('s-location').value.trim();
   if (!t) { document.getElementById('s-title').focus(); return; }
-  S.trip.title   = t;
-  S.trip.date    = d || S.trip.date;
-  S.trip.tagline = tg || S.trip.tagline;
+  S.trip.title    = t;
+  S.trip.date     = d || S.trip.date;
+  S.trip.tagline  = tg || S.trip.tagline;
+  S.trip.location = loc;
   save(); renderHero();
   const btn = document.getElementById('trip-save-btn');
   const orig = btn.textContent;
@@ -2185,6 +2224,24 @@ function shareTrip() {
     .catch(() => prompt('Copy this link to share your trip:', url));
 }
 
+let _mapOpen = false;
+function toggleMap() {
+  const loc  = S.trip.location || '';
+  if (!loc) return;
+  const wrap = document.getElementById('hero-map-wrap');
+  const btn  = document.getElementById('map-toggle-btn');
+  _mapOpen = !_mapOpen;
+  if (_mapOpen) {
+    wrap.innerHTML = `<iframe src="https://maps.google.com/maps?q=${encodeURIComponent(loc)}&output=embed&z=12" loading="lazy" allowfullscreen></iframe>`;
+    wrap.classList.add('open');
+    if (btn) btn.textContent = '🗺️ Hide Map';
+  } else {
+    wrap.classList.remove('open');
+    if (btn) btn.textContent = '🗺️ Map';
+    setTimeout(() => { if (!_mapOpen) wrap.innerHTML = ''; }, 420);
+  }
+}
+
 function toggleTheme() {
   const warm = document.body.classList.toggle('warm');
   const btn = document.getElementById('btn-theme');
@@ -2200,7 +2257,7 @@ Object.assign(window, {
   closeModal, saveModal, deleteItem, deleteCat, quickAddItem,
   openPersonModal, closePersonModal, savePersonModal,
   saveTripDetails, selectNewColor, addPerson, deletePerson, resetAll,
-  shareTrip, toggleTheme,
+  shareTrip, toggleTheme, toggleMap,
   _setPersonColor: (c) => { personModalColor = c; renderPersonModalSwatches(); }
 });
 
