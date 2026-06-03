@@ -516,9 +516,6 @@
     }
     .form-row { display: grid; grid-template-columns: 2fr 1.1fr 1.1fr auto; gap: 12px; align-items: end; }
     @media(max-width:640px){ .form-row { grid-template-columns: 1fr 1fr; } }
-    @media(max-width:480px){ .form-row { grid-template-columns: 1fr; }
-      .form-row > div:last-child { display: flex; }
-      .form-row > div:last-child .btn-add { flex: 1; } }
 
     .ff label {
       display: block; font-size: 0.7rem; color: var(--muted);
@@ -736,16 +733,6 @@
     @keyframes shimmer {
       0% { background-position: -200% 0; }
       100% { background-position: 200% 0; }
-    }
-
-    @media(max-width:768px){
-      .item-row { gap: 8px; }
-      table { font-size: 0.78rem; }
-      thead th, tbody td { padding: 9px 12px; }
-      .pill { min-height: 34px; padding: 5px 11px; }
-    }
-    @media(max-width:480px){
-      .form-row { grid-template-columns: 1fr; }
     }
 
     /* ====== EDIT MODE ====== */
@@ -973,6 +960,7 @@
       /* Categories */
       .cat-head { padding: 13px 16px; }
       .item-row  { padding: 11px 16px; gap: 8px; }
+      .pill { min-height: 34px; padding: 5px 11px; }
 
       /* Expense table */
       .tbl-head { padding: 13px 16px; }
@@ -1082,6 +1070,9 @@
 
       /* Expense form */
       .form-card  { padding: 14px 12px; border-radius: 16px; margin-bottom: 14px; }
+      .form-row { grid-template-columns: 1fr; }
+      .form-row > div:last-child { display: flex; }
+      .form-row > div:last-child .btn-add { flex: 1; }
       .sec-title  { font-size: 0.92rem; margin-bottom: 10px; }
       .split-row  { margin-top: 12px; }
       .btn-add    { width: 100%; padding: 11px; font-size: 0.88rem; margin-top: 2px; }
@@ -1131,6 +1122,11 @@
       .btn-cancel, .btn-save { padding: 10px 16px; font-size: 0.83rem; }
       .swatches { gap: 6px; }
       .swatch { width: 24px; height: 24px; }
+
+      /* Meal / Activity panel inputs */
+      .plan-meal-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .plan-meal-lbl { min-width: auto; }
+      .nav-select-btn { padding: 12px 14px; font-size: 0.82rem; }
     }
 
     /* ── 360 px ─────────────────────────────────────── */
@@ -1185,11 +1181,6 @@
     }
     .plan-input:focus { outline: none; border-color: var(--gold); background: rgba(255,215,0,0.04); }
     .plan-input::placeholder { color: var(--muted); opacity: 0.6; }
-    @media (max-width: 480px) {
-      .plan-meal-row { flex-direction: column; align-items: flex-start; gap: 4px; }
-      .plan-meal-lbl { min-width: auto; }
-      .nav-select-btn { padding: 12px 14px; font-size: 0.82rem; }
-    }
   </style>
 </head>
 <body>
@@ -2926,7 +2917,6 @@ if (localStorage.getItem('camp25-compact') === '1') {
 
 const savedFilter = localStorage.getItem('camp25-filter');
 if (savedFilter) plannerFilter = savedFilter;
-if (localStorage.getItem('camp25-needed-only') === '1') plannerFilter = 'needed';
 setPlannerFilter(plannerFilter);
 
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
