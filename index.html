@@ -57,6 +57,45 @@
       background: radial-gradient(ellipse 120% 100% at 50% -20%, #2e1408 0%, #180c04 55%, #0d0804 100%);
     }
     body.warm nav { background: rgba(13,8,4,0.92); }
+
+    /* ====== LIGHT THEME ====== */
+    body.light {
+      --bg:        #f4f1ea;
+      --bg2:       #e9e3d5;
+      --surface:   rgba(255,255,255,0.7);
+      --surface2:  rgba(255,255,255,0.9);
+      --border:    rgba(0,0,0,0.08);
+      --border2:   rgba(0,0,0,0.18);
+      --text:      #1f2a22;
+      --muted:     #5d6e64;
+      --faint:     #c9d3cc;
+      --fire:      #e85a23;
+      --gold:      #d99500;
+      --green-acc: #3d8c1e;
+      --sh-sm:     0 2px 10px rgba(0,0,0,0.08);
+      --sh-md:     0 8px 28px rgba(0,0,0,0.12);
+      --sh-lg:     0 20px 50px rgba(0,0,0,0.18);
+    }
+    body.light .hero {
+      background: radial-gradient(ellipse 120% 100% at 50% -20%, #cfe3d3 0%, #e6e9dd 55%, #f4f1ea 100%);
+      border-bottom-color: rgba(0,0,0,0.08);
+    }
+    body.light nav { background: rgba(244,241,234,0.92); border-bottom-color: rgba(0,0,0,0.08); }
+    body.light .mobile-quick-bar { background: rgba(244,241,234,0.95); border-top-color: rgba(0,0,0,0.08); }
+    body.light #bg-canvas { opacity: 0.35; }
+    body.light .hero-mountains svg path { fill: #d8d5cb !important; opacity: 0.9; }
+    body.light .hero-mountains svg path:last-child { fill: #cdcbc1 !important; }
+    body.light .item-name { color: var(--text); }
+    body.light .ff input, body.light .ff select,
+    body.light .add-item-row input, body.light .planner-search,
+    body.light .mf input, body.light .mf select { background: #fff; color: var(--text); }
+    body.light .ff select option, body.light .mf select option { background: #fff; }
+    body.light .modal { background: #fffdf6; }
+    body.light .modal-overlay { background: rgba(20,30,24,0.55); }
+    body.light .planner-mini-summary { background: rgba(255,253,246,0.92); }
+    body.light .filter-chip { background: rgba(0,0,0,0.04); color: var(--muted); }
+    body.light .filter-chip.active { color: var(--text); background: linear-gradient(135deg, rgba(217,149,0,0.22), rgba(232,90,35,0.12)); }
+    body.light .cat-head { background: rgba(255,255,255,0.7); }
     .btn-theme {
       padding: 5px 11px; border-radius: 20px; font-size: 0.82rem;
       background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.13);
@@ -64,6 +103,115 @@
       font-family: 'Outfit', sans-serif; white-space: nowrap;
     }
     .btn-theme:hover { background: rgba(255,255,255,0.11); border-color: rgba(255,255,255,0.22); color: var(--text); }
+
+    /* ====== PRESENCE AVATARS ====== */
+    .presence-stack {
+      display: inline-flex; align-items: center; padding-left: 4px;
+    }
+    .presence-dot {
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 2px solid var(--bg2);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.78rem; margin-left: -6px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+      transition: transform 0.15s;
+    }
+    .presence-dot:first-child { margin-left: 0; }
+    .presence-dot.me {
+      box-shadow: 0 0 0 2px var(--gold), 0 1px 4px rgba(0,0,0,0.4);
+    }
+    .presence-dot:hover { transform: translateY(-2px) scale(1.12); z-index: 2; }
+    .presence-count {
+      margin-left: -6px; padding: 0 7px; height: 22px; border-radius: 11px;
+      background: rgba(255,255,255,0.12); color: var(--text);
+      font-size: 0.68rem; font-weight: 800; display: inline-flex; align-items: center;
+      border: 2px solid var(--bg2);
+    }
+
+    /* ====== TRIPS MODAL ====== */
+    .btn-trips {
+      padding: 5px 11px; border-radius: 20px; font-size: 0.78rem;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.13);
+      color: var(--muted); cursor: pointer; transition: all 0.2s;
+      font-family: 'Outfit', sans-serif; white-space: nowrap; font-weight: 700;
+    }
+    .btn-trips:hover { background: rgba(255,255,255,0.11); color: var(--text); }
+    .trips-list { display: flex; flex-direction: column; gap: 8px; max-height: 320px; overflow-y: auto; margin-bottom: 14px; }
+    .trip-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 14px; border-radius: 12px;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      cursor: pointer; transition: border-color 0.18s, background 0.18s;
+    }
+    .trip-row:hover { border-color: var(--border2); background: rgba(255,255,255,0.07); }
+    .trip-row.active { border-color: rgba(255,215,0,0.5); background: rgba(255,215,0,0.08); }
+    .trip-row-info { flex: 1; min-width: 0; }
+    .trip-row-title { font-size: 0.92rem; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .trip-row-meta { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+    .trip-row-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .trip-row-actions button {
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+      color: var(--muted); padding: 4px 9px; border-radius: 8px;
+      font-size: 0.72rem; cursor: pointer; transition: background 0.18s, color 0.18s;
+    }
+    .trip-row-actions button:hover { background: rgba(239,83,80,0.18); color: var(--danger); }
+
+    /* ====== TOUR OVERLAY ====== */
+    .tour-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.72); backdrop-filter: blur(8px);
+      display: none; align-items: center; justify-content: center; padding: 22px;
+      animation: fadeUp 0.25s ease;
+    }
+    .tour-overlay.show { display: flex; }
+    .tour-card {
+      background: #0f2a1e; border: 1px solid var(--border2);
+      border-radius: 22px; padding: 28px 26px;
+      width: 100%; max-width: 420px;
+      box-shadow: var(--sh-lg);
+      text-align: center;
+    }
+    body.light .tour-card { background: #fffdf6; }
+    .tour-emoji { font-size: 2.8rem; margin-bottom: 12px; display: block; }
+    .tour-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.3px; }
+    .tour-body { font-size: 0.9rem; color: var(--muted); line-height: 1.55; margin-bottom: 20px; }
+    .tour-progress { display: flex; gap: 5px; justify-content: center; margin-bottom: 16px; }
+    .tour-progress span {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+    }
+    .tour-progress span.active { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+    .tour-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .tour-btns button {
+      padding: 9px 20px; border-radius: 999px; font-size: 0.85rem; font-weight: 700;
+      font-family: 'Outfit', sans-serif; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+      border: none;
+    }
+    .tour-skip {
+      background: rgba(255,255,255,0.08); color: var(--muted);
+      border: 1px solid var(--border) !important;
+    }
+    .tour-next {
+      background: linear-gradient(135deg, var(--gold), var(--fire));
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(255,107,53,0.35);
+    }
+    .tour-next:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(255,107,53,0.5); }
+
+    /* ====== EMOJI PICKER ROW (modal) ====== */
+    .emoji-picker {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      padding: 8px; background: rgba(0,0,0,0.18);
+      border: 1px solid var(--border); border-radius: 12px;
+    }
+    .emoji-picker button {
+      width: 36px; height: 36px; border-radius: 10px;
+      border: 1px solid transparent;
+      background: rgba(255,255,255,0.04);
+      font-size: 1.2rem; cursor: pointer;
+      transition: background 0.15s, transform 0.1s, border-color 0.15s;
+    }
+    .emoji-picker button:hover { background: rgba(255,215,0,0.18); border-color: rgba(255,215,0,0.4); transform: scale(1.08); }
 
     html { scroll-behavior: smooth; }
 
@@ -765,6 +913,189 @@
       display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
       margin-bottom: 10px;
     }
+    .planner-search-wrap {
+      position: relative; margin-bottom: 10px;
+    }
+    .planner-search {
+      width: 100%; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border2); border-radius: 999px;
+      padding: 10px 38px 10px 38px;
+      color: var(--text); font-size: 0.88rem; font-family: 'Outfit', sans-serif;
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .planner-search:focus {
+      border-color: rgba(255,215,0,0.5);
+      box-shadow: 0 0 0 3px rgba(255,215,0,0.1);
+      background: rgba(255,255,255,0.08);
+    }
+    .planner-search::placeholder { color: var(--muted); }
+    .planner-search-ico {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      font-size: 0.95rem; opacity: 0.7; pointer-events: none;
+    }
+    .planner-search-clear {
+      position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.08); border: none; color: var(--muted);
+      width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
+      font-size: 0.9rem; line-height: 1; display: none;
+      transition: background 0.18s, color 0.18s;
+    }
+    .planner-search-clear:hover { background: rgba(239,83,80,0.18); color: var(--danger); }
+    .planner-search-wrap.has-text .planner-search-clear { display: inline-flex; align-items: center; justify-content: center; }
+
+    /* Filter chip count badge */
+    .filter-chip .chip-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 18px; height: 18px; padding: 0 5px; margin-left: 5px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1); color: var(--text);
+      font-size: 0.62rem; font-weight: 900; vertical-align: middle;
+    }
+    .filter-chip.active .chip-count { background: rgba(255,215,0,0.28); color: var(--gold); }
+    .filter-chip.zero { opacity: 0.45; }
+    .filter-chip.zero .chip-count { background: rgba(255,255,255,0.05); }
+
+    /* Store focus banner */
+    .store-focus-banner {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 9px 14px; margin-bottom: 12px;
+      border-radius: 14px; border: 1px solid rgba(255,215,0,0.32);
+      background: linear-gradient(135deg, rgba(255,215,0,0.12), rgba(255,167,38,0.06));
+      font-size: 0.82rem; font-weight: 700; color: var(--gold);
+    }
+    .store-focus-banner .sf-clear {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);
+      color: var(--text); padding: 4px 12px; border-radius: 999px;
+      cursor: pointer; font-size: 0.72rem; font-weight: 700;
+      transition: background 0.18s;
+    }
+    .store-focus-banner .sf-clear:hover { background: rgba(239,83,80,0.18); }
+
+    /* Clickable store chip on item row */
+    .item-store.clickable {
+      cursor: pointer; display: inline-block; padding: 1px 6px;
+      border-radius: 6px; margin-left: -6px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .item-store.clickable:hover { background: rgba(255,215,0,0.12); color: var(--gold); }
+
+    /* Move (reorder) buttons in edit mode */
+    .move-controls {
+      display: inline-flex; flex-direction: column; gap: 1px;
+      margin-right: 4px; vertical-align: middle;
+    }
+    .btn-move {
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+      color: var(--muted); width: 22px; height: 16px; padding: 0;
+      border-radius: 5px; cursor: pointer; font-size: 0.6rem; line-height: 1;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s, transform 0.1s;
+    }
+    .btn-move:hover { background: rgba(255,215,0,0.18); color: var(--gold); }
+    .btn-move:active { transform: scale(0.9); }
+    .btn-move:disabled { opacity: 0.25; cursor: not-allowed; }
+
+    /* Hero empty state (no categories) */
+    .hero-empty {
+      text-align: center; padding: 60px 22px;
+      background: var(--surface); border: 2px dashed var(--border2);
+      border-radius: 24px; backdrop-filter: blur(12px);
+      margin-bottom: 14px;
+    }
+    .hero-empty-ico {
+      font-size: 4.5rem; margin-bottom: 14px; display: block;
+      animation: floatBob 2.6s ease-in-out infinite;
+    }
+    @keyframes floatBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .hero-empty h2 {
+      font-size: 1.35rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.4px;
+      background: linear-gradient(135deg, var(--gold), var(--fire));
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-empty p { color: var(--muted); font-size: 0.92rem; margin-bottom: 18px; line-height: 1.5; }
+
+    /* Expense payer donut chart */
+    .exp-chart-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 22px; padding: 22px 26px; margin-bottom: 18px;
+      backdrop-filter: blur(12px);
+      display: flex; align-items: center; gap: 26px; flex-wrap: wrap;
+    }
+    .exp-donut { width: 130px; height: 130px; flex-shrink: 0; }
+    .exp-donut-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 14; }
+    .exp-donut-text {
+      fill: var(--gold); font-size: 0.92rem; font-weight: 900;
+      font-family: 'Outfit', sans-serif;
+    }
+    .exp-donut-text-lbl {
+      fill: var(--muted); font-size: 0.42rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      font-family: 'Outfit', sans-serif;
+    }
+    .exp-donut-legend {
+      flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 180px;
+    }
+    .exp-legend-row {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.82rem; font-weight: 600;
+    }
+    .exp-legend-swatch { width: 12px; height: 12px; border-radius: 4px; flex-shrink: 0; }
+    .exp-legend-name { flex: 1; color: var(--text); font-weight: 700; }
+    .exp-legend-val { color: var(--muted); font-variant-numeric: tabular-nums; }
+    @media (max-width: 480px) {
+      .exp-chart-card { padding: 14px 16px; gap: 14px; justify-content: center; }
+      .exp-donut { width: 100px; height: 100px; }
+    }
+
+    .item-assignees {
+      display: inline-flex; align-items: center; gap: 3px;
+      margin-top: 5px; vertical-align: middle;
+    }
+    .item-assignees .ia-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.18);
+      position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      transition: transform 0.15s;
+    }
+    .item-assignees .ia-dot.purchased::after {
+      content: '✓'; position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 0.55rem; font-weight: 900;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+    }
+    .item-assignees .ia-dot:hover { transform: scale(1.25); z-index: 1; }
+    .item-assignees .ia-empty {
+      font-size: 0.62rem; color: var(--muted); font-style: italic; font-weight: 600;
+      opacity: 0.7;
+    }
+
+    .mini-ring-wrap {
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+    }
+    .mini-ring { width: 44px; height: 44px; display: block; }
+    .mini-ring-track { fill: none; stroke: rgba(255,255,255,0.08); stroke-width: 5; }
+    .mini-ring-fill {
+      fill: none; stroke: var(--gold); stroke-width: 5; stroke-linecap: round;
+      transform: rotate(-90deg); transform-origin: 50% 50%;
+      transition: stroke-dashoffset 0.55s cubic-bezier(0.4,0,0.2,1), stroke 0.3s;
+      filter: drop-shadow(0 0 4px currentColor);
+    }
+    .mini-ring-fill.full { stroke: var(--ok); }
+    .mini-ring-text {
+      fill: var(--text); font-size: 0.62rem; font-weight: 900;
+      text-anchor: middle; dominant-baseline: central;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Default tinted body on every category card (header tints stay color-specific) */
+    .cat-block { background: linear-gradient(180deg, rgba(255,255,255,0.018) 0%, var(--surface) 80%); }
+    .cat-block[data-cat="gear"]      { background: linear-gradient(180deg, rgba(102,187,106,0.06) 0%, var(--surface) 80%); }
+    .cat-block[data-cat="costco"]    { background: linear-gradient(180deg, rgba(41,182,246,0.06)  0%, var(--surface) 80%); }
+    .cat-block[data-cat="walmart"]   { background: linear-gradient(180deg, rgba(186,104,200,0.06) 0%, var(--surface) 80%); }
+    .cat-block[data-cat="dollarama"] { background: linear-gradient(180deg, rgba(255,215,0,0.05)   0%, var(--surface) 80%); }
+    .cat-block[data-cat="indian"]    { background: linear-gradient(180deg, rgba(255,107,53,0.06)  0%, var(--surface) 80%); }
+    .cat-block[data-cat="reminders"] { background: linear-gradient(180deg, rgba(240,98,146,0.06)  0%, var(--surface) 80%); }
+
     .filter-chip {
       padding: 7px 12px; border-radius: 999px; border: 1px solid var(--border2);
       background: rgba(255,255,255,0.04); color: var(--muted);
@@ -1195,6 +1526,32 @@
 <!-- Sync toast notification -->
 <div class="sync-toast" id="sync-toast"></div>
 
+<!-- ===== TRIPS MODAL ===== -->
+<div class="modal-overlay" id="trips-modal-overlay" onclick="closeTripsModal(event)">
+  <div class="modal" id="trips-modal">
+    <div class="modal-title">🗺️ Your Trips</div>
+    <div class="trips-list" id="trips-list"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeTripsModal()">Close</button>
+      <button class="btn-save" onclick="createNewTrip()">➕ Create New Trip</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ONBOARDING TOUR ===== -->
+<div class="tour-overlay" id="tour-overlay">
+  <div class="tour-card">
+    <span class="tour-emoji" id="tour-emoji">🏕️</span>
+    <div class="tour-title" id="tour-title"></div>
+    <div class="tour-body"  id="tour-body"></div>
+    <div class="tour-progress" id="tour-progress"></div>
+    <div class="tour-btns">
+      <button class="tour-skip" onclick="endTour()">Skip tour</button>
+      <button class="tour-next" id="tour-next-btn" onclick="tourNext()">Next →</button>
+    </div>
+  </div>
+</div>
+
 <div class="app">
 
   <!-- ===== HERO ===== -->
@@ -1246,7 +1603,9 @@
     </div>
     <div class="nav-right">
       <span class="sync-dot syncing" id="sync-dot" title="Connecting…"></span>
+      <span class="presence-stack" id="presence-stack"></span>
       <span class="trip-chip" id="trip-chip" onclick="shareTrip()" title="Click to copy trip link">⛺️ <span id="trip-id-display">…</span></span>
+      <button class="btn-trips" id="btn-trips" onclick="openTripsModal()" title="Switch or create trips">🗺️ Trips</button>
       <button class="btn-theme" id="btn-theme" onclick="toggleTheme()" title="Toggle theme">🔥 Warm</button>
       <button class="btn-share" onclick="shareTrip()">📤 Share</button>
     </div>
@@ -1271,6 +1630,11 @@
         </div>
         <span class="edit-hint" id="edit-hint">Click a person pill to toggle who's bringing an item</span>
       </div>
+      <div class="planner-search-wrap" id="planner-search-wrap">
+        <span class="planner-search-ico">🔍</span>
+        <input type="search" id="planner-search" class="planner-search" placeholder="Search items, stores, or people…" autocomplete="off" oninput="setPlannerSearch(this.value)" />
+        <button type="button" class="planner-search-clear" onclick="setPlannerSearch('')" title="Clear search">✕</button>
+      </div>
       <div class="planner-filters" id="planner-filters">
         <button class="filter-chip active" data-filter="all" onclick="setPlannerFilter('all')">🌐 All</button>
         <button class="filter-chip" data-filter="needed" onclick="setPlannerFilter('needed')">⏳ Needed</button>
@@ -1278,6 +1642,7 @@
         <button class="filter-chip" data-filter="claimed" onclick="setPlannerFilter('claimed')">✅ Claimed</button>
         <button class="filter-chip" data-filter="purchased" onclick="setPlannerFilter('purchased')">🛍️ Purchased</button>
       </div>
+      <div id="store-focus-banner"></div>
       <div class="planner-mini-summary" id="planner-mini-summary"></div>
       <div class="stats" id="stats"></div>
       <div id="cats"></div>
@@ -1311,6 +1676,9 @@
           <div class="split-pills" id="split-pills"><!-- filled by JS --></div>
         </div>
       </div>
+
+      <!-- Payer breakdown chart -->
+      <div id="expense-chart"></div>
 
       <!-- Per-person totals -->
       <div class="totals" id="totals"></div>
@@ -1456,6 +1824,10 @@
       <label>Store / Source</label>
       <input id="modal-f2" type="text" placeholder="e.g. Walmart" autocomplete="off" />
     </div>
+    <div class="mf" id="modal-emoji-wrap" style="display:none">
+      <label>Category Emoji · tap to insert at start</label>
+      <div class="emoji-picker" id="emoji-picker"></div>
+    </div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal()">Cancel</button>
       <button class="btn-save" id="modal-save-btn" onclick="saveModal()">Save</button>
@@ -1468,7 +1840,7 @@
 // FIREBASE MODULAR SDK
 // ─────────────────────────────────────────────
 import { initializeApp }  from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 const _fbApp = initializeApp({
   apiKey:            "AIzaSyA9IO3HQXO144Hr5P1l1zQMEwBJXlK3_o4",
@@ -1499,6 +1871,8 @@ const tripRef = doc(db, 'trips', TRIP_ID);
 let editMode = false;
 let compactMode = false;
 let plannerFilter = 'all';
+let plannerSearch = '';
+let plannerStoreFilter = '';
 let _lastPillPulseKey = '';
 let _prevAllClaimed = false;
 
@@ -1575,11 +1949,46 @@ function setPlannerFilter(filter) {
 }
 
 function matchesPlannerFilter(item) {
+  if (plannerStoreFilter && item.store !== plannerStoreFilter) return false;
+  if (plannerSearch) {
+    const q = plannerSearch.toLowerCase();
+    const hay = `${item.name} ${item.store} ${(item.a||[]).join(' ')} ${(item.purchasedBy||[]).join(' ')}`.toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
   if (plannerFilter === 'needed') return item.a.length === 0;
   if (plannerFilter === 'not-purchased') return !isItemPurchased(item);
   if (plannerFilter === 'claimed') return item.a.length > 0;
   if (plannerFilter === 'purchased') return isItemPurchased(item);
   return true;
+}
+
+function setPlannerSearch(value) {
+  plannerSearch = (value || '').trim();
+  const input = document.getElementById('planner-search');
+  if (input && input.value !== value) input.value = value || '';
+  const wrap = document.getElementById('planner-search-wrap');
+  if (wrap) wrap.classList.toggle('has-text', !!plannerSearch);
+  renderPlanner();
+}
+
+function setPlannerStoreFilter(store) {
+  plannerStoreFilter = store || '';
+  renderPlanner();
+}
+
+function moveItem(ci, ii, dir) {
+  const items = S.cats[ci].items;
+  const ni = ii + dir;
+  if (ni < 0 || ni >= items.length) return;
+  [items[ii], items[ni]] = [items[ni], items[ii]];
+  save(); renderPlanner();
+}
+
+function moveCat(ci, dir) {
+  const ni = ci + dir;
+  if (ni < 0 || ni >= S.cats.length) return;
+  [S.cats[ci], S.cats[ni]] = [S.cats[ni], S.cats[ci]];
+  save(); renderPlanner();
 }
 
 function openItemModal(ci, ii) {
@@ -1590,6 +1999,7 @@ function openItemModal(ci, ii) {
   document.getElementById('modal-f1').value             = item.name;
   document.getElementById('modal-f2').value             = item.store;
   document.getElementById('modal-f2-wrap').style.display = '';
+  document.getElementById('modal-emoji-wrap').style.display = 'none';
   document.getElementById('modal-save-btn').textContent  = 'Save Changes';
   document.getElementById('modal-overlay').classList.add('show');
   document.getElementById('modal-f1').focus();
@@ -1601,6 +2011,8 @@ function openCatModal() {
   document.getElementById('modal-f1-lbl').textContent   = 'Category Title (include emoji)';
   document.getElementById('modal-f1').value             = '';
   document.getElementById('modal-f2-wrap').style.display = 'none';
+  document.getElementById('modal-emoji-wrap').style.display = '';
+  renderEmojiPicker();
   document.getElementById('modal-save-btn').textContent  = 'Add Category';
   document.getElementById('modal-overlay').classList.add('show');
   document.getElementById('modal-f1').focus();
@@ -1612,6 +2024,8 @@ function openRenameCatModal(ci) {
   document.getElementById('modal-f1-lbl').textContent   = 'Category Title';
   document.getElementById('modal-f1').value             = S.cats[ci].title;
   document.getElementById('modal-f2-wrap').style.display = 'none';
+  document.getElementById('modal-emoji-wrap').style.display = '';
+  renderEmojiPicker();
   document.getElementById('modal-save-btn').textContent  = 'Save';
   document.getElementById('modal-overlay').classList.add('show');
   document.getElementById('modal-f1').focus();
@@ -1969,7 +2383,7 @@ function hapticTick(ms = 8) {
 }
 
 document.addEventListener('pointerdown', e => {
-  const target = e.target.closest('button, .pill, .filter-chip, .trip-chip, .tab-btn, .badge');
+  const target = e.target.closest('button, .pill, .filter-chip, .trip-chip, .tab-btn, .badge, .sc, .tot-card, .bal-card, .cat-head, .hero-chip, .exp-card .ec-inner');
   if (!target) return;
   target.classList.add('tap-pop');
   setTimeout(() => target.classList.remove('tap-pop'), 120);
@@ -2056,15 +2470,63 @@ function renderPlanner() {
   const filteredNeeded = filteredItems.filter(item => item.a.length === 0).length;
   const filteredClaimed = filteredItems.filter(item => item.a.length > 0).length;
   const filteredPurchased = filteredItems.filter(item => isItemPurchased(item)).length;
+
+  // Update filter chip counts (counts respect search + store focus, not filter itself)
+  const baseItems = S.cats.flatMap(c => c.items).filter(item => {
+    if (plannerStoreFilter && item.store !== plannerStoreFilter) return false;
+    if (plannerSearch) {
+      const q = plannerSearch.toLowerCase();
+      const hay = `${item.name} ${item.store} ${(item.a||[]).join(' ')} ${(item.purchasedBy||[]).join(' ')}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  const chipCounts = {
+    all: baseItems.length,
+    needed: baseItems.filter(i => i.a.length === 0).length,
+    'not-purchased': baseItems.filter(i => !isItemPurchased(i)).length,
+    claimed: baseItems.filter(i => i.a.length > 0).length,
+    purchased: baseItems.filter(i => isItemPurchased(i)).length,
+  };
+  document.querySelectorAll('#planner-filters .filter-chip').forEach(btn => {
+    const key = btn.dataset.filter;
+    if (!btn.dataset.baseLabel) btn.dataset.baseLabel = btn.textContent.trim();
+    const count = chipCounts[key] ?? 0;
+    btn.innerHTML = `${btn.dataset.baseLabel} <span class="chip-count">${count}</span>`;
+    btn.classList.toggle('zero', count === 0 && key !== 'all');
+  });
+
+  // Store focus banner
+  const banner = document.getElementById('store-focus-banner');
+  if (banner) {
+    banner.innerHTML = plannerStoreFilter
+      ? `<span>🔍 Focusing on <strong>${plannerStoreFilter}</strong> · ${filteredTotal} item${filteredTotal===1?'':'s'}</span>
+         <button class="sf-clear" onclick="setPlannerStoreFilter('')">✕ Clear</button>`
+      : '';
+  }
+  const ringPct = filteredTotal ? Math.round((filteredPurchased / filteredTotal) * 100) : 0;
+  const C = 2 * Math.PI * 18; // r=18
+  const ringOffset = C - (ringPct / 100) * C;
+  const searchTag = plannerSearch ? `<span class="mini-filter-lbl">🔍 “${plannerSearch}”</span>` : '';
   document.getElementById('planner-mini-summary').innerHTML = `
-    <div class="mini-kpis">
-      <span class="mini-kpi">📦 ${filteredTotal} shown</span>
-      <span class="mini-kpi needed">⏳ ${filteredNeeded} needed</span>
-      <span class="mini-kpi">✅ ${filteredClaimed} claimed</span>
-      <span class="mini-kpi purchase">🛍️ ${filteredPurchased} purchased</span>
-      <span class="mini-kpi done">🌟 ${Math.max(0, filteredTotal - filteredNeeded)} with owner</span>
+    <div class="mini-ring-wrap">
+      <svg class="mini-ring" viewBox="0 0 44 44" aria-label="Overall purchased progress">
+        <circle class="mini-ring-track" cx="22" cy="22" r="18"></circle>
+        <circle class="mini-ring-fill ${ringPct>=100?'full':''}" cx="22" cy="22" r="18"
+          stroke-dasharray="${C.toFixed(2)}" stroke-dashoffset="${ringOffset.toFixed(2)}"></circle>
+        <text class="mini-ring-text" x="22" y="22">${ringPct}%</text>
+      </svg>
+      <div class="mini-kpis">
+        <span class="mini-kpi">📦 ${filteredTotal} shown</span>
+        <span class="mini-kpi needed">⏳ ${filteredNeeded} needed</span>
+        <span class="mini-kpi">✅ ${filteredClaimed} claimed</span>
+        <span class="mini-kpi purchase">🛍️ ${filteredPurchased} purchased</span>
+      </div>
     </div>
-    <span class="mini-filter-lbl">Filter: ${plannerFilter.replace('-', ' ')}</span>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      ${searchTag}
+      <span class="mini-filter-lbl">Filter: ${plannerFilter.replace('-', ' ')}</span>
+    </div>
   `;
 
   const catsEl = document.getElementById('cats');
@@ -2084,7 +2546,8 @@ function renderPlanner() {
         <div class="item-top">
           <div class="item-info">
             <div class="item-name">${item.name}</div>
-            <div class="item-store">📍 ${item.store}</div>
+            <div class="item-store${plannerStoreFilter || editMode ? '' : ' clickable'}" ${(!editMode && !plannerStoreFilter) ? `data-action="focus-store" data-store="${(item.store||'').replace(/"/g,'&quot;')}"` : ''} title="${(!editMode && !plannerStoreFilter) ? 'Tap to focus on this store' : ''}">📍 ${item.store}</div>
+            ${renderItemAssignees(item)}
           </div>
           <div class="item-badges">
             ${item.a.length
@@ -2093,6 +2556,10 @@ function renderPlanner() {
             <span class="status-tag status-secondary ${purchase.cls}">${purchase.text}</span>
             ${editMode ? `
             <div class="edit-controls">
+              <div class="move-controls">
+                <button class="btn-move" data-action="move-item-up"   data-ci="${ci}" data-ii="${ii}" title="Move up"${ii===0?' disabled':''}>▲</button>
+                <button class="btn-move" data-action="move-item-down" data-ci="${ci}" data-ii="${ii}" title="Move down"${ii===cat.items.length-1?' disabled':''}>▼</button>
+              </div>
               <button class="btn-icon btn-ie" data-action="edit-item" data-ci="${ci}" data-ii="${ii}" title="Edit">✏️</button>
               <button class="btn-icon btn-id" data-action="del-item"  data-ci="${ci}" data-ii="${ii}" title="Delete">🗑️</button>
             </div>` : ''}
@@ -2134,6 +2601,10 @@ function renderPlanner() {
 
     const catEditBtns = editMode ? `
       <div class="cat-actions" onclick="event.stopPropagation()">
+        <div class="move-controls">
+          <button class="btn-move" data-action="move-cat-up"   data-ci="${ci}" title="Move category up"${ci===0?' disabled':''}>▲</button>
+          <button class="btn-move" data-action="move-cat-down" data-ci="${ci}" title="Move category down"${ci===S.cats.length-1?' disabled':''}>▼</button>
+        </div>
         <button class="btn-icon btn-ie" data-action="edit-cat" data-ci="${ci}" title="Rename">✏️</button>
         <button class="btn-icon btn-id" data-action="del-cat"  data-ci="${ci}" title="Delete category">🗑️</button>
       </div>` : '';
@@ -2175,13 +2646,24 @@ function renderPlanner() {
     </div>` : '');
 
   if (!catsEl.innerHTML.trim()) {
-    catsEl.innerHTML = `
-      <div class="empty">
-        <div class="ico">🔎</div>
-        <p>No items match this filter right now.</p>
-        <p style="margin-top:8px"><button class="btn-compact-toggle" onclick="setPlannerFilter('all')">Show All Items</button></p>
-      </div>
-    `;
+    if (!S.cats.length && !editMode) {
+      catsEl.innerHTML = `
+        <div class="hero-empty">
+          <span class="hero-empty-ico">🏕️</span>
+          <h2>Your trip is a blank canvas</h2>
+          <p>No categories yet. Start by adding one — gear, groceries, or anything you want to pack together.</p>
+          <button class="btn-add" onclick="toggleEditMode();setTimeout(()=>openCatModal(),120)">➕ Add First Category</button>
+        </div>
+      `;
+    } else {
+      catsEl.innerHTML = `
+        <div class="empty">
+          <div class="ico">🔎</div>
+          <p>No items match this filter right now.</p>
+          <p style="margin-top:8px"><button class="btn-compact-toggle" onclick="setPlannerFilter('all')">Show All Items</button></p>
+        </div>
+      `;
+    }
   }
 
   if (_lastPillPulseKey) {
@@ -2206,6 +2688,11 @@ document.getElementById('cats').addEventListener('click', e => {
     if (a === 'del-cat')    { deleteCat(ci); return; }
     if (a === 'quick-add')  { quickAddItem(ci); return; }
     if (a === 'add-cat')    { openCatModal(); return; }
+    if (a === 'move-item-up')   { moveItem(ci, ii, -1); return; }
+    if (a === 'move-item-down') { moveItem(ci, ii,  1); return; }
+    if (a === 'move-cat-up')    { moveCat(ci, -1); return; }
+    if (a === 'move-cat-down')  { moveCat(ci,  1); return; }
+    if (a === 'focus-store')    { setPlannerStoreFilter(actionEl.dataset.store || ''); return; }
   }
   // Toggle category expand/collapse
   const head = e.target.closest('.cat-head');
@@ -2285,6 +2772,7 @@ function renderExpenses() {
   const grand = Object.values(paid).reduce((s,v)=>s+v, 0);
 
   document.getElementById('grand-lbl').textContent = grand ? `Grand Total: $${grand.toFixed(2)}` : '';
+  document.getElementById('expense-chart').innerHTML = renderPayerDonut(paid, grand);
 
   document.getElementById('totals').innerHTML = S.people.map(per => {
     const c = pcs(per.color);
@@ -2484,6 +2972,55 @@ function personByName(n) { return S.people.find(p=>p.name===n) || {name:n, color
 function pillStyle(col, on) {
   const c = pcs(col);
   return `color:${c.text};border-color:${c.border};background:${c.bg}${on?`;box-shadow:${c.glow}`:''}`;
+}
+
+function renderItemAssignees(item) {
+  const assigned = item.a || [];
+  const purchased = item.purchasedBy || [];
+  if (!assigned.length && !purchased.length) {
+    return `<div class="item-assignees"><span class="ia-empty">unassigned</span></div>`;
+  }
+  const names = [...new Set([...assigned, ...purchased])];
+  const dots = names.map(name => {
+    const p = personByName(name);
+    const isPurchased = purchased.includes(name);
+    const opacity = assigned.includes(name) || isPurchased ? 1 : 0.4;
+    return `<span class="ia-dot ${isPurchased?'purchased':''}" style="background:${p.color};opacity:${opacity}" title="${name}${isPurchased?' \u2713 purchased':''}"></span>`;
+  }).join('');
+  return `<div class="item-assignees">${dots}</div>`;
+}
+
+function renderPayerDonut(paid, grand) {
+  if (!grand) return '';
+  const R = 30, C = 2 * Math.PI * R;
+  let cum = 0;
+  const arcs = S.people.map(p => {
+    const v = paid[p.name] || 0;
+    if (v <= 0) return '';
+    const frac = v / grand;
+    const dash = `${(frac * C).toFixed(2)} ${C.toFixed(2)}`;
+    const offset = -(cum / grand) * C;
+    cum += v;
+    return `<circle cx="40" cy="40" r="${R}" fill="none" stroke="${p.color}" stroke-width="14" stroke-dasharray="${dash}" stroke-dashoffset="${offset.toFixed(2)}" transform="rotate(-90 40 40)"></circle>`;
+  }).join('');
+  const legend = S.people.map(p => {
+    const v = paid[p.name] || 0;
+    if (v <= 0) return '';
+    return `<div class="exp-legend-row">
+      <span class="exp-legend-swatch" style="background:${p.color}"></span>
+      <span class="exp-legend-name" style="color:${p.color}">${p.name}</span>
+      <span class="exp-legend-val">$${v.toFixed(2)} · ${Math.round((v/grand)*100)}%</span>
+    </div>`;
+  }).join('');
+  return `<div class="exp-chart-card">
+    <svg class="exp-donut" viewBox="0 0 80 80" aria-label="Spending by payer">
+      <circle class="exp-donut-track" cx="40" cy="40" r="${R}"></circle>
+      ${arcs}
+      <text class="exp-donut-text" x="40" y="38" text-anchor="middle" dominant-baseline="central">$${grand.toFixed(2)}</text>
+      <text class="exp-donut-text-lbl" x="40" y="50" text-anchor="middle" dominant-baseline="central">TOTAL</text>
+    </svg>
+    <div class="exp-donut-legend">${legend}</div>
+  </div>`;
 }
 
 // ─────────────────────────────────────────────
@@ -2873,10 +3410,216 @@ function toggleMap() {
 }
 
 function toggleTheme() {
-  const warm = document.body.classList.toggle('warm');
+  const order = ['forest', 'warm', 'light'];
+  const cur = document.body.classList.contains('warm') ? 'warm'
+            : document.body.classList.contains('light') ? 'light'
+            : 'forest';
+  const next = order[(order.indexOf(cur) + 1) % order.length];
+  document.body.classList.remove('warm', 'light');
+  if (next !== 'forest') document.body.classList.add(next);
   const btn = document.getElementById('btn-theme');
-  btn.textContent = warm ? '🌲 Forest' : '🔥 Warm';
-  localStorage.setItem('camp25-theme', warm ? 'warm' : 'forest');
+  const labels = { forest: '🔥 Warm', warm: '☀️ Light', light: '🌲 Forest' };
+  btn.textContent = labels[next];
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', next === 'light' ? '#f4f1ea' : next === 'warm' ? '#180c05' : '#0d1a12');
+  localStorage.setItem('camp25-theme', next);
+}
+
+// ─────────────────────────────────────────────
+// EMOJI PICKER (modal)
+// ─────────────────────────────────────────────
+const EMOJI_CHOICES = ['⛺','🛒','🏪','🍳','🍽️','🔥','🥩','🥦','🍻','🌲','🎒','🧴','🏕️','📋','💡','🪵','🎣','🚗','🌅','🍦','🎲','🏞️','💧','🧊','🌶️','🍞','🌽','🥚','🍫','📷'];
+
+function renderEmojiPicker() {
+  const wrap = document.getElementById('emoji-picker');
+  if (!wrap) return;
+  wrap.innerHTML = EMOJI_CHOICES.map(e => `<button type="button" data-emoji="${e}">${e}</button>`).join('');
+}
+
+document.addEventListener('click', e => {
+  const btn = e.target.closest('#emoji-picker button[data-emoji]');
+  if (!btn) return;
+  const input = document.getElementById('modal-f1');
+  if (!input) return;
+  const emoji = btn.dataset.emoji;
+  const stripped = input.value.replace(/^[\p{Extended_Pictographic}\u200d\ufe0f\s]+/u, '').trim();
+  input.value = `${emoji} ${stripped}`.trim();
+  input.focus();
+});
+
+// ─────────────────────────────────────────────
+// MULTI-TRIP SWITCHER
+// ─────────────────────────────────────────────
+function getTripsRegistry() {
+  try { return JSON.parse(localStorage.getItem('camp25-trips') || '{}'); }
+  catch(e) { return {}; }
+}
+function saveTripsRegistry(reg) {
+  try { localStorage.setItem('camp25-trips', JSON.stringify(reg)); } catch(e) {}
+}
+function registerCurrentTrip() {
+  const reg = getTripsRegistry();
+  reg[TRIP_ID] = { title: S.trip.title || 'Untitled Trip', lastSeen: Date.now() };
+  saveTripsRegistry(reg);
+}
+
+function openTripsModal() {
+  registerCurrentTrip();
+  const reg = getTripsRegistry();
+  const entries = Object.entries(reg).sort((a,b) => (b[1].lastSeen||0) - (a[1].lastSeen||0));
+  const listEl = document.getElementById('trips-list');
+  listEl.innerHTML = entries.length ? entries.map(([id, info]) => {
+    const isActive = id === TRIP_ID;
+    const lastSeen = info.lastSeen ? new Date(info.lastSeen).toLocaleDateString('en-CA', { month:'short', day:'numeric' }) : '';
+    return `
+      <div class="trip-row ${isActive?'active':''}" data-trip-id="${id}">
+        <div class="trip-row-info">
+          <div class="trip-row-title">${isActive ? '👉 ' : ''}${(info.title||'Untitled').replace(/</g,'&lt;')}</div>
+          <div class="trip-row-meta">${id} · last opened ${lastSeen}</div>
+        </div>
+        <div class="trip-row-actions">
+          ${isActive ? '<span style="font-size:0.7rem;color:var(--gold);font-weight:800">CURRENT</span>' : `<button data-trip-switch="${id}">Open →</button>`}
+          ${isActive ? '' : `<button data-trip-forget="${id}" title="Remove from list">✕</button>`}
+        </div>
+      </div>`;
+  }).join('') : `<div class="empty"><p>No saved trips yet.</p></div>`;
+  // Tour entry
+  listEl.innerHTML += `<div style="margin-top:10px;text-align:center"><button class="btn-cancel" onclick="startTour()">🎓 Replay quick tour</button></div>`;
+  document.getElementById('trips-modal-overlay').classList.add('show');
+}
+
+function closeTripsModal(e) {
+  if (e && e.target !== document.getElementById('trips-modal-overlay')) return;
+  document.getElementById('trips-modal-overlay').classList.remove('show');
+}
+
+function switchTrip(id) {
+  if (id === TRIP_ID) return;
+  location.hash = '#t=' + id;
+  location.reload();
+}
+
+function forgetTrip(id) {
+  if (id === TRIP_ID) return;
+  const reg = getTripsRegistry();
+  delete reg[id];
+  saveTripsRegistry(reg);
+  openTripsModal();
+}
+
+function createNewTrip() {
+  const id = [...Array(10)].map(()=>'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.random()*36|0]).join('');
+  location.hash = '#t=' + id;
+  location.reload();
+}
+
+document.getElementById('trips-list').addEventListener('click', e => {
+  const sw = e.target.closest('[data-trip-switch]');
+  if (sw) { switchTrip(sw.dataset.tripSwitch); return; }
+  const fg = e.target.closest('[data-trip-forget]');
+  if (fg) { e.stopPropagation(); forgetTrip(fg.dataset.tripForget); return; }
+  const row = e.target.closest('.trip-row[data-trip-id]');
+  if (row && row.dataset.tripId !== TRIP_ID) switchTrip(row.dataset.tripId);
+});
+
+// ─────────────────────────────────────────────
+// PRESENCE  (separate doc to avoid trip-doc write storms)
+// ─────────────────────────────────────────────
+const PRESENCE_EMOJIS = ['🦊','🐻','🦉','🐸','🦝','🦋','🐝','🐢','🦔','🦦','🐿️','🦄','🐧','🦩'];
+const PRESENCE_COLORS = ['#29b6f6','#ba68c8','#f06292','#ffa726','#66bb6a','#ff7043','#80cbc4','#fff176','#ef5350','#ab47bc'];
+
+function getViewerIdentity() {
+  let cached = null;
+  try { cached = JSON.parse(localStorage.getItem('camp25-viewer-id') || 'null'); } catch(e) {}
+  if (cached && cached.id) return cached;
+  const id = [...Array(12)].map(()=>'abcdefghijklmnopqrstuvwxyz0123456789'[Math.random()*36|0]).join('');
+  const identity = {
+    id,
+    emoji: PRESENCE_EMOJIS[Math.floor(Math.random()*PRESENCE_EMOJIS.length)],
+    color: PRESENCE_COLORS[Math.floor(Math.random()*PRESENCE_COLORS.length)],
+  };
+  try { localStorage.setItem('camp25-viewer-id', JSON.stringify(identity)); } catch(e) {}
+  return identity;
+}
+
+const VIEWER = getViewerIdentity();
+const presenceRef = doc(db, 'presence', TRIP_ID);
+let _presenceHbTimer = null;
+
+function sendPresenceHeartbeat() {
+  setDoc(presenceRef, {
+    viewers: {
+      [VIEWER.id]: { emoji: VIEWER.emoji, color: VIEWER.color, ts: serverTimestamp() }
+    }
+  }, { merge: true }).catch(() => {});
+}
+
+function startPresence() {
+  sendPresenceHeartbeat();
+  if (_presenceHbTimer) clearInterval(_presenceHbTimer);
+  _presenceHbTimer = setInterval(sendPresenceHeartbeat, 25000);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') sendPresenceHeartbeat();
+  });
+}
+
+function renderPresence(viewers) {
+  const el = document.getElementById('presence-stack');
+  if (!el) return;
+  const now = Date.now();
+  const list = Object.entries(viewers || {})
+    .map(([id, v]) => {
+      const tsMs = v && v.ts && v.ts.toMillis ? v.ts.toMillis() : (v && v.ts) || 0;
+      return { id, emoji: v?.emoji || '👤', color: v?.color || '#999', tsMs };
+    })
+    .filter(v => v.tsMs && (now - v.tsMs) < 60000)
+    .sort((a,b) => (a.id === VIEWER.id ? -1 : b.id === VIEWER.id ? 1 : b.tsMs - a.tsMs));
+  if (!list.length) { el.innerHTML = ''; return; }
+  const SHOW = 3;
+  const shown = list.slice(0, SHOW);
+  const extra = list.length - shown.length;
+  el.innerHTML = shown.map(v => `
+    <span class="presence-dot ${v.id===VIEWER.id?'me':''}" style="background:${v.color}" title="${v.id===VIEWER.id?'You':'A crew member'} viewing now">${v.emoji}</span>
+  `).join('') + (extra > 0 ? `<span class="presence-count" title="${list.length} viewers">+${extra}</span>` : '');
+}
+
+// ─────────────────────────────────────────────
+// ONBOARDING TOUR
+// ─────────────────────────────────────────────
+const TOUR_STEPS = [
+  { emoji: '⛺', title: 'Welcome to your camping HQ', body: 'This is your shared trip planner. Everything you change is auto-synced with your crew in real time.' },
+  { emoji: '🔍', title: 'Search & filter fast', body: 'Use the search bar to find any item by name, store, or person. Filter chips show live counts so you can spot what still needs attention.' },
+  { emoji: '🛍️', title: 'Track who buys what', body: 'Tap an "Assigned" pill to claim an item, then tap the "Purchased" pill once you’ve grabbed it. The progress ring fills as you go.' },
+  { emoji: '🗺️', title: 'Share & switch trips', body: 'Use 📤 Share to send the trip link, or open 🗺️ Trips to switch between trips and create new ones. You can replay this tour anytime from the Trips menu.' },
+];
+let _tourStep = 0;
+
+function startTour() {
+  closeTripsModal({ target: document.getElementById('trips-modal-overlay') });
+  _tourStep = 0;
+  document.getElementById('tour-overlay').classList.add('show');
+  renderTourStep();
+}
+
+function renderTourStep() {
+  const step = TOUR_STEPS[_tourStep];
+  document.getElementById('tour-emoji').textContent = step.emoji;
+  document.getElementById('tour-title').textContent = step.title;
+  document.getElementById('tour-body').textContent  = step.body;
+  document.getElementById('tour-progress').innerHTML =
+    TOUR_STEPS.map((_, i) => `<span class="${i===_tourStep?'active':''}"></span>`).join('');
+  document.getElementById('tour-next-btn').textContent =
+    _tourStep === TOUR_STEPS.length - 1 ? 'Got it 🎉' : 'Next →';
+}
+
+function tourNext() {
+  _tourStep++;
+  if (_tourStep >= TOUR_STEPS.length) { endTour(); return; }
+  renderTourStep();
+}
+
+function endTour() {
+  document.getElementById('tour-overlay').classList.remove('show');
+  localStorage.setItem('camp25-tour-done', '1');
 }
 
 // ─────────────────────────────────────────────
@@ -2887,9 +3630,11 @@ Object.assign(window, {
   closeModal, saveModal, deleteItem, deleteCat, quickAddItem,
   openPersonModal, closePersonModal, savePersonModal,
   saveTripDetails, selectNewColor, addPerson, deletePerson, resetAll,
-  shareTrip, toggleTheme, toggleMap, toggleCompactMode, setPlannerFilter,
+  shareTrip, toggleTheme, toggleMap, toggleCompactMode, setPlannerFilter, setPlannerSearch, setPlannerStoreFilter,
   switchTab, jumpToAddExpense,
   toggleNavDropdown, renderMealPlan, renderActivityPlan,
+  openTripsModal, closeTripsModal, createNewTrip, switchTrip, forgetTrip,
+  startTour, tourNext, endTour,
   _setPersonColor: (c) => { personModalColor = c; renderPersonModalSwatches(); }
 });
 
@@ -2900,9 +3645,15 @@ let _firstSnap = true;
 let _lastSaveTs = 0;
 
 // Load saved theme preference
-if (localStorage.getItem('camp25-theme') === 'warm') {
+const savedTheme = localStorage.getItem('camp25-theme');
+if (savedTheme === 'warm') {
   document.body.classList.add('warm');
+  document.getElementById('btn-theme').textContent = '☀️ Light';
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', '#180c05');
+} else if (savedTheme === 'light') {
+  document.body.classList.add('light');
   document.getElementById('btn-theme').textContent = '🌲 Forest';
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f4f1ea');
 }
 
 if (localStorage.getItem('camp25-compact') === '1') {
@@ -2929,6 +3680,12 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
 
 document.getElementById('trip-id-display').textContent = TRIP_ID;
 document.getElementById('loading-overlay').style.display = 'flex';
+
+startPresence();
+onSnapshot(presenceRef, snap => {
+  const data = snap.exists() ? snap.data() : null;
+  renderPresence(data && data.viewers);
+}, () => {});
 
 onSnapshot(tripRef, snap => {
   const wasFirst = _firstSnap;
@@ -2966,10 +3723,14 @@ onSnapshot(tripRef, snap => {
 
   if (wasFirst) {
     document.getElementById('loading-overlay').style.display = 'none';
+    if (!localStorage.getItem('camp25-tour-done')) {
+      setTimeout(startTour, 600);
+    }
   } else if (Date.now() - _lastSaveTs > 3000) {
     showSyncToast('🔄 Updated by a crew member!');
   }
 
+  registerCurrentTrip();
   renderHero(); renderExpenseForm(); renderPlanner(); renderExpenses();
   setSyncStatus('ok');
   const at = document.querySelector('.tab-btn.active')?.dataset.tab;
