@@ -104,6 +104,59 @@
     }
     .btn-theme:hover { background: rgba(255,255,255,0.11); border-color: rgba(255,255,255,0.22); color: var(--text); }
 
+    /* ====== NAV OVERFLOW MENU ====== */
+    .nav-more-wrap { position: relative; }
+    .nav-more-btn {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      color: var(--text); cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+      transition: background 0.18s, border-color 0.18s;
+    }
+    .nav-more-btn:hover, .nav-more-btn.open { background: rgba(255,255,255,0.12); border-color: var(--border2); }
+    .nav-more-menu {
+      position: absolute; top: calc(100% + 8px); right: 0;
+      min-width: 240px; padding: 6px;
+      background: rgba(8,15,11,0.97); border: 1px solid var(--border2); border-radius: 14px;
+      box-shadow: var(--sh-md); backdrop-filter: blur(20px) saturate(1.4);
+      opacity: 0; transform: translateY(-6px) scale(0.97); pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      z-index: 320;
+    }
+    .nav-more-menu.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+    body.warm .nav-more-menu { background: rgba(13,8,4,0.97); }
+    body.light .nav-more-menu { background: rgba(255,253,246,0.98); }
+    .nav-more-item {
+      width: 100%; display: flex; align-items: center; gap: 12px;
+      padding: 11px 13px; border-radius: 10px;
+      background: none; border: none; color: var(--text);
+      font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 600;
+      text-align: left; cursor: pointer; transition: background 0.15s;
+    }
+    .nav-more-item:hover { background: rgba(255,255,255,0.07); }
+    body.light .nav-more-item:hover { background: rgba(0,0,0,0.05); }
+    .nav-more-item.nmi-faint { color: var(--muted); font-weight: 500; }
+    .nmi-ic { font-size: 1.05rem; width: 22px; text-align: center; }
+    .nav-more-sep { height: 1px; background: var(--border); margin: 4px 6px; }
+    .nav-more-tripid {
+      padding: 8px 13px 4px; font-size: 0.7rem; color: var(--muted);
+      letter-spacing: 0.05em; font-weight: 600; cursor: pointer;
+    }
+    .nav-more-tripid code { font-family: inherit; color: var(--text); letter-spacing: 0.08em; }
+
+    /* ====== HERO COLLAPSE ON SCROLL ====== */
+    .hero { transition: padding 0.28s ease; }
+    .hero-content { transition: padding 0.28s ease; }
+    body.hero-collapsed .hero { padding-top: 14px; padding-bottom: 0; }
+    body.hero-collapsed .hero-moon,
+    body.hero-collapsed .hero-emoji,
+    body.hero-collapsed .hero-sub,
+    body.hero-collapsed .person-badges,
+    body.hero-collapsed .hero-map-wrap,
+    body.hero-collapsed .hero-mountains { display: none !important; }
+    body.hero-collapsed .hero-content { padding-bottom: 14px; }
+    body.hero-collapsed .hero h1 { font-size: 1.15rem; opacity: 0.85; }
+    body.hero-collapsed .hero::before { display: none; }
+
     /* ====== PRESENCE AVATARS ====== */
     .presence-stack {
       display: inline-flex; align-items: center; padding-left: 4px;
@@ -494,20 +547,13 @@
     .cat-block[data-cat="indian"]    { border-left-color: var(--fire); }
     .cat-block[data-cat="reminders"] { border-left-color: var(--deep); }
 
-    /* Category header gradient tints */
-    .cat-block[data-cat="gear"]      .cat-head { background: linear-gradient(100deg, rgba(102,187,106,0.10) 0%, transparent 65%), var(--surface); }
-    .cat-block[data-cat="costco"]    .cat-head { background: linear-gradient(100deg, rgba(41,182,246,0.10)  0%, transparent 65%), var(--surface); }
-    .cat-block[data-cat="walmart"]   .cat-head { background: linear-gradient(100deg, rgba(186,104,200,0.10) 0%, transparent 65%), var(--surface); }
-    .cat-block[data-cat="dollarama"] .cat-head { background: linear-gradient(100deg, rgba(255,215,0,0.09)   0%, transparent 65%), var(--surface); }
-    .cat-block[data-cat="indian"]    .cat-head { background: linear-gradient(100deg, rgba(255,107,53,0.10)  0%, transparent 65%), var(--surface); }
-    .cat-block[data-cat="reminders"] .cat-head { background: linear-gradient(100deg, rgba(240,98,146,0.10)  0%, transparent 65%), var(--surface); }
-
-    .cat-block[data-cat="gear"]      .cat-head:hover { background: linear-gradient(100deg, rgba(102,187,106,0.17) 0%, transparent 65%), var(--surface); }
-    .cat-block[data-cat="costco"]    .cat-head:hover { background: linear-gradient(100deg, rgba(41,182,246,0.17)  0%, transparent 65%), var(--surface); }
-    .cat-block[data-cat="walmart"]   .cat-head:hover { background: linear-gradient(100deg, rgba(186,104,200,0.17) 0%, transparent 65%), var(--surface); }
-    .cat-block[data-cat="dollarama"] .cat-head:hover { background: linear-gradient(100deg, rgba(255,215,0,0.15)   0%, transparent 65%), var(--surface); }
-    .cat-block[data-cat="indian"]    .cat-head:hover { background: linear-gradient(100deg, rgba(255,107,53,0.17)  0%, transparent 65%), var(--surface); }
-    .cat-block[data-cat="reminders"] .cat-head:hover { background: linear-gradient(100deg, rgba(240,98,146,0.17)  0%, transparent 65%), var(--surface); }
+    /* Cat-count badge tints to match category */
+    .cat-block[data-cat="gear"]      .cat-count { background:rgba(102,187,106,0.12); color:var(--ok);    border-color:rgba(102,187,106,0.3); }
+    .cat-block[data-cat="costco"]    .cat-count { background:rgba(41,182,246,0.12);  color:var(--sid);   border-color:rgba(41,182,246,0.3); }
+    .cat-block[data-cat="walmart"]   .cat-count { background:rgba(186,104,200,0.12); color:var(--rahul); border-color:rgba(186,104,200,0.3); }
+    .cat-block[data-cat="dollarama"] .cat-count { background:rgba(255,215,0,0.10);   color:var(--gold);  border-color:rgba(255,215,0,0.3); }
+    .cat-block[data-cat="indian"]    .cat-count { background:rgba(255,107,53,0.12);  color:var(--fire);  border-color:rgba(255,107,53,0.3); }
+    .cat-block[data-cat="reminders"] .cat-count { background:rgba(240,98,146,0.12);  color:var(--deep);  border-color:rgba(240,98,146,0.3); }
 
     /* Cat-count badge tints to match category */
     .cat-block[data-cat="gear"]      .cat-count { background:rgba(102,187,106,0.12); color:var(--ok);    border-color:rgba(102,187,106,0.3); }
@@ -1111,8 +1157,8 @@
 
     .planner-mini-summary {
       position: sticky; top: 54px; z-index: 120;
-      margin-bottom: 14px; padding: 10px 12px;
-      border: 1px solid var(--border); border-radius: 14px;
+      margin-bottom: 12px; padding: 7px 10px;
+      border: 1px solid var(--border); border-radius: 12px;
       background: rgba(8,15,11,0.82); backdrop-filter: blur(14px) saturate(1.4);
       display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
     }
@@ -1610,10 +1656,19 @@
     <div class="nav-right">
       <span class="sync-dot syncing" id="sync-dot" title="Connecting…"></span>
       <span class="presence-stack" id="presence-stack"></span>
-      <span class="trip-chip" id="trip-chip" onclick="shareTrip()" title="Click to copy trip link">⛺️ <span id="trip-id-display">…</span></span>
-      <button class="btn-trips" id="btn-trips" onclick="openTripsModal()" title="Switch or create trips">🗺️<span class="btn-label"> Trips</span></button>
-      <button class="btn-theme" id="btn-theme" onclick="toggleTheme()" title="Toggle theme">🔥<span class="btn-label" id="btn-theme-label"> Warm</span></button>
-      <button class="btn-share" onclick="shareTrip()">📤<span class="btn-label"> Share</span></button>
+      <div class="nav-more-wrap">
+        <button class="nav-more-btn" id="nav-more-btn" onclick="toggleOverflowMenu(event)" aria-label="More options">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+        </button>
+        <div class="nav-more-menu" id="nav-more-menu">
+          <button class="nav-more-item" onclick="shareTrip(); closeOverflowMenu();"><span class="nmi-ic">📤</span><span>Share trip link</span></button>
+          <button class="nav-more-item" onclick="openTripsModal(); closeOverflowMenu();"><span class="nmi-ic">🗺️</span><span>Switch / create trip</span></button>
+          <button class="nav-more-item" id="btn-theme" onclick="toggleTheme()"><span class="nmi-ic">🔥</span><span class="btn-label" id="btn-theme-label">Warm theme</span></button>
+          <div class="nav-more-sep"></div>
+          <button class="nav-more-item nmi-faint" onclick="startTour(); closeOverflowMenu();"><span class="nmi-ic">🎓</span><span>Replay tour</span></button>
+          <div class="nav-more-tripid" onclick="shareTrip()" title="Tap to copy link">⛺️ Trip <code id="trip-id-display">…</code></div>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -3424,9 +3479,9 @@ function toggleTheme() {
   document.body.classList.remove('warm', 'light');
   if (next !== 'forest') document.body.classList.add(next);
   const btn = document.getElementById('btn-theme');
-  const labels = { forest: ['🔥', 'Warm'], warm: ['☀️', 'Light'], light: ['🌲', 'Forest'] };
+  const labels = { forest: ['🔥', 'Warm theme'], warm: ['☀️', 'Light theme'], light: ['🌲', 'Forest theme'] };
   const [emoji, word] = labels[next];
-  btn.innerHTML = `${emoji}<span class="btn-label" id="btn-theme-label"> ${word}</span>`;
+  btn.innerHTML = `<span class="nmi-ic">${emoji}</span><span class="btn-label" id="btn-theme-label">${word}</span>`;
   document.querySelector('meta[name="theme-color"]').setAttribute('content', next === 'light' ? '#f4f1ea' : next === 'warm' ? '#180c05' : '#0d1a12');
   localStorage.setItem('camp25-theme', next);
 }
@@ -3630,6 +3685,36 @@ function endTour() {
 }
 
 // ─────────────────────────────────────────────
+// NAV OVERFLOW MENU + AUTO-COLLAPSE HERO
+// ─────────────────────────────────────────────
+function toggleOverflowMenu(e) {
+  if (e) e.stopPropagation();
+  const menu = document.getElementById('nav-more-menu');
+  const btn  = document.getElementById('nav-more-btn');
+  const open = menu.classList.toggle('open');
+  btn.classList.toggle('open', open);
+}
+function closeOverflowMenu() {
+  document.getElementById('nav-more-menu').classList.remove('open');
+  document.getElementById('nav-more-btn').classList.remove('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.nav-more-wrap')) closeOverflowMenu();
+});
+
+let _heroCollapseTicking = false;
+function _updateHeroCollapse() {
+  const collapsed = (window.scrollY || document.documentElement.scrollTop) > 90;
+  document.body.classList.toggle('hero-collapsed', collapsed);
+  _heroCollapseTicking = false;
+}
+window.addEventListener('scroll', () => {
+  if (_heroCollapseTicking) return;
+  _heroCollapseTicking = true;
+  requestAnimationFrame(_updateHeroCollapse);
+}, { passive: true });
+
+// ─────────────────────────────────────────────
 // GLOBAL EXPORTS  (module-scoped functions must be on window for onclick=)
 // ─────────────────────────────────────────────
 Object.assign(window, {
@@ -3642,6 +3727,7 @@ Object.assign(window, {
   toggleNavDropdown, renderMealPlan, renderActivityPlan,
   openTripsModal, closeTripsModal, createNewTrip, switchTrip, forgetTrip,
   startTour, tourNext, endTour,
+  toggleOverflowMenu, closeOverflowMenu,
   _setPersonColor: (c) => { personModalColor = c; renderPersonModalSwatches(); }
 });
 
@@ -3655,11 +3741,11 @@ let _lastSaveTs = 0;
 const savedTheme = localStorage.getItem('camp25-theme');
 if (savedTheme === 'warm') {
   document.body.classList.add('warm');
-  document.getElementById('btn-theme').innerHTML = '☀️<span class="btn-label" id="btn-theme-label"> Light</span>';
+  document.getElementById('btn-theme').innerHTML = '<span class="nmi-ic">☀️</span><span class="btn-label" id="btn-theme-label">Light theme</span>';
   document.querySelector('meta[name="theme-color"]').setAttribute('content', '#180c05');
 } else if (savedTheme === 'light') {
   document.body.classList.add('light');
-  document.getElementById('btn-theme').innerHTML = '🌲<span class="btn-label" id="btn-theme-label"> Forest</span>';
+  document.getElementById('btn-theme').innerHTML = '<span class="nmi-ic">🌲</span><span class="btn-label" id="btn-theme-label">Forest theme</span>';
   document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f4f1ea');
 }
 
