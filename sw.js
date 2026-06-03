@@ -1,4 +1,5 @@
-const CACHE_NAME = 'camp-planner-v1';
+// Bump this version any time index.html changes so old installs refresh.
+const CACHE_NAME = 'camp-planner-v3';
 const APP_SHELL = [
   './',
   './index.html',
@@ -16,25 +17,51 @@ self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)))
-    )
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
+// Network-first for navigations / HTML so users always get the latest UI.
+// Cache-first for everything else (icons, manifest, etc.).
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
+  const req = event.request;
+  if (req.method !== 'GET') return;
+
+  const isHTML =
+    req.mode === 'navigate' ||
+    (req.headers.get('accept') || '').includes('text/html');
+
+  if (isHTML) {
+    event.respondWith(
+      fetch(req)
+        .then(response => {
+          if (response && response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put('./index.html', clone));
+          }
+          return response;
+        })
+        .catch(() => caches.match('./index.html').then(r => r || caches.match('./')))
+    );
+    return;
+  }
 
   event.respondWith(
-    caches.match(event.request).then(cached => {
+    caches.match(req).then(cached => {
       if (cached) return cached;
-      return fetch(event.request)
+      return fetch(req)
         .then(response => {
           if (!response || response.status !== 200) return response;
-          const responseClone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone));
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(req, clone));
           return response;
         })
         .catch(() => caches.match('./index.html'));
     })
   );
+});
+
+// Allow the page to trigger an immediate update.
+self.addEventListener('message', event => {
+  if (event.data === 'SKIP_WAITING') self.skipWaiting();
 });
