@@ -83,8 +83,6 @@
     body.light nav { background: rgba(244,241,234,0.92); border-bottom-color: rgba(0,0,0,0.08); }
     body.light .mobile-quick-bar { background: rgba(244,241,234,0.95); border-top-color: rgba(0,0,0,0.08); }
     body.light #bg-canvas { opacity: 0.35; }
-    body.light .hero-mountains svg path { fill: #d8d5cb !important; opacity: 0.9; }
-    body.light .hero-mountains svg path:last-child { fill: #cdcbc1 !important; }
     body.light .item-name { color: var(--text); }
     body.light .ff input, body.light .ff select,
     body.light .add-item-row input, body.light .planner-search,
@@ -92,7 +90,6 @@
     body.light .ff select option, body.light .mf select option { background: #fff; }
     body.light .modal { background: #fffdf6; }
     body.light .modal-overlay { background: rgba(20,30,24,0.55); }
-    body.light .planner-mini-summary { background: rgba(255,253,246,0.92); }
     body.light .filter-chip { background: rgba(0,0,0,0.04); color: var(--muted); }
     body.light .filter-chip.active { color: var(--text); background: linear-gradient(135deg, rgba(217,149,0,0.22), rgba(232,90,35,0.12)); }
     body.light .cat-head { background: rgba(255,255,255,0.7); }
@@ -143,20 +140,6 @@
     }
     .nav-more-tripid code { font-family: inherit; color: var(--text); letter-spacing: 0.08em; }
 
-    /* ====== HERO COLLAPSE ON SCROLL ====== */
-    .hero { transition: padding 0.28s ease; }
-    .hero-content { transition: padding 0.28s ease; }
-    body.hero-collapsed .hero { padding-top: 14px; padding-bottom: 0; }
-    body.hero-collapsed .hero-moon,
-    body.hero-collapsed .hero-emoji,
-    body.hero-collapsed .hero-sub,
-    body.hero-collapsed .person-badges,
-    body.hero-collapsed .hero-map-wrap,
-    body.hero-collapsed .hero-mountains { display: none !important; }
-    body.hero-collapsed .hero-content { padding-bottom: 14px; }
-    body.hero-collapsed .hero h1 { font-size: 1.15rem; opacity: 0.85; }
-    body.hero-collapsed .hero::before { display: none; }
-
     /* ====== PRESENCE AVATARS ====== */
     .presence-stack {
       display: inline-flex; align-items: center; padding-left: 4px;
@@ -182,13 +165,6 @@
     }
 
     /* ====== TRIPS MODAL ====== */
-    .btn-trips {
-      padding: 5px 11px; border-radius: 20px; font-size: 0.78rem;
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.13);
-      color: var(--muted); cursor: pointer; transition: all 0.2s;
-      font-family: 'Outfit', sans-serif; white-space: nowrap; font-weight: 700;
-    }
-    .btn-trips:hover { background: rgba(255,255,255,0.11); color: var(--text); }
     .trips-list { display: flex; flex-direction: column; gap: 8px; max-height: 320px; overflow-y: auto; margin-bottom: 14px; }
     .trip-row {
       display: flex; align-items: center; gap: 10px;
@@ -208,48 +184,6 @@
       font-size: 0.72rem; cursor: pointer; transition: background 0.18s, color 0.18s;
     }
     .trip-row-actions button:hover { background: rgba(239,83,80,0.18); color: var(--danger); }
-
-    /* ====== TOUR OVERLAY ====== */
-    .tour-overlay {
-      position: fixed; inset: 0; z-index: 1000;
-      background: rgba(0,0,0,0.72); backdrop-filter: blur(8px);
-      display: none; align-items: center; justify-content: center; padding: 22px;
-      animation: fadeUp 0.25s ease;
-    }
-    .tour-overlay.show { display: flex; }
-    .tour-card {
-      background: #0f2a1e; border: 1px solid var(--border2);
-      border-radius: 22px; padding: 28px 26px;
-      width: 100%; max-width: 420px;
-      box-shadow: var(--sh-lg);
-      text-align: center;
-    }
-    body.light .tour-card { background: #fffdf6; }
-    .tour-emoji { font-size: 2.8rem; margin-bottom: 12px; display: block; }
-    .tour-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.3px; }
-    .tour-body { font-size: 0.9rem; color: var(--muted); line-height: 1.55; margin-bottom: 20px; }
-    .tour-progress { display: flex; gap: 5px; justify-content: center; margin-bottom: 16px; }
-    .tour-progress span {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: rgba(255,255,255,0.18);
-    }
-    .tour-progress span.active { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
-    .tour-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-    .tour-btns button {
-      padding: 9px 20px; border-radius: 999px; font-size: 0.85rem; font-weight: 700;
-      font-family: 'Outfit', sans-serif; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
-      border: none;
-    }
-    .tour-skip {
-      background: rgba(255,255,255,0.08); color: var(--muted);
-      border: 1px solid var(--border) !important;
-    }
-    .tour-next {
-      background: linear-gradient(135deg, var(--gold), var(--fire));
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(255,107,53,0.35);
-    }
-    .tour-next:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(255,107,53,0.5); }
 
     /* ====== EMOJI PICKER ROW (modal) ====== */
     .emoji-picker {
@@ -287,121 +221,36 @@
     /* ====== HERO ====== */
     .hero {
       background: radial-gradient(ellipse 120% 100% at 50% -20%, #1a3a20 0%, #0d1f14 50%, #080f0b 100%);
-      padding: 64px 24px 0;
+      padding: 28px 24px 24px;
       text-align: center;
       border-bottom: 1px solid var(--border);
       position: relative;
       overflow: hidden;
     }
-    .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 60% 40% at 50% -10%, rgba(255,107,53,0.18) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 30% at 80% 10%, rgba(255,215,0,0.08) 0%, transparent 50%);
-    }
 
-    /* Moon */
-    .hero-moon {
-      position: absolute; top: 28px; right: 10%;
-      width: 52px; height: 52px; border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #fff9d6, #ffd700 60%, #e6a800);
-      box-shadow: 0 0 0 2px rgba(255,215,0,0.2),
-                  0 0 20px 6px rgba(255,215,0,0.25),
-                  0 0 50px 15px rgba(255,215,0,0.1);
-      animation: moonPulse 5s ease-in-out infinite;
-      z-index: 1;
-    }
-    @keyframes moonPulse {
-      0%,100% { box-shadow: 0 0 0 2px rgba(255,215,0,0.2), 0 0 20px 6px rgba(255,215,0,0.25), 0 0 50px 15px rgba(255,215,0,0.1); }
-      50%      { box-shadow: 0 0 0 4px rgba(255,215,0,0.15), 0 0 30px 10px rgba(255,215,0,0.3), 0 0 70px 22px rgba(255,215,0,0.15); }
-    }
-    /* Star sparkles around moon */
-    .hero-moon::before, .hero-moon::after {
-      content: '✦'; position: absolute; color: rgba(255,215,0,0.7); font-size: 0.6rem;
-      animation: sparkle 3s ease-in-out infinite;
-    }
-    .hero-moon::before { top: -14px; right: -8px; animation-delay: 0.5s; }
-    .hero-moon::after  { bottom: -10px; left: -14px; animation-delay: 1.2s; }
-    @keyframes sparkle { 0%,100%{opacity:0.3;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.2)} }
-
-    .hero-content { position: relative; z-index: 2; padding-bottom: 36px; }
-
-    .hero-emoji {
-      font-size: 3.8rem; display: block; margin-bottom: 14px;
-      animation: bob 3.5s ease-in-out infinite;
-      filter: drop-shadow(0 4px 12px rgba(255,107,53,0.4));
-    }
-    @keyframes bob {
-      0%,100% { transform: translateY(0) rotate(-2deg); }
-      50%      { transform: translateY(-14px) rotate(2deg); }
-    }
+    .hero-content { position: relative; z-index: 2; }
 
     .hero h1 {
-      font-size: clamp(1.8rem, 5vw, 3.2rem);
-      font-weight: 900; letter-spacing: -1px;
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      font-weight: 900; letter-spacing: -0.5px;
       background: linear-gradient(135deg, #ffe066 0%, #ffb347 40%, #ff6b35 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .hero-sub {
-      color: var(--muted); font-size: 0.98rem; margin-bottom: 30px;
+      color: var(--muted); font-size: 0.92rem;
       display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap;
     }
     .hero-chip {
       background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 50px; padding: 4px 12px; font-size: 0.82rem; color: var(--muted);
+      border-radius: 50px; padding: 4px 12px; font-size: 0.78rem; color: var(--muted);
       font-weight: 600;
     }
-    .hero-map-wrap {
-      max-width: 680px; margin: 20px auto 4px;
-      border-radius: 20px; overflow: hidden; height: 0;
-      transition: height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.35s;
-      border: 1px solid rgba(255,255,255,0.1); opacity: 0;
-    }
-    .hero-map-wrap.open { height: 230px; opacity: 1; }
-    .hero-map-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
     .hero-loc { cursor: pointer; color: var(--text) !important; text-decoration: none; }
     .hero-loc:hover { background: rgba(255,255,255,0.12); }
-    .btn-map-toggle { cursor: pointer; background: rgba(255,215,0,0.1); border-color: rgba(255,215,0,0.25); color: var(--gold); }
-    .btn-map-toggle:hover { background: rgba(255,215,0,0.18); border-color:rgba(255,215,0,0.35); color:var(--gold); font-weight:800; }
-    .hero-cd-urgent  { background:rgba(255,107,53,0.13); border-color:rgba(255,107,53,0.45); color:var(--fire); font-weight:800; animation:cd-pulse 2s ease-in-out infinite; }
-    .hero-cd-today   { background:rgba(102,187,106,0.15);border-color:rgba(102,187,106,0.5); color:var(--ok);   font-weight:800; animation:cd-pulse 1.2s ease-in-out infinite; }
+    .hero-cd-urgent  { background:rgba(255,107,53,0.13); border-color:rgba(255,107,53,0.45); color:var(--fire); font-weight:800; }
+    .hero-cd-today   { background:rgba(102,187,106,0.15);border-color:rgba(102,187,106,0.5); color:var(--ok);   font-weight:800; }
     .hero-cd-past    { background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.1); color:var(--muted); }
-    @keyframes cd-pulse {
-      0%,100% { box-shadow: 0 0 0 0   rgba(255,107,53,0.35); }
-      50%     { box-shadow: 0 0 0 7px rgba(255,107,53,0);    }
-    }
-
-    .person-badges {
-      display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 0;
-    }
-    .badge {
-      padding: 8px 20px; border-radius: 50px; font-weight: 700; font-size: 0.88rem;
-      border: 1.5px solid; display: flex; align-items: center; gap: 8px;
-      backdrop-filter: blur(12px); transition: transform 0.25s, box-shadow 0.25s;
-      position: relative; overflow: hidden;
-    }
-    .badge::before {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
-    }
-    .badge:hover { transform: translateY(-4px); }
-    .b-sid   { color:var(--sid);   border-color:rgba(41,182,246,0.5);  background:rgba(41,182,246,0.1);  box-shadow:0 4px 20px rgba(41,182,246,0.2); }
-    .b-rahul { color:var(--rahul); border-color:rgba(186,104,200,0.5); background:rgba(186,104,200,0.1); box-shadow:0 4px 20px rgba(186,104,200,0.2); }
-    .b-deep  { color:var(--deep);  border-color:rgba(240,98,146,0.5);  background:rgba(240,98,146,0.1);  box-shadow:0 4px 20px rgba(240,98,146,0.2); }
-    .b-sujoy { color:var(--sujoy); border-color:rgba(255,167,38,0.5);  background:rgba(255,167,38,0.1);  box-shadow:0 4px 20px rgba(255,167,38,0.2); }
-    .b-sid:hover   { box-shadow:0 8px 28px rgba(41,182,246,0.4); }
-    .b-rahul:hover { box-shadow:0 8px 28px rgba(186,104,200,0.4); }
-    .b-deep:hover  { box-shadow:0 8px 28px rgba(240,98,146,0.4); }
-    .b-sujoy:hover { box-shadow:0 8px 28px rgba(255,167,38,0.4); }
-
-    /* Mountain silhouette at bottom of hero */
-    .hero-mountains {
-      position: relative; z-index: 1; margin-top: 10px;
-      line-height: 0; pointer-events: none;
-    }
-    .hero-mountains svg { width: 100%; display: block; }
 
     /* ====== TABS NAV (DROPDOWN) ====== */
     nav {
@@ -930,31 +779,12 @@
     }
 
     /* ====== EDIT MODE ====== */
-    .edit-toolbar {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
-    }
-    .toolbar-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .btn-edit-toggle {
-      padding: 9px 22px; border-radius: 50px; font-size: 0.85rem; font-weight: 700;
-      border: 2px solid var(--border2); background: var(--surface); color: var(--muted);
-      cursor: pointer; transition: all 0.25s; display: flex; align-items: center; gap: 8px;
+      padding: 8px 18px; border-radius: 50px; font-size: 0.82rem; font-weight: 700;
+      border: 1px solid var(--border2); background: var(--surface); color: var(--muted);
+      cursor: pointer; transition: all 0.2s;
     }
-    .btn-edit-toggle.on {
-      border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.1);
-      box-shadow: 0 0 20px rgba(255,215,0,0.15);
-    }
-    .edit-hint { font-size: 0.8rem; color: var(--muted); font-style: italic; }
-    .btn-compact-toggle {
-      padding: 9px 18px; border-radius: 50px; font-size: 0.82rem; font-weight: 700;
-      border: 2px solid var(--border2); background: var(--surface); color: var(--muted);
-      cursor: pointer; transition: all 0.25s; display: flex; align-items: center; gap: 6px;
-      font-family: 'Outfit', sans-serif;
-    }
-    .btn-compact-toggle.on {
-      border-color: var(--sid); color: var(--sid); background: rgba(41,182,246,0.1);
-      box-shadow: 0 0 18px rgba(41,182,246,0.2);
-    }
+    .btn-edit-toggle:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
     .planner-filters {
       display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
       margin-bottom: 10px;
@@ -1115,24 +945,6 @@
       opacity: 0.7;
     }
 
-    .mini-ring-wrap {
-      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
-    }
-    .mini-ring { width: 44px; height: 44px; display: block; }
-    .mini-ring-track { fill: none; stroke: rgba(255,255,255,0.08); stroke-width: 5; }
-    .mini-ring-fill {
-      fill: none; stroke: var(--gold); stroke-width: 5; stroke-linecap: round;
-      transform: rotate(-90deg); transform-origin: 50% 50%;
-      transition: stroke-dashoffset 0.55s cubic-bezier(0.4,0,0.2,1), stroke 0.3s;
-      filter: drop-shadow(0 0 4px currentColor);
-    }
-    .mini-ring-fill.full { stroke: var(--ok); }
-    .mini-ring-text {
-      fill: var(--text); font-size: 0.62rem; font-weight: 900;
-      text-anchor: middle; dominant-baseline: central;
-      font-family: 'Outfit', sans-serif;
-    }
-
     /* Default tinted body on every category card (header tints stay color-specific) */
     .cat-block { background: linear-gradient(180deg, rgba(255,255,255,0.018) 0%, var(--surface) 80%); }
     .cat-block[data-cat="gear"]      { background: linear-gradient(180deg, rgba(102,187,106,0.06) 0%, var(--surface) 80%); }
@@ -1155,31 +967,8 @@
       box-shadow: 0 0 14px rgba(255,215,0,0.18);
     }
 
-    .planner-mini-summary {
-      position: sticky; top: 54px; z-index: 120;
-      margin-bottom: 12px; padding: 7px 10px;
-      border: 1px solid var(--border); border-radius: 12px;
-      background: rgba(8,15,11,0.82); backdrop-filter: blur(14px) saturate(1.4);
-      display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
-    }
-    .mini-kpis { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    .mini-kpi {
-      padding: 4px 9px; border-radius: 999px; font-size: 0.67rem; font-weight: 800;
-      border: 1px solid rgba(255,255,255,0.16); color: var(--text);
-      background: rgba(255,255,255,0.05);
-    }
-    .mini-kpi.needed { border-color: rgba(255,167,38,0.3); color: var(--warn); background: rgba(255,167,38,0.1); }
-    .mini-kpi.purchase { border-color: rgba(255,215,0,0.3); color: var(--gold); background: rgba(255,215,0,0.1); }
-    .mini-kpi.done { border-color: rgba(102,187,106,0.3); color: var(--ok); background: rgba(102,187,106,0.1); }
-    .mini-filter-lbl { font-size: 0.72rem; color: var(--muted); font-weight: 600; }
-
-    body.planner-compact .item-row { padding: 9px 14px; gap: 7px; }
-    body.planner-compact .item-name { font-size: 0.84rem; }
-    body.planner-compact .item-store,
-    body.planner-compact .item-pill-label,
-    body.planner-compact .cat-progress-wrap { display: none; }
-    body.planner-compact .pill { padding: 2px 8px; font-size: 0.64rem; }
-    body.planner-compact .status-tag { font-size: 0.62rem; padding: 2px 8px; }
+    .planner-mini-summary { display: none; }
+    .mini-kpis, .mini-kpi, .mini-filter-lbl { display: none; }
 
     .btn-icon {
       background: none; border: none; cursor: pointer; padding: 5px 7px;
@@ -1190,26 +979,6 @@
     .btn-ie:hover { background: rgba(255,215,0,0.18); }
     .btn-id:hover { background: rgba(239,83,80,0.18); }
     .edit-controls { display: flex; gap: 2px; }
-
-    .add-item-row {
-      display: flex; align-items: center; gap: 8px; padding: 10px 22px;
-      border-top: 1px dashed rgba(255,215,0,0.18); flex-wrap: wrap;
-    }
-    .add-item-row input {
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,215,0,0.22);
-      border-radius: 8px; padding: 7px 11px; color: var(--text); font-size: 0.82rem;
-      outline: none; transition: border-color 0.2s;
-    }
-    .add-item-row input:focus { border-color: var(--gold); }
-    .add-item-row .ai-name  { flex: 1; min-width: 100px; }
-    .add-item-row .ai-store { width: 110px; }
-    .btn-quick-add {
-      background: rgba(255,215,0,0.13); color: var(--gold);
-      border: 1px solid rgba(255,215,0,0.32);
-      border-radius: 8px; padding: 7px 14px; font-size: 0.82rem; font-weight: 700;
-      cursor: pointer; transition: background 0.2s; white-space: nowrap;
-    }
-    .btn-quick-add:hover { background: rgba(255,215,0,0.26); }
 
     .add-cat-wrap {
       border: 2px dashed rgba(255,255,255,0.14); border-radius: 20px;
@@ -1303,12 +1072,7 @@
     .sync-dot.offline { background:#9e9e9e; }
     .sync-dot.error   { background:var(--danger); }
     @keyframes syncBlink { 0%,100%{opacity:1}50%{opacity:0.25} }
-    .trip-chip { font-size:0.7rem; font-weight:700; color:var(--muted); background:rgba(255,255,255,0.06); border:1px solid var(--border); border-radius:20px; padding:4px 11px; letter-spacing:0.04em; cursor:pointer; white-space:nowrap; transition:border-color 0.2s; user-select:all; }
-    .trip-chip:hover { border-color:var(--border2); color:var(--text); }
-    .btn-share { padding:6px 16px; border-radius:20px; font-size:0.78rem; font-weight:800; background:linear-gradient(135deg,rgba(41,182,246,0.15),rgba(86,171,47,0.15)); border:1px solid rgba(41,182,246,0.4); color:#4fc3f7; cursor:pointer; transition:all 0.2s; font-family:'Outfit',sans-serif; white-space:nowrap; }
-    .btn-share:hover { background:linear-gradient(135deg,rgba(41,182,246,0.3),rgba(86,171,47,0.3)); border-color:rgba(41,182,246,0.7); }
-    .sync-toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(16px); background:rgba(18,30,22,0.96); border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:12px 22px; font-size:0.88rem; font-weight:600; color:var(--text); opacity:0; pointer-events:none; transition:all 0.32s; z-index:5000; backdrop-filter:blur(14px); white-space:nowrap; }
-    .sync-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+    .trip-chip { font-size:0.7rem; font-weight:700; color:var(--muted); background:rgba(255,255,255,0.06); border:1px solid var(--border); border-radius:20px; padding:4px 11px; letter-spacing:0.04em; cursor:pointer; white-space:nowrap; transition:border-color 0.2s; user-select:all; display:none; }
 
     /* ====== MOBILE / RESPONSIVE ====== */
 
@@ -1325,14 +1089,11 @@
 
     /* ── 768 px ─────────────────────────────────────── */
     @media (max-width: 768px) {
-      .hero { padding: 40px 16px 0; }
-      .hero-moon { width: 40px; height: 40px; top: 20px; right: 8%; }
+      .hero { padding: 18px 14px; }
       .ctn { padding: 16px 14px 90px; }
 
       /* Tabs */
       .tab-btn { padding: 13px 15px; font-size: 0.83rem; }
-      .btn-share { padding: 5px 10px; font-size: 0.73rem; }
-      .trip-chip { font-size: 0.65rem; padding: 4px 8px; }
 
       /* Categories */
       .cat-head { padding: 13px 16px; }
@@ -1378,13 +1139,10 @@
     /* ── 480 px ─────────────────────────────────────── */
     @media (max-width: 480px) {
       /* Hero */
-      .hero { padding: 24px 12px 0; }
-      .hero-emoji { font-size: 2.6rem; margin-bottom: 10px; }
-      .hero h1 { font-size: 1.55rem; letter-spacing: -0.5px; }
-      .hero-sub { font-size: 0.8rem; gap: 6px; margin-bottom: 18px; }
-      .hero-chip { font-size: 0.73rem; padding: 3px 9px; }
-      .badge { padding: 6px 14px; font-size: 0.8rem; gap: 6px; }
-      .person-badges { gap: 7px; }
+      .hero { padding: 14px 12px; }
+      .hero h1 { font-size: 1.2rem; letter-spacing: -0.4px; margin-bottom: 6px; }
+      .hero-sub { font-size: 0.76rem; gap: 6px; }
+      .hero-chip { font-size: 0.7rem; padding: 3px 9px; }
 
       /* Container */
       .ctn { padding: 12px 10px 100px; }
@@ -1393,11 +1151,6 @@
       .tab-btn { padding: 11px 12px; font-size: 0.77rem; }
       .nav-right { gap: 6px; padding: 0 8px 0 4px; }
       #trip-id-display { display: none; }
-      .trip-chip { padding: 4px 7px; }
-      /* Collapse nav buttons to icons only; mobile-quick-bar covers share */
-      .nav-right .btn-label { display: none; }
-      .nav-right .btn-share { display: none; }
-      .btn-trips, .btn-theme { padding: 5px 9px; font-size: 1rem; line-height: 1; }
       .presence-stack { padding-left: 2px; }
       .presence-dot { width: 20px; height: 20px; font-size: 0.7rem; }
 
@@ -1418,25 +1171,6 @@
       .status-tag { font-size: 0.65rem; padding: 2px 8px; }
 
       /* Edit toolbar */
-      .edit-toolbar { margin-bottom: 12px; gap: 6px; }
-      .btn-edit-toggle { padding: 8px 16px; font-size: 0.8rem; }
-      .btn-compact-toggle { padding: 8px 12px; font-size: 0.76rem; }
-      .planner-filters {
-        gap: 6px; margin-bottom: 8px;
-        flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
-        scroll-snap-type: x proximity;
-        padding-bottom: 2px;
-      }
-      .planner-filters::-webkit-scrollbar { display: none; }
-      .filter-chip {
-        padding: 8px 11px; font-size: 0.69rem;
-        flex: 0 0 auto; scroll-snap-align: start;
-      }
-      .planner-mini-summary {
-        top: calc(52px + env(safe-area-inset-top));
-        padding: 8px 10px;
-      }
-      .mini-filter-lbl { width: 100%; }
       .edit-hint { display: none; }
       .mobile-quick-bar { display: flex; }
       .ctn { padding-bottom: 150px; }
@@ -1575,9 +1309,6 @@
   <div class="loading-msg" id="loading-msg">⛺️ Loading your trip…</div>
 </div>
 
-<!-- Sync toast notification -->
-<div class="sync-toast" id="sync-toast"></div>
-
 <!-- ===== TRIPS MODAL ===== -->
 <div class="modal-overlay" id="trips-modal-overlay" onclick="closeTripsModal(event)">
   <div class="modal" id="trips-modal">
@@ -1590,49 +1321,13 @@
   </div>
 </div>
 
-<!-- ===== ONBOARDING TOUR ===== -->
-<div class="tour-overlay" id="tour-overlay">
-  <div class="tour-card">
-    <span class="tour-emoji" id="tour-emoji">🏕️</span>
-    <div class="tour-title" id="tour-title"></div>
-    <div class="tour-body"  id="tour-body"></div>
-    <div class="tour-progress" id="tour-progress"></div>
-    <div class="tour-btns">
-      <button class="tour-skip" onclick="endTour()">Skip tour</button>
-      <button class="tour-next" id="tour-next-btn" onclick="tourNext()">Next →</button>
-    </div>
-  </div>
-</div>
-
 <div class="app">
 
   <!-- ===== HERO ===== -->
   <header class="hero">
-    <div class="hero-moon"></div>
     <div class="hero-content">
-      <span class="hero-emoji">⛺</span>
-      <h1 id="hero-title">Ultimate Camping Trip Planner</h1>
-      <div class="hero-sub" id="hero-chips">
-        <span class="hero-chip">🌲 Summer 2026</span>
-        <span class="hero-chip">👨‍👩‍👧 4 People</span>
-        <span class="hero-chip">🔥 Grill. Chill. Thrill.</span>
-      </div>
-      <div class="person-badges" id="hero-badges">
-        <div class="badge b-sid">  🌊 Sid</div>
-        <div class="badge b-rahul">💫 Rahul</div>
-        <div class="badge b-deep"> 🌸 Deep</div>
-        <div class="badge b-sujoy">🔥 Sujoy</div>
-      </div>
-      <div id="hero-map-wrap" class="hero-map-wrap"></div>
-    </div>
-    <!-- Mountain silhouette -->
-    <div class="hero-mountains">
-      <svg viewBox="0 0 1440 110" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-        <path d="M0,110 L0,75 L90,30 L180,60 L300,5 L420,50 L520,18 L640,55 L720,8 L830,48 L940,12 L1060,52 L1160,22 L1300,58 L1440,35 L1440,110 Z"
-              fill="#0d1a12" opacity="0.9"/>
-        <path d="M0,110 L0,88 L70,68 L160,88 L250,55 L360,80 L460,48 L580,78 L680,42 L790,74 L890,50 L1010,80 L1110,55 L1230,82 L1340,62 L1440,80 L1440,110 Z"
-              fill="#080f0b"/>
-      </svg>
+      <h1 id="hero-title">Camping Trip</h1>
+      <div class="hero-sub" id="hero-chips"></div>
     </div>
   </header>
 
@@ -1665,7 +1360,6 @@
           <button class="nav-more-item" onclick="openTripsModal(); closeOverflowMenu();"><span class="nmi-ic">🗺️</span><span>Switch / create trip</span></button>
           <button class="nav-more-item" id="btn-theme" onclick="toggleTheme()"><span class="nmi-ic">🔥</span><span class="btn-label" id="btn-theme-label">Warm theme</span></button>
           <div class="nav-more-sep"></div>
-          <button class="nav-more-item nmi-faint" onclick="startTour(); closeOverflowMenu();"><span class="nmi-ic">🎓</span><span>Replay tour</span></button>
           <div class="nav-more-tripid" onclick="shareTrip()" title="Tap to copy link">⛺️ Trip <code id="trip-id-display">…</code></div>
         </div>
       </div>
@@ -1684,13 +1378,6 @@
 
     <!-- ===== PLANNER PANEL ===== -->
     <div id="panel-planner" class="panel active">
-      <div class="edit-toolbar">
-        <div class="toolbar-actions">
-          <button class="btn-edit-toggle" id="edit-toggle" onclick="toggleEditMode()">✏️ Edit Mode</button>
-          <button class="btn-compact-toggle" id="compact-toggle" onclick="toggleCompactMode()">🗜️ Compact Off</button>
-        </div>
-        <span class="edit-hint" id="edit-hint">Click a person pill to toggle who's bringing an item</span>
-      </div>
       <div class="planner-search-wrap" id="planner-search-wrap">
         <span class="planner-search-ico">🔍</span>
         <input type="search" id="planner-search" class="planner-search" placeholder="Search items, stores, or people…" autocomplete="off" oninput="setPlannerSearch(this.value)" />
@@ -1704,7 +1391,6 @@
         <button class="filter-chip" data-filter="purchased" onclick="setPlannerFilter('purchased')">🛍️ Purchased</button>
       </div>
       <div id="store-focus-banner"></div>
-      <div class="planner-mini-summary" id="planner-mini-summary"></div>
       <div class="stats" id="stats"></div>
       <div id="cats"></div>
     </div>
@@ -1929,8 +1615,7 @@ const tripRef = doc(db, 'trips', TRIP_ID);
 // ─────────────────────────────────────────────
 // EDIT MODE
 // ─────────────────────────────────────────────
-let editMode = false;
-let compactMode = false;
+const editMode = true;
 let plannerFilter = 'all';
 let plannerSearch = '';
 let plannerStoreFilter = '';
@@ -1976,29 +1661,6 @@ function launchConfetti() {
   requestAnimationFrame(frame);
 }
 let modalCtx  = null; // { mode:'item'|'cat', ci, ii }
-
-function toggleEditMode() {
-  editMode = !editMode;
-  const btn  = document.getElementById('edit-toggle');
-  const hint = document.getElementById('edit-hint');
-  btn.classList.toggle('on', editMode);
-  btn.textContent = editMode ? '✅ Done Editing' : '✏️ Edit Mode';
-  hint.textContent = editMode
-    ? 'Edit Mode ON — add, rename, or delete items and categories'
-    : 'Click a person pill to toggle who\'s bringing an item';
-  renderPlanner();
-}
-
-function toggleCompactMode() {
-  compactMode = !compactMode;
-  document.body.classList.toggle('planner-compact', compactMode);
-  const btn = document.getElementById('compact-toggle');
-  if (btn) {
-    btn.classList.toggle('on', compactMode);
-    btn.textContent = compactMode ? '🗜️ Compact On' : '🗜️ Compact Off';
-  }
-  localStorage.setItem('camp25-compact', compactMode ? '1' : '0');
-}
 
 function setPlannerFilter(filter) {
   plannerFilter = filter;
@@ -2141,22 +1803,6 @@ function deleteCat(ci) {
   if (!confirm(`Delete the entire category "${S.cats[ci].title}" and all its items?`)) return;
   S.cats.splice(ci, 1);
   save(); renderPlanner();
-}
-
-function quickAddItem(ci) {
-  const rows = document.querySelectorAll(`.add-item-row[data-ci="${ci}"]`);
-  if (!rows.length) return;
-  const nameInput  = rows[0].querySelector('.ai-name');
-  const storeInput = rows[0].querySelector('.ai-store');
-  const name  = nameInput.value.trim();
-  const store = storeInput.value.trim() || 'TBD';
-  if (!name) { nameInput.focus(); return; }
-  S.cats[ci].items.push({ name, store, a: [], purchasedBy: [] });
-  nameInput.value = ''; storeInput.value = '';
-  save(); renderPlanner();
-  // re-open the category
-  S.collapsed[S.cats[ci].id] = false;
-  renderPlanner();
 }
 
 function normalizeItem(item) {
@@ -2566,29 +2212,6 @@ function renderPlanner() {
       : '';
   }
   const ringPct = filteredTotal ? Math.round((filteredPurchased / filteredTotal) * 100) : 0;
-  const C = 2 * Math.PI * 18; // r=18
-  const ringOffset = C - (ringPct / 100) * C;
-  const searchTag = plannerSearch ? `<span class="mini-filter-lbl">🔍 “${plannerSearch}”</span>` : '';
-  document.getElementById('planner-mini-summary').innerHTML = `
-    <div class="mini-ring-wrap">
-      <svg class="mini-ring" viewBox="0 0 44 44" aria-label="Overall purchased progress">
-        <circle class="mini-ring-track" cx="22" cy="22" r="18"></circle>
-        <circle class="mini-ring-fill ${ringPct>=100?'full':''}" cx="22" cy="22" r="18"
-          stroke-dasharray="${C.toFixed(2)}" stroke-dashoffset="${ringOffset.toFixed(2)}"></circle>
-        <text class="mini-ring-text" x="22" y="22">${ringPct}%</text>
-      </svg>
-      <div class="mini-kpis">
-        <span class="mini-kpi">📦 ${filteredTotal} shown</span>
-        <span class="mini-kpi needed">⏳ ${filteredNeeded} needed</span>
-        <span class="mini-kpi">✅ ${filteredClaimed} claimed</span>
-        <span class="mini-kpi purchase">🛍️ ${filteredPurchased} purchased</span>
-      </div>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-      ${searchTag}
-      <span class="mini-filter-lbl">Filter: ${plannerFilter.replace('-', ' ')}</span>
-    </div>
-  `;
 
   const catsEl = document.getElementById('cats');
   catsEl.innerHTML = S.cats.map((cat,ci) => {
@@ -2653,12 +2276,7 @@ function renderPlanner() {
       </div>`;
     }).join('');
 
-    const addRow = editMode ? `
-      <div class="add-item-row" data-ci="${ci}">
-        <input class="ai-name"  type="text" placeholder="New item name…" />
-        <input class="ai-store" type="text" placeholder="Store / source" />
-        <button class="btn-quick-add" data-action="quick-add" data-ci="${ci}">+ Add Item</button>
-      </div>` : '';
+    const addRow = '';
 
     const catEditBtns = editMode ? `
       <div class="cat-actions" onclick="event.stopPropagation()">
@@ -2707,13 +2325,13 @@ function renderPlanner() {
     </div>` : '');
 
   if (!catsEl.innerHTML.trim()) {
-    if (!S.cats.length && !editMode) {
+    if (!S.cats.length) {
       catsEl.innerHTML = `
         <div class="hero-empty">
           <span class="hero-empty-ico">🏕️</span>
           <h2>Your trip is a blank canvas</h2>
           <p>No categories yet. Start by adding one — gear, groceries, or anything you want to pack together.</p>
-          <button class="btn-add" onclick="toggleEditMode();setTimeout(()=>openCatModal(),120)">➕ Add First Category</button>
+          <button class="btn-add" onclick="openCatModal()">➕ Add First Category</button>
         </div>
       `;
     } else {
@@ -2721,7 +2339,7 @@ function renderPlanner() {
         <div class="empty">
           <div class="ico">🔎</div>
           <p>No items match this filter right now.</p>
-          <p style="margin-top:8px"><button class="btn-compact-toggle" onclick="setPlannerFilter('all')">Show All Items</button></p>
+          <p style="margin-top:8px"><button class="btn-edit-toggle" onclick="setPlannerFilter('all')">Show All Items</button></p>
         </div>
       `;
     }
@@ -2747,7 +2365,6 @@ document.getElementById('cats').addEventListener('click', e => {
     if (a === 'del-item')   { deleteItem(ci, ii); return; }
     if (a === 'edit-cat')   { openRenameCatModal(ci); return; }
     if (a === 'del-cat')    { deleteCat(ci); return; }
-    if (a === 'quick-add')  { quickAddItem(ci); return; }
     if (a === 'add-cat')    { openCatModal(); return; }
     if (a === 'move-item-up')   { moveItem(ci, ii, -1); return; }
     if (a === 'move-item-down') { moveItem(ci, ii,  1); return; }
@@ -2780,12 +2397,7 @@ document.getElementById('cats').addEventListener('click', e => {
 });
 
 // Allow pressing Enter in quick-add inputs
-document.getElementById('cats').addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    const row = e.target.closest('.add-item-row[data-ci]');
-    if (row) quickAddItem(+row.dataset.ci);
-  }
-});
+// (quick-add row removed; keydown handler no longer needed)
 
 // ─────────────────────────────────────────────
 // EXPENSES
@@ -3124,8 +2736,7 @@ function renderHero() {
   const cnt = S.people.length;
   const loc = S.trip.location || '';
   const locChip = loc
-    ? `<a class="hero-chip hero-loc" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}" target="_blank" rel="noopener" title="Open in Google Maps">📍 ${loc}</a>
-       <span class="hero-chip btn-map-toggle" onclick="toggleMap()" id="map-toggle-btn">🗺️ Map</span>`
+    ? `<a class="hero-chip hero-loc" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}" target="_blank" rel="noopener" title="Open in Google Maps">📍 ${loc}</a>`
     : '';
   document.getElementById('hero-chips').innerHTML = `
     <span class="hero-chip">🌲 ${formatDateRange(S.trip.startDate, S.trip.endDate)}</span>
@@ -3134,15 +2745,6 @@ function renderHero() {
     ${locChip}
     ${tripCountdown()}
   `;
-  // Reset map state on re-render
-  const mapWrap = document.getElementById('hero-map-wrap');
-  mapWrap.classList.remove('open');
-  mapWrap.innerHTML = '';
-  _mapOpen = false;
-  document.getElementById('hero-badges').innerHTML = S.people.map(p => {
-    const c = pcs(p.color);
-    return `<div class="badge" style="color:${c.text};border-color:${c.border};background:${c.bg};box-shadow:0 4px 20px rgba(${c.rbg},0.2)">${p.emoji} ${p.name}</div>`;
-  }).join('');
 }
 
 // ─────────────────────────────────────────────
@@ -3426,7 +3028,6 @@ function resetAll() {
 // ─────────────────────────────────────────────
 // SYNC HELPERS
 // ─────────────────────────────────────────────
-let _toastTimer;
 
 function setSyncStatus(status) {
   const el = document.getElementById('sync-dot');
@@ -3436,38 +3037,10 @@ function setSyncStatus(status) {
   el.title = msgs[status] || '';
 }
 
-function showSyncToast(msg) {
-  const el = document.getElementById('sync-toast');
-  if (!el) return;
-  el.textContent = msg;
-  el.classList.add('show');
-  clearTimeout(_toastTimer);
-  _toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
-}
-
 function shareTrip() {
   const url = location.href;
   navigator.clipboard.writeText(url)
-    .then(() => showSyncToast('📋 Trip link copied! Send it to your crew.'))
     .catch(() => prompt('Copy this link to share your trip:', url));
-}
-
-let _mapOpen = false;
-function toggleMap() {
-  const loc  = S.trip.location || '';
-  if (!loc) return;
-  const wrap = document.getElementById('hero-map-wrap');
-  const btn  = document.getElementById('map-toggle-btn');
-  _mapOpen = !_mapOpen;
-  if (_mapOpen) {
-    wrap.innerHTML = `<iframe src="https://maps.google.com/maps?q=${encodeURIComponent(loc)}&output=embed&z=12" loading="lazy" allowfullscreen></iframe>`;
-    wrap.classList.add('open');
-    if (btn) btn.textContent = '🗺️ Hide Map';
-  } else {
-    wrap.classList.remove('open');
-    if (btn) btn.textContent = '🗺️ Map';
-    setTimeout(() => { if (!_mapOpen) wrap.innerHTML = ''; }, 420);
-  }
 }
 
 function toggleTheme() {
@@ -3544,8 +3117,6 @@ function openTripsModal() {
         </div>
       </div>`;
   }).join('') : `<div class="empty"><p>No saved trips yet.</p></div>`;
-  // Tour entry
-  listEl.innerHTML += `<div style="margin-top:10px;text-align:center"><button class="btn-cancel" onclick="startTour()">🎓 Replay quick tour</button></div>`;
   document.getElementById('trips-modal-overlay').classList.add('show');
 }
 
@@ -3645,47 +3216,7 @@ function renderPresence(viewers) {
 }
 
 // ─────────────────────────────────────────────
-// ONBOARDING TOUR
-// ─────────────────────────────────────────────
-const TOUR_STEPS = [
-  { emoji: '⛺', title: 'Welcome to your camping HQ', body: 'This is your shared trip planner. Everything you change is auto-synced with your crew in real time.' },
-  { emoji: '🔍', title: 'Search & filter fast', body: 'Use the search bar to find any item by name, store, or person. Filter chips show live counts so you can spot what still needs attention.' },
-  { emoji: '🛍️', title: 'Track who buys what', body: 'Tap an "Assigned" pill to claim an item, then tap the "Purchased" pill once you’ve grabbed it. The progress ring fills as you go.' },
-  { emoji: '🗺️', title: 'Share & switch trips', body: 'Use 📤 Share to send the trip link, or open 🗺️ Trips to switch between trips and create new ones. You can replay this tour anytime from the Trips menu.' },
-];
-let _tourStep = 0;
-
-function startTour() {
-  closeTripsModal({ target: document.getElementById('trips-modal-overlay') });
-  _tourStep = 0;
-  document.getElementById('tour-overlay').classList.add('show');
-  renderTourStep();
-}
-
-function renderTourStep() {
-  const step = TOUR_STEPS[_tourStep];
-  document.getElementById('tour-emoji').textContent = step.emoji;
-  document.getElementById('tour-title').textContent = step.title;
-  document.getElementById('tour-body').textContent  = step.body;
-  document.getElementById('tour-progress').innerHTML =
-    TOUR_STEPS.map((_, i) => `<span class="${i===_tourStep?'active':''}"></span>`).join('');
-  document.getElementById('tour-next-btn').textContent =
-    _tourStep === TOUR_STEPS.length - 1 ? 'Got it 🎉' : 'Next →';
-}
-
-function tourNext() {
-  _tourStep++;
-  if (_tourStep >= TOUR_STEPS.length) { endTour(); return; }
-  renderTourStep();
-}
-
-function endTour() {
-  document.getElementById('tour-overlay').classList.remove('show');
-  localStorage.setItem('camp25-tour-done', '1');
-}
-
-// ─────────────────────────────────────────────
-// NAV OVERFLOW MENU + AUTO-COLLAPSE HERO
+// NAV OVERFLOW MENU
 // ─────────────────────────────────────────────
 function toggleOverflowMenu(e) {
   if (e) e.stopPropagation();
@@ -3702,31 +3233,18 @@ document.addEventListener('click', e => {
   if (!e.target.closest('.nav-more-wrap')) closeOverflowMenu();
 });
 
-let _heroCollapseTicking = false;
-function _updateHeroCollapse() {
-  const collapsed = (window.scrollY || document.documentElement.scrollTop) > 90;
-  document.body.classList.toggle('hero-collapsed', collapsed);
-  _heroCollapseTicking = false;
-}
-window.addEventListener('scroll', () => {
-  if (_heroCollapseTicking) return;
-  _heroCollapseTicking = true;
-  requestAnimationFrame(_updateHeroCollapse);
-}, { passive: true });
-
 // ─────────────────────────────────────────────
 // GLOBAL EXPORTS  (module-scoped functions must be on window for onclick=)
 // ─────────────────────────────────────────────
 Object.assign(window, {
-  toggleEditMode, openItemModal, openCatModal, openRenameCatModal,
-  closeModal, saveModal, deleteItem, deleteCat, quickAddItem,
+  openItemModal, openCatModal, openRenameCatModal,
+  closeModal, saveModal, deleteItem, deleteCat,
   openPersonModal, closePersonModal, savePersonModal,
   saveTripDetails, selectNewColor, addPerson, deletePerson, resetAll,
-  shareTrip, toggleTheme, toggleMap, toggleCompactMode, setPlannerFilter, setPlannerSearch, setPlannerStoreFilter,
+  shareTrip, toggleTheme, setPlannerFilter, setPlannerSearch, setPlannerStoreFilter,
   switchTab, jumpToAddExpense,
   toggleNavDropdown, renderMealPlan, renderActivityPlan,
   openTripsModal, closeTripsModal, createNewTrip, switchTrip, forgetTrip,
-  startTour, tourNext, endTour,
   toggleOverflowMenu, closeOverflowMenu,
   _setPersonColor: (c) => { personModalColor = c; renderPersonModalSwatches(); }
 });
@@ -3747,16 +3265,6 @@ if (savedTheme === 'warm') {
   document.body.classList.add('light');
   document.getElementById('btn-theme').innerHTML = '<span class="nmi-ic">🌲</span><span class="btn-label" id="btn-theme-label">Forest theme</span>';
   document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f4f1ea');
-}
-
-if (localStorage.getItem('camp25-compact') === '1') {
-  compactMode = true;
-  document.body.classList.add('planner-compact');
-  const compactBtn = document.getElementById('compact-toggle');
-  if (compactBtn) {
-    compactBtn.classList.add('on');
-    compactBtn.textContent = '🗜️ Compact On';
-  }
 }
 
 const savedFilter = localStorage.getItem('camp25-filter');
@@ -3838,11 +3346,6 @@ onSnapshot(tripRef, snap => {
 
   if (wasFirst) {
     document.getElementById('loading-overlay').style.display = 'none';
-    if (!localStorage.getItem('camp25-tour-done')) {
-      setTimeout(startTour, 600);
-    }
-  } else if (Date.now() - _lastSaveTs > 3000) {
-    showSyncToast('🔄 Updated by a crew member!');
   }
 
   registerCurrentTrip();
