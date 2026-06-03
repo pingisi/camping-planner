@@ -158,7 +158,7 @@
     .hero-loc { cursor: pointer; color: var(--text) !important; text-decoration: none; }
     .hero-loc:hover { background: rgba(255,255,255,0.12); }
     .btn-map-toggle { cursor: pointer; background: rgba(255,215,0,0.1); border-color: rgba(255,215,0,0.25); color: var(--gold); }
-    .btn-map-toggle:hover { background: rgba(255,215,0,0.18); }  border-color:rgba(255,215,0,0.35);  color:var(--gold); font-weight:800; }
+    .btn-map-toggle:hover { background: rgba(255,215,0,0.18); border-color:rgba(255,215,0,0.35); color:var(--gold); font-weight:800; }
     .hero-cd-urgent  { background:rgba(255,107,53,0.13); border-color:rgba(255,107,53,0.45); color:var(--fire); font-weight:800; animation:cd-pulse 2s ease-in-out infinite; }
     .hero-cd-today   { background:rgba(102,187,106,0.15);border-color:rgba(102,187,106,0.5); color:var(--ok);   font-weight:800; animation:cd-pulse 1.2s ease-in-out infinite; }
     .hero-cd-past    { background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.1); color:var(--muted); }
@@ -369,7 +369,23 @@
     .item-name { font-size: 0.875rem; font-weight: 600; color: var(--text); }
     .item-store { font-size: 0.7rem; color: var(--muted); margin-top: 3px; font-weight: 500; }
 
+    .item-pills-wrap { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .item-pill-label {
+      font-size: 0.62rem; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 0.6px; font-weight: 700;
+    }
+
     .item-pills { display: flex; gap: 5px; flex-wrap: wrap; }
+    .item-pills-purchased .pill.on { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2); }
+    .item-pills-purchased .pill::before {
+      content: '✓';
+      display: inline-block;
+      margin-right: 4px;
+      font-size: 0.66rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .item-pills-purchased .pill.on::before { opacity: 0.9; }
 
     .pill {
       padding: 3px 10px; border-radius: 50px; font-size: 0.7rem; font-weight: 700;
@@ -399,6 +415,9 @@
       border: 1px solid rgba(255,167,38,0.3);
       animation: needPulse 3s ease-in-out infinite;
     }
+    .s-purchased { background:rgba(102,187,106,0.14); color:var(--ok); border: 1px solid rgba(102,187,106,0.35); }
+    .s-partial { background:rgba(255,215,0,0.12); color:var(--gold); border: 1px solid rgba(255,215,0,0.32); }
+    .s-not-purchased { background:rgba(240,98,146,0.1); color:var(--deep); border: 1px solid rgba(240,98,146,0.3); }
     @keyframes needPulse {
       0%,100% { opacity: 1; box-shadow: none; }
       50% { opacity: 0.7; box-shadow: 0 0 6px rgba(255,167,38,0.3); }
@@ -1450,12 +1469,55 @@ function quickAddItem(ci) {
   const name  = nameInput.value.trim();
   const store = storeInput.value.trim() || 'TBD';
   if (!name) { nameInput.focus(); return; }
-  S.cats[ci].items.push({ name, store, a: [] });
+  S.cats[ci].items.push({ name, store, a: [], purchasedBy: [] });
   nameInput.value = ''; storeInput.value = '';
   save(); renderPlanner();
   // re-open the category
   S.collapsed[S.cats[ci].id] = false;
   renderPlanner();
+}
+
+function normalizeItem(item) {
+  if (!Array.isArray(item.a)) item.a = [];
+  if (!Array.isArray(item.purchasedBy)) item.purchasedBy = [];
+  return item;
+}
+
+function normalizeState() {
+  const people = new Set(S.people.map(p => p.name));
+  S.cats.forEach(cat => {
+    if (!Array.isArray(cat.items)) cat.items = [];
+    cat.items.forEach(item => {
+      normalizeItem(item);
+      item.a = item.a.filter(name => people.has(name));
+      item.purchasedBy = item.purchasedBy.filter(name => people.has(name));
+    });
+  });
+}
+
+function isItemPurchased(item) {
+  const assigned = item.a;
+  const purchased = item.purchasedBy;
+  if (!purchased.length) return false;
+  if (assigned.length) return assigned.every(name => purchased.includes(name));
+  return purchased.length >= S.people.length;
+}
+
+function getPurchaseStatus(item) {
+  const assigned = item.a;
+  const purchased = item.purchasedBy;
+
+  if (!purchased.length) {
+    return { cls: 's-not-purchased', text: '🛒 Not Purchased' };
+  }
+
+  if (isItemPurchased(item)) {
+    const count = assigned.length || S.people.length;
+    return { cls: 's-purchased', text: `✅ Purchased (${count}/${count})` };
+  }
+
+  const totalTarget = assigned.length || S.people.length;
+  return { cls: 's-partial', text: `🛍️ Partial (${purchased.length}/${totalTarget})` };
 }
 
 // ─────────────────────────────────────────────
@@ -1582,6 +1644,7 @@ function deepClone(x) { return JSON.parse(JSON.stringify(x)); }
 
 
 function save() {
+  normalizeState();
   try { localStorage.setItem('camp25', JSON.stringify(S)); } catch(e) {}
   _lastSaveTs = Date.now();
   setSyncStatus('syncing');
@@ -1689,10 +1752,13 @@ document.getElementById('nav-dropdown').addEventListener('click', e => {
 // PLANNER
 // ─────────────────────────────────────────────
 function renderPlanner() {
-  let total=0, claimed=0;
+  normalizeState();
+
+  let total=0, claimed=0, purchased=0;
   const pc = Object.fromEntries(S.people.map(p=>[p.name,0]));
   S.cats.forEach(c => c.items.forEach(i => {
     total++;
+    if (isItemPurchased(i)) purchased++;
     if (i.a.length) { claimed++; i.a.forEach(p => { if(p in pc) pc[p]++; }); }
   }));
   const pct = n => total ? Math.round(n/total*100) : 0;
@@ -1724,6 +1790,13 @@ function renderPlanner() {
       <div class="prog-bar"><div class="prog-fill" style="width:${pct(total-claimed)}%;background:var(--warn)"></div></div>
       <div class="sc-pct" style="color:var(--warn)">${pct(total-claimed)}% remaining</div>
     </div>
+    <div class="sc">
+      <span class="sc-icon">🛍️</span>
+      <div class="sc-num" style="color:var(--ok)">${purchased}</div>
+      <div class="sc-lbl">Purchased</div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct(purchased)}%;background:var(--ok)"></div></div>
+      <div class="sc-pct" style="color:var(--ok)">${pct(purchased)}% complete</div>
+    </div>
     ${S.people.map(p=>`
     <div class="sc">
       <div class="sc-avatar" style="background:${p.color};box-shadow:0 0 0 3px ${p.color}33">${p.name[0].toUpperCase()}</div>
@@ -1737,31 +1810,49 @@ function renderPlanner() {
   const catsEl = document.getElementById('cats');
   catsEl.innerHTML = S.cats.map((cat,ci) => {
     const open = !S.collapsed[cat.id];
-    const itemsHtml = cat.items.map((item,ii) => `
+    const itemsHtml = cat.items.map((item,ii) => {
+      const purchase = getPurchaseStatus(item);
+      return `
       <div class="item-row">
         <div class="item-info">
           <div class="item-name">${item.name}</div>
           <div class="item-store">📍 ${item.store}</div>
         </div>
-        <div class="item-pills">
-          ${S.people.map(p=>`
-            <span class="pill ${item.a.includes(p.name)?'on':'off'}"
-              style="${pillStyle(p.color, item.a.includes(p.name))}"
-              data-ci="${ci}" data-ii="${ii}" data-p="${p.name}"
-              title="Click to toggle ${p.name}'s assignment">${p.name}</span>
-          `).join('')}
+        <div class="item-pills-wrap">
+          <span class="item-pill-label">Assigned</span>
+          <div class="item-pills">
+            ${S.people.map(p=>`
+              <span class="pill ${item.a.includes(p.name)?'on':'off'}"
+                style="${pillStyle(p.color, item.a.includes(p.name))}"
+                data-ci="${ci}" data-ii="${ii}" data-p="${p.name}" data-role="assign"
+                title="Click to toggle ${p.name}'s assignment">${p.name}</span>
+            `).join('')}
+          </div>
+        </div>
+        <div class="item-pills-wrap">
+          <span class="item-pill-label">Purchased</span>
+          <div class="item-pills item-pills-purchased">
+            ${S.people.map(p=>`
+              <span class="pill ${item.purchasedBy.includes(p.name)?'on':'off'}"
+                style="${pillStyle(p.color, item.purchasedBy.includes(p.name))}"
+                data-ci="${ci}" data-ii="${ii}" data-p="${p.name}" data-role="purchase"
+                title="Click to mark ${p.name} as purchased">${p.name}</span>
+            `).join('')}
+          </div>
         </div>
         <div style="display:flex;align-items:center;gap:6px">
           ${item.a.length
             ? `<span class="status-tag s-claimed">✅ Claimed</span>`
             : `<span class="status-tag s-needed">⏳ Needed</span>`}
+          <span class="status-tag ${purchase.cls}">${purchase.text}</span>
           ${editMode ? `
           <div class="edit-controls">
             <button class="btn-icon btn-ie" data-action="edit-item" data-ci="${ci}" data-ii="${ii}" title="Edit">✏️</button>
             <button class="btn-icon btn-id" data-action="del-item"  data-ci="${ci}" data-ii="${ii}" title="Delete">🗑️</button>
           </div>` : ''}
         </div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
 
     const addRow = editMode ? `
       <div class="add-item-row" data-ci="${ci}">
@@ -1832,7 +1923,8 @@ document.getElementById('cats').addEventListener('click', e => {
   const pill = e.target.closest('.pill[data-ci]');
   if (pill) {
     const ci=+pill.dataset.ci, ii=+pill.dataset.ii, p=pill.dataset.p;
-    const arr = S.cats[ci].items[ii].a;
+    const item = normalizeItem(S.cats[ci].items[ii]);
+    const arr = pill.dataset.role === 'purchase' ? item.purchasedBy : item.a;
     const idx = arr.indexOf(p);
     if (idx>=0) arr.splice(idx,1); else arr.push(p);
     save(); renderPlanner();
@@ -2367,7 +2459,11 @@ function deletePerson(pi) {
   if (inExp)   msg += '\n⚠️ They appear in expense records (data kept, shown as unknown).';
   if (inItems) msg += '\n⚠️ They will be removed from item assignments.';
   if (!confirm(msg)) return;
-  S.cats.forEach(c=>c.items.forEach(i=>{ i.a=i.a.filter(n=>n!==p.name); }));
+  S.cats.forEach(c=>c.items.forEach(i=>{
+    normalizeItem(i);
+    i.a = i.a.filter(n=>n!==p.name);
+    i.purchasedBy = i.purchasedBy.filter(n=>n!==p.name);
+  }));
   S.people.splice(pi,1);
   save(); renderPeopleList(); renderHero(); renderExpenseForm(); renderPlanner();
 }
@@ -2403,7 +2499,11 @@ function savePersonModal() {
   const p = S.people[personModalIdx];
   const oldName = p.name;
   if (name !== oldName) {
-    S.cats.forEach(c=>c.items.forEach(i=>{ i.a=i.a.map(n=>n===oldName?name:n); }));
+    S.cats.forEach(c=>c.items.forEach(i=>{
+      normalizeItem(i);
+      i.a=i.a.map(n=>n===oldName?name:n);
+      i.purchasedBy=i.purchasedBy.map(n=>n===oldName?name:n);
+    }));
     S.expenses.forEach(e=>{
       if (e.payer===oldName) e.payer=name;
       e.split=e.split.map(n=>n===oldName?name:n);
@@ -2520,6 +2620,7 @@ onSnapshot(tripRef, snap => {
     if (p.trip)        S.trip       = { ...deepClone(TRIP_INIT), ...p.trip };
     if (p.meals)       S.meals      = p.meals;
     if (p.activities)  S.activities = p.activities;
+    normalizeState();
     try { localStorage.setItem('camp25', JSON.stringify(S)); } catch(e) {}
   } else if (wasFirst) {
     // Brand new trip — seed from localStorage if available (one-time migration)
@@ -2534,6 +2635,7 @@ onSnapshot(tripRef, snap => {
         if (p.trip)        S.trip       = { ...deepClone(TRIP_INIT), ...p.trip };
         if (p.meals)       S.meals      = p.meals;
         if (p.activities)  S.activities = p.activities;
+        normalizeState();
         save(); // push existing data up to Firestore
       }
     } catch(e) {}
@@ -2568,6 +2670,7 @@ onSnapshot(tripRef, snap => {
       if (p.trip)        S.trip       = { ...deepClone(TRIP_INIT), ...p.trip };
       if (p.meals)       S.meals      = p.meals;
       if (p.activities)  S.activities = p.activities;
+      normalizeState();
     }
   } catch(e) {}
   renderHero(); renderExpenseForm(); renderPlanner(); renderExpenses();
