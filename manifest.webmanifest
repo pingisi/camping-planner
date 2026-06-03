@@ -1,0 +1,12 @@
+{
+  "name": "Camping Trip Planner",
+  "short_name": "Camp Planner",
+  "description": "Plan camping items, expenses, settlement, meals, and activities with your group.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#080f0b",
+  "theme_color": "#0d1a12",
+  "lang": "en"
+}

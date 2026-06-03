@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d1a12" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>⛺ Camping Trip Planner 2026</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -69,6 +73,7 @@
       color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
     }
 
     /* ====== CANVAS BACKGROUND ====== */
@@ -244,6 +249,45 @@
     /* ====== CONTAINER ====== */
     .ctn { max-width: 1200px; margin: 0 auto; padding: 28px 20px; }
 
+    .mobile-quick-bar {
+      display: none;
+      position: fixed;
+      left: 10px;
+      right: 10px;
+      bottom: calc(10px + env(safe-area-inset-bottom));
+      z-index: 260;
+      border: 1px solid var(--border2);
+      border-radius: 16px;
+      background: rgba(8,15,11,0.92);
+      backdrop-filter: blur(16px) saturate(1.4);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.35);
+      padding: 7px;
+      gap: 6px;
+    }
+    .mobile-qa-btn {
+      flex: 1;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 10px;
+      padding: 9px 6px;
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.69rem;
+      font-weight: 700;
+      line-height: 1.1;
+      cursor: pointer;
+      min-height: 42px;
+    }
+    .mobile-qa-btn.active {
+      color: var(--gold);
+      border-color: rgba(255,215,0,0.4);
+      background: rgba(255,215,0,0.12);
+    }
+    .tap-pop {
+      transform: scale(0.97) !important;
+      transition: transform 0.09s ease;
+    }
+
     /* ====== TAB PANELS ====== */
     .panel { display: none; }
     .panel.active { display: block; animation: fadeUp 0.3s ease; }
@@ -335,12 +379,32 @@
       backdrop-filter: blur(16px) saturate(1.6);
     }
     .cat-head:hover { background: rgba(255,255,255,0.025); }
-    .cat-title-wrap { display: flex; align-items: center; gap: 10px; }
+    .cat-title-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; flex: 1; min-width: 0; }
+    .cat-title-main { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .cat-title { font-size: 0.98rem; font-weight: 700; letter-spacing: -0.2px; }
     .cat-count {
       background: rgba(255,215,0,0.1); color: var(--gold);
       border: 1px solid rgba(255,215,0,0.25);
       border-radius: 50px; padding: 2px 10px; font-size: 0.72rem; font-weight: 800;
+    }
+    .cat-progress-wrap { width: min(420px, 100%); }
+    .cat-progress-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 6px; }
+    .cat-progress-chip {
+      padding: 2px 8px; border-radius: 14px; font-size: 0.64rem; font-weight: 700;
+      border: 1px solid rgba(102,187,106,0.35); color: var(--ok); background: rgba(102,187,106,0.12);
+    }
+    .cat-progress-chip.purchase {
+      border-color: rgba(255,215,0,0.35); color: var(--gold); background: rgba(255,215,0,0.12);
+    }
+    .cat-progress-line {
+      position: relative; height: 4px; border-radius: 3px; background: rgba(255,255,255,0.08);
+      overflow: hidden; margin-bottom: 4px;
+    }
+    .cat-progress-line:last-child { margin-bottom: 0; }
+    .cat-progress-fill {
+      height: 100%; border-radius: 3px; display: block;
+      transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 8px currentColor;
     }
     .chevron { width: 18px; height: 18px; color: var(--muted); transition: transform 0.35s; }
     .chevron.open { transform: rotate(180deg); }
@@ -351,9 +415,9 @@
 
     /* ====== ITEM ROW ====== */
     .item-row {
-      display: flex; align-items: center; gap: 12px; padding: 13px 22px;
+      display: flex; flex-direction: column; gap: 9px; padding: 13px 22px;
       border-bottom: 1px solid rgba(255,255,255,0.035);
-      transition: background 0.18s, padding-left 0.18s; flex-wrap: wrap;
+      transition: background 0.18s, padding-left 0.18s;
       position: relative;
     }
     .item-row::before {
@@ -365,9 +429,12 @@
     .item-row:hover { background: rgba(76,175,80,0.04); }
     .item-row:hover::before { transform: scaleY(1); }
 
+    .item-top { width: 100%; display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
     .item-info { flex: 1; min-width: 110px; }
-    .item-name { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+    .item-name { font-size: 0.91rem; font-weight: 700; color: var(--text); line-height: 1.3; }
     .item-store { font-size: 0.7rem; color: var(--muted); margin-top: 3px; font-weight: 500; }
+    .item-controls { width: 100%; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .item-badges { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 
     .item-pills-wrap { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .item-pill-label {
@@ -391,10 +458,19 @@
       padding: 3px 10px; border-radius: 50px; font-size: 0.7rem; font-weight: 700;
       border: 1.5px solid; cursor: pointer;
       transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
     }
     .pill:hover { transform: scale(1.1); }
     .pill.on  { opacity: 1; }
     .pill.off { opacity: 0.18; }
+    .pill.pulse { animation: pillPop 0.28s ease; }
+    @keyframes pillPop {
+      0% { transform: scale(0.86); }
+      60% { transform: scale(1.16); }
+      100% { transform: scale(1); }
+    }
     .p-sid   { color:var(--sid);   border-color:rgba(41,182,246,0.6);  background:rgba(41,182,246,0.1); }
     .p-rahul { color:var(--rahul); border-color:rgba(186,104,200,0.6); background:rgba(186,104,200,0.1); }
     .p-deep  { color:var(--deep);  border-color:rgba(240,98,146,0.6);  background:rgba(240,98,146,0.1); }
@@ -409,7 +485,9 @@
       padding: 3px 10px; border-radius: 50px; font-size: 0.68rem; font-weight: 800;
       white-space: nowrap; letter-spacing: 0.3px;
     }
-    .s-claimed { background:rgba(102,187,106,0.12); color:var(--ok); border: 1px solid rgba(102,187,106,0.25); }
+    .status-primary { font-size: 0.72rem; font-weight: 900; }
+    .status-secondary { opacity: 0.86; }
+    .s-claimed { background:rgba(255,167,38,0.12); color:var(--warn); border: 1px solid rgba(255,167,38,0.3); }
     .s-needed  {
       background:rgba(255,167,38,0.1); color:var(--warn);
       border: 1px solid rgba(255,167,38,0.3);
@@ -664,6 +742,7 @@
       .item-row { gap: 8px; }
       table { font-size: 0.78rem; }
       thead th, tbody td { padding: 9px 12px; }
+      .pill { min-height: 34px; padding: 5px 11px; }
     }
     @media(max-width:480px){
       .form-row { grid-template-columns: 1fr; }
@@ -674,6 +753,7 @@
       display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
     }
+    .toolbar-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .btn-edit-toggle {
       padding: 9px 22px; border-radius: 50px; font-size: 0.85rem; font-weight: 700;
       border: 2px solid var(--border2); background: var(--surface); color: var(--muted);
@@ -684,6 +764,58 @@
       box-shadow: 0 0 20px rgba(255,215,0,0.15);
     }
     .edit-hint { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+    .btn-compact-toggle {
+      padding: 9px 18px; border-radius: 50px; font-size: 0.82rem; font-weight: 700;
+      border: 2px solid var(--border2); background: var(--surface); color: var(--muted);
+      cursor: pointer; transition: all 0.25s; display: flex; align-items: center; gap: 6px;
+      font-family: 'Outfit', sans-serif;
+    }
+    .btn-compact-toggle.on {
+      border-color: var(--sid); color: var(--sid); background: rgba(41,182,246,0.1);
+      box-shadow: 0 0 18px rgba(41,182,246,0.2);
+    }
+    .planner-filters {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .filter-chip {
+      padding: 7px 12px; border-radius: 999px; border: 1px solid var(--border2);
+      background: rgba(255,255,255,0.04); color: var(--muted);
+      font-size: 0.74rem; font-weight: 700; cursor: pointer;
+      transition: all 0.2s; font-family: 'Outfit', sans-serif;
+    }
+    .filter-chip:hover { color: var(--text); border-color: rgba(255,255,255,0.28); }
+    .filter-chip.active {
+      color: var(--text); border-color: rgba(255,215,0,0.42);
+      background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,167,38,0.1));
+      box-shadow: 0 0 14px rgba(255,215,0,0.18);
+    }
+
+    .planner-mini-summary {
+      position: sticky; top: 54px; z-index: 120;
+      margin-bottom: 14px; padding: 10px 12px;
+      border: 1px solid var(--border); border-radius: 14px;
+      background: rgba(8,15,11,0.82); backdrop-filter: blur(14px) saturate(1.4);
+      display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+    }
+    .mini-kpis { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .mini-kpi {
+      padding: 4px 9px; border-radius: 999px; font-size: 0.67rem; font-weight: 800;
+      border: 1px solid rgba(255,255,255,0.16); color: var(--text);
+      background: rgba(255,255,255,0.05);
+    }
+    .mini-kpi.needed { border-color: rgba(255,167,38,0.3); color: var(--warn); background: rgba(255,167,38,0.1); }
+    .mini-kpi.purchase { border-color: rgba(255,215,0,0.3); color: var(--gold); background: rgba(255,215,0,0.1); }
+    .mini-kpi.done { border-color: rgba(102,187,106,0.3); color: var(--ok); background: rgba(102,187,106,0.1); }
+    .mini-filter-lbl { font-size: 0.72rem; color: var(--muted); font-weight: 600; }
+
+    body.planner-compact .item-row { padding: 9px 14px; gap: 7px; }
+    body.planner-compact .item-name { font-size: 0.84rem; }
+    body.planner-compact .item-store,
+    body.planner-compact .item-pill-label,
+    body.planner-compact .cat-progress-wrap { display: none; }
+    body.planner-compact .pill { padding: 2px 8px; font-size: 0.64rem; }
+    body.planner-compact .status-tag { font-size: 0.62rem; padding: 2px 8px; }
 
     .btn-icon {
       background: none; border: none; cursor: pointer; padding: 5px 7px;
@@ -917,7 +1049,26 @@
       /* Edit toolbar */
       .edit-toolbar { margin-bottom: 12px; gap: 6px; }
       .btn-edit-toggle { padding: 8px 16px; font-size: 0.8rem; }
+      .btn-compact-toggle { padding: 8px 12px; font-size: 0.76rem; }
+      .planner-filters {
+        gap: 6px; margin-bottom: 8px;
+        flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x proximity;
+        padding-bottom: 2px;
+      }
+      .planner-filters::-webkit-scrollbar { display: none; }
+      .filter-chip {
+        padding: 8px 11px; font-size: 0.69rem;
+        flex: 0 0 auto; scroll-snap-align: start;
+      }
+      .planner-mini-summary {
+        top: calc(52px + env(safe-area-inset-top));
+        padding: 8px 10px;
+      }
+      .mini-filter-lbl { width: 100%; }
       .edit-hint { display: none; }
+      .mobile-quick-bar { display: flex; }
+      .ctn { padding-bottom: 150px; }
 
       /* Quick-add row: stack inputs vertically */
       .add-item-row {
@@ -989,6 +1140,21 @@
       .badge    { padding: 5px 11px; font-size: 0.76rem; }
       .balances { grid-template-columns: 1fr; }
       .sc-num   { font-size: 1.6rem; }
+      .pill { min-height: 36px; }
+      .mobile-qa-btn { font-size: 0.63rem; padding: 8px 5px; }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      .pill:hover,
+      .btn-icon:hover,
+      .badge:hover,
+      .tx-item:hover,
+      .sc:hover,
+      .tot-card:hover,
+      .bal-card:hover {
+        transform: none;
+      }
+      .pill:active { transform: scale(0.97); }
     }
 
     /* ====== MEAL / ACTIVITY PLAN ====== */
@@ -1095,14 +1261,33 @@
     </div>
   </nav>
 
+  <div class="mobile-quick-bar" id="mobile-quick-bar">
+    <button class="mobile-qa-btn active" data-qa-tab="planner" onclick="switchTab('planner')">📋 List</button>
+    <button class="mobile-qa-btn" data-qa-tab="expenses" onclick="switchTab('expenses')">💰 Expenses</button>
+    <button class="mobile-qa-btn" data-qa-tab="settlement" onclick="switchTab('settlement')">⚖️ Settle</button>
+    <button class="mobile-qa-btn" onclick="jumpToAddExpense()">➕ Add</button>
+    <button class="mobile-qa-btn" onclick="shareTrip()">📤 Share</button>
+  </div>
+
   <div class="ctn">
 
     <!-- ===== PLANNER PANEL ===== -->
     <div id="panel-planner" class="panel active">
       <div class="edit-toolbar">
-        <button class="btn-edit-toggle" id="edit-toggle" onclick="toggleEditMode()">✏️ Edit Mode</button>
+        <div class="toolbar-actions">
+          <button class="btn-edit-toggle" id="edit-toggle" onclick="toggleEditMode()">✏️ Edit Mode</button>
+          <button class="btn-compact-toggle" id="compact-toggle" onclick="toggleCompactMode()">🗜️ Compact Off</button>
+        </div>
         <span class="edit-hint" id="edit-hint">Click a person pill to toggle who's bringing an item</span>
       </div>
+      <div class="planner-filters" id="planner-filters">
+        <button class="filter-chip active" data-filter="all" onclick="setPlannerFilter('all')">🌐 All</button>
+        <button class="filter-chip" data-filter="needed" onclick="setPlannerFilter('needed')">⏳ Needed</button>
+        <button class="filter-chip" data-filter="not-purchased" onclick="setPlannerFilter('not-purchased')">🛒 Not Purchased</button>
+        <button class="filter-chip" data-filter="claimed" onclick="setPlannerFilter('claimed')">✅ Claimed</button>
+        <button class="filter-chip" data-filter="purchased" onclick="setPlannerFilter('purchased')">🛍️ Purchased</button>
+      </div>
+      <div class="planner-mini-summary" id="planner-mini-summary"></div>
       <div class="stats" id="stats"></div>
       <div id="cats"></div>
     </div>
@@ -1321,6 +1506,9 @@ const tripRef = doc(db, 'trips', TRIP_ID);
 // EDIT MODE
 // ─────────────────────────────────────────────
 let editMode = false;
+let compactMode = false;
+let plannerFilter = 'all';
+let _lastPillPulseKey = '';
 let _prevAllClaimed = false;
 
 function launchConfetti() {
@@ -1373,6 +1561,34 @@ function toggleEditMode() {
     ? 'Edit Mode ON — add, rename, or delete items and categories'
     : 'Click a person pill to toggle who\'s bringing an item';
   renderPlanner();
+}
+
+function toggleCompactMode() {
+  compactMode = !compactMode;
+  document.body.classList.toggle('planner-compact', compactMode);
+  const btn = document.getElementById('compact-toggle');
+  if (btn) {
+    btn.classList.toggle('on', compactMode);
+    btn.textContent = compactMode ? '🗜️ Compact On' : '🗜️ Compact Off';
+  }
+  localStorage.setItem('camp25-compact', compactMode ? '1' : '0');
+}
+
+function setPlannerFilter(filter) {
+  plannerFilter = filter;
+  document.querySelectorAll('#planner-filters .filter-chip').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === plannerFilter);
+  });
+  localStorage.setItem('camp25-filter', plannerFilter);
+  renderPlanner();
+}
+
+function matchesPlannerFilter(item) {
+  if (plannerFilter === 'needed') return item.a.length === 0;
+  if (plannerFilter === 'not-purchased') return !isItemPurchased(item);
+  if (plannerFilter === 'claimed') return item.a.length > 0;
+  if (plannerFilter === 'purchased') return isItemPurchased(item);
+  return true;
 }
 
 function openItemModal(ci, ii) {
@@ -1718,6 +1934,57 @@ function toggleNavDropdown() {
   btn.classList.toggle('open', open);
 }
 
+function updateQuickBarActive(tabId) {
+  document.querySelectorAll('.mobile-qa-btn[data-qa-tab]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.qaTab === tabId);
+  });
+}
+
+function switchTab(id) {
+  const btn = document.querySelector(`.tab-btn[data-tab="${id}"]`);
+  if (!btn) return;
+  document.getElementById('nav-dropdown').classList.remove('open');
+  document.getElementById('nav-select-btn').classList.remove('open');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('nav-select-label').textContent = btn.textContent.trim();
+  document.getElementById('panel-'+id).classList.add('active');
+  if (id==='expenses')   renderExpenses();
+  if (id==='settlement') renderSettlement();
+  if (id==='settings')   renderSettings();
+  if (id==='meal')       renderMealPlan();
+  if (id==='activity')   renderActivityPlan();
+  updateQuickBarActive(id);
+}
+
+function jumpToAddExpense() {
+  switchTab('expenses');
+  setTimeout(() => {
+    const desc = document.getElementById('e-desc');
+    if (desc) desc.focus();
+  }, 90);
+}
+
+let _lastVibeAt = 0;
+function hapticTick(ms = 8) {
+  const supportsVibrate = typeof navigator.vibrate === 'function';
+  if (!supportsVibrate) return;
+  if (!window.matchMedia('(pointer: coarse)').matches) return;
+  const now = Date.now();
+  if (now - _lastVibeAt < 55) return;
+  navigator.vibrate(ms);
+  _lastVibeAt = now;
+}
+
+document.addEventListener('pointerdown', e => {
+  const target = e.target.closest('button, .pill, .filter-chip, .trip-chip, .tab-btn, .badge');
+  if (!target) return;
+  target.classList.add('tap-pop');
+  setTimeout(() => target.classList.remove('tap-pop'), 120);
+  hapticTick();
+}, { passive: true });
+
 // Close nav dropdown when clicking outside it
 document.addEventListener('click', e => {
   const wrap = document.getElementById('nav-dropdown');
@@ -1731,21 +1998,7 @@ document.addEventListener('click', e => {
 document.getElementById('nav-dropdown').addEventListener('click', e => {
   const btn = e.target.closest('.tab-btn');
   if (!btn) return;
-  // Close dropdown
-  document.getElementById('nav-dropdown').classList.remove('open');
-  document.getElementById('nav-select-btn').classList.remove('open');
-  // Update active tab
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('nav-select-label').textContent = btn.textContent.trim();
-  const id = btn.dataset.tab;
-  document.getElementById('panel-'+id).classList.add('active');
-  if (id==='expenses')   renderExpenses();
-  if (id==='settlement') renderSettlement();
-  if (id==='settings')   renderSettings();
-  if (id==='meal')       renderMealPlan();
-  if (id==='activity')   renderActivityPlan();
+  switchTab(btn.dataset.tab);
 });
 
 // ─────────────────────────────────────────────
@@ -1807,49 +2060,76 @@ function renderPlanner() {
     </div>`).join('')}
   `;
 
+  const filteredItems = S.cats.flatMap(cat => cat.items).filter(item => matchesPlannerFilter(item));
+  const filteredTotal = filteredItems.length;
+  const filteredNeeded = filteredItems.filter(item => item.a.length === 0).length;
+  const filteredClaimed = filteredItems.filter(item => item.a.length > 0).length;
+  const filteredPurchased = filteredItems.filter(item => isItemPurchased(item)).length;
+  document.getElementById('planner-mini-summary').innerHTML = `
+    <div class="mini-kpis">
+      <span class="mini-kpi">📦 ${filteredTotal} shown</span>
+      <span class="mini-kpi needed">⏳ ${filteredNeeded} needed</span>
+      <span class="mini-kpi">✅ ${filteredClaimed} claimed</span>
+      <span class="mini-kpi purchase">🛍️ ${filteredPurchased} purchased</span>
+      <span class="mini-kpi done">🌟 ${Math.max(0, filteredTotal - filteredNeeded)} with owner</span>
+    </div>
+    <span class="mini-filter-lbl">Filter: ${plannerFilter.replace('-', ' ')}</span>
+  `;
+
   const catsEl = document.getElementById('cats');
   catsEl.innerHTML = S.cats.map((cat,ci) => {
     const open = !S.collapsed[cat.id];
-    const itemsHtml = cat.items.map((item,ii) => {
+    const visibleItems = cat.items.filter(item => matchesPlannerFilter(item));
+    if (!visibleItems.length && !editMode) return '';
+    const catTotal = cat.items.length;
+    const catClaimed = cat.items.filter(item => item.a.length > 0).length;
+    const catPurchased = cat.items.filter(item => isItemPurchased(item)).length;
+    const catPct = n => catTotal ? Math.round((n / catTotal) * 100) : 0;
+    const itemsHtml = visibleItems.map(item => {
+      const ii = cat.items.indexOf(item);
       const purchase = getPurchaseStatus(item);
       return `
       <div class="item-row">
-        <div class="item-info">
-          <div class="item-name">${item.name}</div>
-          <div class="item-store">📍 ${item.store}</div>
-        </div>
-        <div class="item-pills-wrap">
-          <span class="item-pill-label">Assigned</span>
-          <div class="item-pills">
-            ${S.people.map(p=>`
-              <span class="pill ${item.a.includes(p.name)?'on':'off'}"
-                style="${pillStyle(p.color, item.a.includes(p.name))}"
-                data-ci="${ci}" data-ii="${ii}" data-p="${p.name}" data-role="assign"
-                title="Click to toggle ${p.name}'s assignment">${p.name}</span>
-            `).join('')}
+        <div class="item-top">
+          <div class="item-info">
+            <div class="item-name">${item.name}</div>
+            <div class="item-store">📍 ${item.store}</div>
+          </div>
+          <div class="item-badges">
+            ${item.a.length
+              ? `<span class="status-tag status-primary s-claimed">✅ Claimed</span>`
+              : `<span class="status-tag status-primary s-needed">⏳ Needed</span>`}
+            <span class="status-tag status-secondary ${purchase.cls}">${purchase.text}</span>
+            ${editMode ? `
+            <div class="edit-controls">
+              <button class="btn-icon btn-ie" data-action="edit-item" data-ci="${ci}" data-ii="${ii}" title="Edit">✏️</button>
+              <button class="btn-icon btn-id" data-action="del-item"  data-ci="${ci}" data-ii="${ii}" title="Delete">🗑️</button>
+            </div>` : ''}
           </div>
         </div>
-        <div class="item-pills-wrap">
-          <span class="item-pill-label">Purchased</span>
-          <div class="item-pills item-pills-purchased">
-            ${S.people.map(p=>`
-              <span class="pill ${item.purchasedBy.includes(p.name)?'on':'off'}"
-                style="${pillStyle(p.color, item.purchasedBy.includes(p.name))}"
-                data-ci="${ci}" data-ii="${ii}" data-p="${p.name}" data-role="purchase"
-                title="Click to mark ${p.name} as purchased">${p.name}</span>
-            `).join('')}
+        <div class="item-controls">
+          <div class="item-pills-wrap">
+            <span class="item-pill-label">Assigned</span>
+            <div class="item-pills">
+              ${S.people.map(p=>`
+                <span class="pill ${item.a.includes(p.name)?'on':'off'} ${_lastPillPulseKey===`${ci}|${ii}|assign|${p.name}` ? 'pulse' : ''}"
+                  style="${pillStyle(p.color, item.a.includes(p.name))}"
+                  data-ci="${ci}" data-ii="${ii}" data-p="${p.name}" data-role="assign"
+                  title="Click to toggle ${p.name}'s assignment">${p.name}</span>
+              `).join('')}
+            </div>
           </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:6px">
-          ${item.a.length
-            ? `<span class="status-tag s-claimed">✅ Claimed</span>`
-            : `<span class="status-tag s-needed">⏳ Needed</span>`}
-          <span class="status-tag ${purchase.cls}">${purchase.text}</span>
-          ${editMode ? `
-          <div class="edit-controls">
-            <button class="btn-icon btn-ie" data-action="edit-item" data-ci="${ci}" data-ii="${ii}" title="Edit">✏️</button>
-            <button class="btn-icon btn-id" data-action="del-item"  data-ci="${ci}" data-ii="${ii}" title="Delete">🗑️</button>
-          </div>` : ''}
+          <div class="item-pills-wrap">
+            <span class="item-pill-label">Purchased</span>
+            <div class="item-pills item-pills-purchased">
+              ${S.people.map(p=>`
+                <span class="pill ${item.purchasedBy.includes(p.name)?'on':'off'} ${_lastPillPulseKey===`${ci}|${ii}|purchase|${p.name}` ? 'pulse' : ''}"
+                  style="${pillStyle(p.color, item.purchasedBy.includes(p.name))}"
+                  data-ci="${ci}" data-ii="${ii}" data-p="${p.name}" data-role="purchase"
+                  title="Click to mark ${p.name} as purchased">${p.name}</span>
+              `).join('')}
+            </div>
+          </div>
         </div>
       </div>`;
     }).join('');
@@ -1871,9 +2151,19 @@ function renderPlanner() {
       <div class="cat-block" data-cat="${cat.id}">
         <div class="cat-head" data-catid="${cat.id}">
           <div class="cat-title-wrap">
-            <span class="cat-title">${cat.title}</span>
-            <span class="cat-count">${cat.items.length}</span>
-            ${catEditBtns}
+            <div class="cat-title-main">
+              <span class="cat-title">${cat.title}</span>
+              <span class="cat-count">${plannerFilter==='all' ? cat.items.length : `${visibleItems.length}/${cat.items.length}`}</span>
+              ${catEditBtns}
+            </div>
+            <div class="cat-progress-wrap">
+              <div class="cat-progress-row">
+                <span class="cat-progress-chip">✅ ${catClaimed}/${catTotal}</span>
+                <span class="cat-progress-chip purchase">🛍️ ${catPurchased}/${catTotal}</span>
+              </div>
+              <div class="cat-progress-line"><span class="cat-progress-fill" style="width:${catPct(catClaimed)}%;background:var(--ok);color:var(--ok)"></span></div>
+              <div class="cat-progress-line"><span class="cat-progress-fill" style="width:${catPct(catPurchased)}%;background:var(--gold);color:var(--gold)"></span></div>
+            </div>
           </div>
           <svg class="chevron ${open?'open':''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M6 9l6 6 6-6"/>
@@ -1892,6 +2182,23 @@ function renderPlanner() {
       <span style="font-size:1.4rem">➕</span>
       <span class="ac-label">Add New Category / Store</span>
     </div>` : '');
+
+  if (!catsEl.innerHTML.trim()) {
+    catsEl.innerHTML = `
+      <div class="empty">
+        <div class="ico">🔎</div>
+        <p>No items match this filter right now.</p>
+        <p style="margin-top:8px"><button class="btn-compact-toggle" onclick="setPlannerFilter('all')">Show All Items</button></p>
+      </div>
+    `;
+  }
+
+  if (_lastPillPulseKey) {
+    const pulseKey = _lastPillPulseKey;
+    setTimeout(() => {
+      if (_lastPillPulseKey === pulseKey) _lastPillPulseKey = '';
+    }, 300);
+  }
 }
 
 // Planner click handler
@@ -1924,9 +2231,11 @@ document.getElementById('cats').addEventListener('click', e => {
   if (pill) {
     const ci=+pill.dataset.ci, ii=+pill.dataset.ii, p=pill.dataset.p;
     const item = normalizeItem(S.cats[ci].items[ii]);
-    const arr = pill.dataset.role === 'purchase' ? item.purchasedBy : item.a;
+    const role = pill.dataset.role === 'purchase' ? 'purchase' : 'assign';
+    const arr = role === 'purchase' ? item.purchasedBy : item.a;
     const idx = arr.indexOf(p);
     if (idx>=0) arr.splice(idx,1); else arr.push(p);
+    _lastPillPulseKey = `${ci}|${ii}|${role}|${p}`;
     save(); renderPlanner();
   }
 });
@@ -2587,7 +2896,8 @@ Object.assign(window, {
   closeModal, saveModal, deleteItem, deleteCat, quickAddItem,
   openPersonModal, closePersonModal, savePersonModal,
   saveTripDetails, selectNewColor, addPerson, deletePerson, resetAll,
-  shareTrip, toggleTheme, toggleMap,
+  shareTrip, toggleTheme, toggleMap, toggleCompactMode, setPlannerFilter,
+  switchTab, jumpToAddExpense,
   toggleNavDropdown, renderMealPlan, renderActivityPlan,
   _setPersonColor: (c) => { personModalColor = c; renderPersonModalSwatches(); }
 });
@@ -2602,6 +2912,29 @@ let _lastSaveTs = 0;
 if (localStorage.getItem('camp25-theme') === 'warm') {
   document.body.classList.add('warm');
   document.getElementById('btn-theme').textContent = '🌲 Forest';
+}
+
+if (localStorage.getItem('camp25-compact') === '1') {
+  compactMode = true;
+  document.body.classList.add('planner-compact');
+  const compactBtn = document.getElementById('compact-toggle');
+  if (compactBtn) {
+    compactBtn.classList.add('on');
+    compactBtn.textContent = '🗜️ Compact On';
+  }
+}
+
+const savedFilter = localStorage.getItem('camp25-filter');
+if (savedFilter) plannerFilter = savedFilter;
+if (localStorage.getItem('camp25-needed-only') === '1') plannerFilter = 'needed';
+setPlannerFilter(plannerFilter);
+
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => {
+      console.warn('Service worker registration failed:', err);
+    });
+  });
 }
 
 document.getElementById('trip-id-display').textContent = TRIP_ID;
