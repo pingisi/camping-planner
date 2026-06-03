@@ -980,6 +980,16 @@
     .btn-id:hover { background: rgba(239,83,80,0.18); }
     .edit-controls { display: flex; gap: 2px; }
 
+    .cat-add-row { padding: 10px 22px 14px; display: flex; justify-content: center; border-top: 1px dashed rgba(255,255,255,0.08); }
+    .btn-add-item {
+      background: rgba(255,215,0,0.1); color: var(--gold);
+      border: 1px dashed rgba(255,215,0,0.4); border-radius: 999px;
+      padding: 7px 16px; font-size: 0.8rem; font-weight: 700;
+      cursor: pointer; transition: background 0.18s, border-color 0.18s;
+      font-family: 'Outfit', sans-serif;
+    }
+    .btn-add-item:hover { background: rgba(255,215,0,0.2); border-color: var(--gold); }
+
     .add-cat-wrap {
       border: 2px dashed rgba(255,255,255,0.14); border-radius: 20px;
       padding: 18px 24px; display: flex; align-items: center; gap: 12px;
@@ -1728,6 +1738,19 @@ function openItemModal(ci, ii) {
   document.getElementById('modal-f1').focus();
 }
 
+function openAddItemModal(ci) {
+  modalCtx = { mode: 'add-item', ci };
+  document.getElementById('modal-title').textContent    = '➕ Add Item';
+  document.getElementById('modal-f1-lbl').textContent   = 'Item Name';
+  document.getElementById('modal-f1').value             = '';
+  document.getElementById('modal-f2').value             = '';
+  document.getElementById('modal-f2-wrap').style.display = '';
+  document.getElementById('modal-emoji-wrap').style.display = 'none';
+  document.getElementById('modal-save-btn').textContent  = 'Add Item';
+  document.getElementById('modal-overlay').classList.add('show');
+  document.getElementById('modal-f1').focus();
+}
+
 function openCatModal() {
   modalCtx = { mode: 'cat' };
   document.getElementById('modal-title').textContent    = '➕ Add New Category';
@@ -1768,6 +1791,9 @@ function saveModal() {
   if (modalCtx.mode === 'item') {
     S.cats[modalCtx.ci].items[modalCtx.ii].name  = f1;
     S.cats[modalCtx.ci].items[modalCtx.ii].store = f2 || S.cats[modalCtx.ci].items[modalCtx.ii].store;
+  } else if (modalCtx.mode === 'add-item') {
+    S.cats[modalCtx.ci].items.push({ name: f1, store: f2 || 'TBD', a: [], purchasedBy: [] });
+    S.collapsed[S.cats[modalCtx.ci].id] = false;
   } else if (modalCtx.mode === 'cat') {
     const newId = 'cat_' + Date.now();
     S.cats.push({ id: newId, title: f1, items: [] });
@@ -2276,7 +2302,7 @@ function renderPlanner() {
       </div>`;
     }).join('');
 
-    const addRow = '';
+    const addRow = `<div class="cat-add-row"><button class="btn-add-item" data-action="add-item" data-ci="${ci}">➕ Add Item</button></div>`;
 
     const catEditBtns = editMode ? `
       <div class="cat-actions" onclick="event.stopPropagation()">
@@ -2365,6 +2391,7 @@ document.getElementById('cats').addEventListener('click', e => {
     if (a === 'del-item')   { deleteItem(ci, ii); return; }
     if (a === 'edit-cat')   { openRenameCatModal(ci); return; }
     if (a === 'del-cat')    { deleteCat(ci); return; }
+    if (a === 'add-item')   { openAddItemModal(ci); return; }
     if (a === 'add-cat')    { openCatModal(); return; }
     if (a === 'move-item-up')   { moveItem(ci, ii, -1); return; }
     if (a === 'move-item-down') { moveItem(ci, ii,  1); return; }
@@ -3237,7 +3264,7 @@ document.addEventListener('click', e => {
 // GLOBAL EXPORTS  (module-scoped functions must be on window for onclick=)
 // ─────────────────────────────────────────────
 Object.assign(window, {
-  openItemModal, openCatModal, openRenameCatModal,
+  openItemModal, openAddItemModal, openCatModal, openRenameCatModal,
   closeModal, saveModal, deleteItem, deleteCat,
   openPersonModal, closePersonModal, savePersonModal,
   saveTripDetails, selectNewColor, addPerson, deletePerson, resetAll,
