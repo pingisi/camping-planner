@@ -1,5 +1,5 @@
 // Bump this version any time index.html changes so old installs refresh.
-const CACHE_NAME = 'camp-planner-v3';
+const CACHE_NAME = 'camp-planner-v4';
 const APP_SHELL = [
   './',
   './index.html',

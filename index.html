@@ -1348,6 +1348,12 @@
       .nav-right { gap: 6px; padding: 0 8px 0 4px; }
       #trip-id-display { display: none; }
       .trip-chip { padding: 4px 7px; }
+      /* Collapse nav buttons to icons only; mobile-quick-bar covers share */
+      .nav-right .btn-label { display: none; }
+      .nav-right .btn-share { display: none; }
+      .btn-trips, .btn-theme { padding: 5px 9px; font-size: 1rem; line-height: 1; }
+      .presence-stack { padding-left: 2px; }
+      .presence-dot { width: 20px; height: 20px; font-size: 0.7rem; }
 
       /* Stats: fixed 2-column grid */
       .stats { grid-template-columns: repeat(2,1fr); gap: 8px; margin-bottom: 16px; }
@@ -1605,9 +1611,9 @@
       <span class="sync-dot syncing" id="sync-dot" title="Connecting…"></span>
       <span class="presence-stack" id="presence-stack"></span>
       <span class="trip-chip" id="trip-chip" onclick="shareTrip()" title="Click to copy trip link">⛺️ <span id="trip-id-display">…</span></span>
-      <button class="btn-trips" id="btn-trips" onclick="openTripsModal()" title="Switch or create trips">🗺️ Trips</button>
-      <button class="btn-theme" id="btn-theme" onclick="toggleTheme()" title="Toggle theme">🔥 Warm</button>
-      <button class="btn-share" onclick="shareTrip()">📤 Share</button>
+      <button class="btn-trips" id="btn-trips" onclick="openTripsModal()" title="Switch or create trips">🗺️<span class="btn-label"> Trips</span></button>
+      <button class="btn-theme" id="btn-theme" onclick="toggleTheme()" title="Toggle theme">🔥<span class="btn-label" id="btn-theme-label"> Warm</span></button>
+      <button class="btn-share" onclick="shareTrip()">📤<span class="btn-label"> Share</span></button>
     </div>
   </nav>
 
@@ -3418,8 +3424,9 @@ function toggleTheme() {
   document.body.classList.remove('warm', 'light');
   if (next !== 'forest') document.body.classList.add(next);
   const btn = document.getElementById('btn-theme');
-  const labels = { forest: '🔥 Warm', warm: '☀️ Light', light: '🌲 Forest' };
-  btn.textContent = labels[next];
+  const labels = { forest: ['🔥', 'Warm'], warm: ['☀️', 'Light'], light: ['🌲', 'Forest'] };
+  const [emoji, word] = labels[next];
+  btn.innerHTML = `${emoji}<span class="btn-label" id="btn-theme-label"> ${word}</span>`;
   document.querySelector('meta[name="theme-color"]').setAttribute('content', next === 'light' ? '#f4f1ea' : next === 'warm' ? '#180c05' : '#0d1a12');
   localStorage.setItem('camp25-theme', next);
 }
@@ -3648,11 +3655,11 @@ let _lastSaveTs = 0;
 const savedTheme = localStorage.getItem('camp25-theme');
 if (savedTheme === 'warm') {
   document.body.classList.add('warm');
-  document.getElementById('btn-theme').textContent = '☀️ Light';
+  document.getElementById('btn-theme').innerHTML = '☀️<span class="btn-label" id="btn-theme-label"> Light</span>';
   document.querySelector('meta[name="theme-color"]').setAttribute('content', '#180c05');
 } else if (savedTheme === 'light') {
   document.body.classList.add('light');
-  document.getElementById('btn-theme').textContent = '🌲 Forest';
+  document.getElementById('btn-theme').innerHTML = '🌲<span class="btn-label" id="btn-theme-label"> Forest</span>';
   document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f4f1ea');
 }
 
